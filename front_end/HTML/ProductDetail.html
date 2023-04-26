@@ -42,7 +42,7 @@
                                 <a href="Login.html" id="userName" style="display: contents;">
                                     <i class="material-icons">account_circle</i>User name</a>
                                 <div class="dropdown-content">
-                                    <a href="Admin.html">Admin</a>
+                                    <a href="Admin/TableProduct.html">Admin</a>
                                     <a href="#">Log Out</a>
                                 </div>
                             </div>
@@ -88,155 +88,6 @@
                     <div class="col-md-6 col-lg-6" id="productImage"></div>
                     <div class="col-md-6 col-lg-6" style="padding-left: 2%;" id="detail"></div>
                 </div>
-                
-                <script>
-                    axios.all([
-                        axios.get('../JS/watch.json'),
-                        axios.get('../JS/image.json'),
-                        axios.get('../JS/brand.json'),
-                        axios.get('../JS/color.json'),
-                        axios.get('../JS/watch_type.json')
-                    ]).then(axios.spread(function(watch,images,brands,colors,types){
-                        const params = new URLSearchParams(document.location.search)
-                        const watchId = params.get('watchId')
-                        
-                        watchById = watch.data.find(function(w){
-                            return w.watchid===watchId
-                        })
-                        type = types.data.find(function(tp){
-                            return tp.typeid===watchById.watch_typeid
-                        })
-                        document.getElementById('typeLink').innerHTML = 
-                                '<a href="Categories.html?watchType='+type.typeid+'">'+type.type_name+'</a>'
-
-                        imageById = images.data.filter(function(i){
-                            return i.watchid===watchId
-                        })
-                        brand = brands.data.find(function(b){
-                            return b.brandid = watchById.brandid
-                        })
-                        color = colors.data.find(function(c){
-                            return c.colorid = watchById.colorid
-                        })
-                        document.getElementById('rootLink').innerText = watchById.watch_name
-                        document.getElementById('productImage').innerHTML = 
-                                        '<div class="mySlides">'+
-                                                '<img src="'+imageById[0].imageurl+'">'+
-                                           ' </div>'+
-                                            '<div class="mySlides">'+
-                                                '<img src="'+imageById[1].imageurl+'">'+
-                                            '</div>'+
-                                            '<div class="mySlides">'+
-                                                '<img src="'+imageById[2].imageurl+'">'+
-                                            '</div>'+
-                                           ' <div class="mySlides">'+
-                                                '<img src="'+imageById[3].imageurl+'">'+
-                                            '</div>'+
-                                        '<div class="row" style="display: flex; margin-top: 2%;">'+
-                                            '<div class="col-md-3 col-lg-3">'+
-                                                '<img class="demo cursor" src="'+imageById[0].imageurl+'"'+
-                                                        'style="width: 100%;" onclick="currentSlide(1)">'+
-                                           ' </div>'+
-                                            '<div class="col-md-3 col-lg-3">'+
-                                                '<img class="demo cursor" src="'+imageById[1].imageurl+'"'+
-                                                        'style="width: 100%;" onclick="currentSlide(2)">'+
-                                            '</div>'+
-                                            '<div class="col-md-3 col-lg-3">'+
-                                                '<img class="demo cursor" src="'+imageById[2].imageurl+'"'+
-                                                        'style="width: 100%;" onclick="currentSlide(3)">'+
-                                            '</div>'+
-                                            '<div class="col-md-3 col-lg-3">'+
-                                                '<img class="demo cursor" src="'+imageById[3].imageurl+'"'+
-                                                        'style="width: 100%;" onclick="currentSlide(4)">'+
-                                            '</div>'+
-                                        '</div>'+
-                                    '</div>'
-                        
-                        document.getElementById('detail').innerHTML = ' <h2 style="font-weight: bold;">'+watchById.watch_name+'</h2>'+
-                                '<p style="font-weight: bold;">Product Detail:</p>'+
-                                '<p style="color: gray;">Thickness: '+watchById.thickness+'</p>'+
-                                '<p style="color: gray;">Water Resistance: '+watchById.water_resistance+'</p>'+
-                               ' <p style="color: gray;">Brand: '+brand.brand_name+'</p>'+
-                                '<h2 id="price" style="color: red;">'+watchById.price.toLocaleString('en-US', {style : 'currency', currency : 'VND'})+'</h2>'+
-                                '<label>Color:</label><br>'+
-                                '<span class="dot" style="color:'+color.color_name+';"></span><br><br>'+
-                                '<label>Quantity:</label><br>'+
-                                '<input id="Qty" type="number" min="1" value="1" style="width: 65px;padding: 1%;"><br><br>'+
-                                '<label>Available quantity :</label>'+
-                                '<p>'+watchById.limit_quantity+'</p>'+
-                                '<button id="btnAdd2Cart" style="margin-bottom: 20px;"><i class="material-icons" style="color: white;background-color: black;">shopping_cart</i>Add to Cart</button>'+
-                                '<i class="material-icons" id="clickHeart" onclick="likeProduct()">favorite_border</i><br>'+
-                                '<a href="#" class="fa fa-facebook"></a>'+
-                                '<a href="#" class="fa fa-twitter"></a>'+
-                                '<a href="#" class="fa fa-google"></a>'+
-                                '<a href="#" class="fa fa-linkedin"></a>'+
-                                '<a href="#" class="fa fa-pinterest"></a>'
-                        }
-                    ))
-                </script>
-                    <!-- <div class="row"> -->
-                        <!-- Product Image -->
-                        <!-- <div class="col-md-6 col-lg-6">
-                            <div class="mySlides">
-                                <img src="https://fossil.scene7.com/is/image/FossilPartners/ES5268_main?$sfcc_fos_large$">
-                            </div>
-                            <div class="mySlides">
-                                <img src="https://fossil.scene7.com/is/image/FossilPartners/ES5268_9L?$sfcc_lifestyle_large$">
-                            </div>
-                            <div class="mySlides">
-                                <img src="https://fossil.scene7.com/is/image/FossilPartners/ES5268_2?$sfcc_fos_large$">
-                            </div>
-                            <div class="mySlides">
-                                <img src="https://fossil.scene7.com/is/image/FossilPartners/ES5268_1?$sfcc_fos_large$">
-                            </div>
-    
-                            <div class="row" style="display: flex; margin-top: 2%;">
-                                <div class="col-md-3 col-lg-3">
-                                    <img class="demo cursor" src="https://fossil.scene7.com/is/image/FossilPartners/ES5268_main?$sfcc_fos_large$"
-                                            style="width: 100%;" onclick="currentSlide(1)">
-                                </div>
-                                <div class="col-md-3 col-lg-3">
-                                    <img class="demo cursor" src="https://fossil.scene7.com/is/image/FossilPartners/ES5268_9L?$sfcc_lifestyle_large$"
-                                            style="width: 100%;" onclick="currentSlide(2)">
-                                </div>
-                                <div class="col-md-3 col-lg-3">
-                                    <img class="demo cursor" src="https://fossil.scene7.com/is/image/FossilPartners/ES5268_2?$sfcc_fos_large$"
-                                            style="width: 100%;" onclick="currentSlide(3)">
-                                </div>
-                                <div class="col-md-3 col-lg-3">
-                                    <img class="demo cursor" src="https://fossil.scene7.com/is/image/FossilPartners/ES5268_1?$sfcc_fos_large$"
-                                            style="width: 100%;" onclick="currentSlide(4)">
-                                </div>
-                                
-                            </div>
-                        </div> -->
-    
-                        <!-- Product Detail -->
-                        <!-- <div class="col-md-6 col-lg-6" style="padding-left: 2%;">
-                            <h2 style="font-weight: bold;">Carlie Three-Hand Blush Eco Leather Watch</h2>
-                            
-                            <p style="font-weight: bold;">Product Detail:</p>
-                            <p style="color: gray;">Thickness:</p>
-                            <p style="color: gray;">Water Resistance: </p>
-                            <p style="color: gray;">Brand: </p>
-                            <h2 id="price" style="color: red;">$4.5</h2>
-                            <label>Color:</label><br>
-                            <span class="dot"></span>
-                            <span class="dot"></span>
-                            <span class="dot"></span><br><br>
-                            <label>Quantity:</label><br>
-                            <input id="Qty" type="number" min="1" value="1" style="width: 65px;padding: 1%;"><br><br>
-                            <label>Available quantity :</label>
-                            <p>100</p>
-                            <button id="btnAdd2Cart" style="margin-bottom: 20px;"><i class="material-icons" style="color: white;background-color: black;">shopping_cart</i>Add to Cart</button>
-                            <i class="material-icons" id="clickHeart" onclick="likeProduct()">favorite_border</i><br>
-                            <a href="#" class="fa fa-facebook"></a>
-                            <a href="#" class="fa fa-twitter"></a>
-                            <a href="#" class="fa fa-google"></a>
-                            <a href="#" class="fa fa-linkedin"></a>
-                            <a href="#" class="fa fa-pinterest"></a>
-                        </div> -->
-                    <!-- </div> -->
 
                 <!-- Description & Review -->
                 <div class="row" style="margin-top: 6%; background-color: aquamarine;">
@@ -245,7 +96,8 @@
                         <button class="tablinks" onclick="openContent(event, 'Review')">Review</button>
                     </div>
                     <div id="Description" class="tabcontent">
-                        <h3>Description</h3>
+                        <h4>Description</h4>
+                        <div id="desWatch"></div>
                       </div>
                       
                       <div id="Review" class="tabcontent">
@@ -258,90 +110,8 @@
                     <div class="flex-container" style="margin-bottom: 2%;">
                         <h2 style="font-weight: bold;">Related Products</h2>
                     </div>
-                    <div class="col-md-3 col-lg-3">
-                        <div class="card">
-                            <div class="card-header" style="position: relative;;">
-                                <a href="ProductDetail.html">
-                                    <img src="https://d1rkccsb0jf1bk.cloudfront.net/products/100044091/main/medium/LL136940.jpg"
-                                    id="imageCard">
-                                    <div class="middle">
-                                        <i class="material-icons" style="color: gray;margin-top: 50%;">remove_red_eye</i>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="card-body" style="width: 100%;margin-bottom: -30px;">
-                                <a href="ProductDetail.html" class="txtLinkName"><p id="nameWatch">Carlie Three-Hand Blush Eco Leather Watch</p></a>
-                                <p id="priceWatch">$ 4.56</p>
-                            </div>
-                            <div style="margin-bottom: 20px;">
-                                <button id="btnAdd2Cart"><i class="material-icons" style="color: white;background-color: black;margin-right: 10px;">shopping_cart</i>Add to Cart</button>
-                            </div>
-                        </div>
-                        
-                    </div>
-                    <div class="col-md-3 col-lg-3">
-                        <div class="card">
-                            <div class="card-header" style="position: relative;;">
-                                <a href="ProductDetail.html">
-                                    <img src="https://d1rkccsb0jf1bk.cloudfront.net/products/100044091/main/medium/LL136940.jpg"
-                                    id="imageCard">
-                                    <div class="middle">
-                                        <i class="material-icons" style="color: gray;margin-top: 50%;">remove_red_eye</i>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="card-body" style="width: 100%;margin-bottom: -30px;">
-                                <a href="ProductDetail.html" class="txtLinkName"><p id="nameWatch">Carlie Three-Hand Blush Eco Leather Watch</p></a>
-                                <p id="priceWatch">$ 4.56</p>
-                            </div>
-                            <div style="margin-bottom: 20px;">
-                                <button id="btnAdd2Cart"><i class="material-icons" style="color: white;background-color: black;margin-right: 10px;">shopping_cart</i>Add to Cart</button>
-                            </div>
-                        </div>
-                        
-                    </div>
-                    <div class="col-md-3 col-lg-3">
-                        <div class="card">
-                            <div class="card-header" style="position: relative;;">
-                                <a href="ProductDetail.html">
-                                    <img src="https://d1rkccsb0jf1bk.cloudfront.net/products/100044091/main/medium/LL136940.jpg"
-                                    id="imageCard">
-                                    <div class="middle">
-                                        <i class="material-icons" style="color: gray;margin-top: 50%;">remove_red_eye</i>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="card-body" style="width: 100%;margin-bottom: -30px;">
-                                <a href="ProductDetail.html" class="txtLinkName"><p id="nameWatch">Carlie Three-Hand Blush Eco Leather Watch</p></a>
-                                <p id="priceWatch">$ 4.56</p>
-                            </div>
-                            <div style="margin-bottom: 20px;">
-                                <button id="btnAdd2Cart"><i class="material-icons" style="color: white;background-color: black;margin-right: 10px;">shopping_cart</i>Add to Cart</button>
-                            </div>
-                        </div>
-                        
-                    </div>
-                    <div class="col-md-3 col-lg-3">
-                        <div class="card">
-                            <div class="card-header" style="position: relative;;">
-                                <a href="ProductDetail.html">
-                                    <img src="https://d1rkccsb0jf1bk.cloudfront.net/products/100044091/main/medium/LL136940.jpg"
-                                    id="imageCard">
-                                    <div class="middle">
-                                        <i class="material-icons" style="color: gray;margin-top: 50%;">remove_red_eye</i>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="card-body" style="width: 100%;margin-bottom: -30px;">
-                                <a href="ProductDetail.html" class="txtLinkName"><p id="nameWatch">Carlie Three-Hand Blush Eco Leather Watch</p></a>
-                                <p id="priceWatch">$ 4.56</p>
-                            </div>
-                            <div style="margin-bottom: 20px;">
-                                <button id="btnAdd2Cart"><i class="material-icons" style="color: white;background-color: black;margin-right: 10px;">shopping_cart</i>Add to Cart</button>
-                            </div>
-                        </div>
-                        
-                    </div>
+                    <div id="related" class="row"></div>
+                    
                 </div>
             </div>
         </section>
@@ -373,4 +143,123 @@
         </footer>
     </div>
 </body>
+<script>
+    axios.all([
+        axios.get('../JS/watch.json'),
+        axios.get('../JS/image.json'),
+        axios.get('../JS/brand.json'),
+        axios.get('../JS/color.json'),
+        axios.get('../JS/watch_type.json')
+    ]).then(axios.spread(function(watch,images,brands,colors,types){
+        const params = new URLSearchParams(document.location.search)
+        const watchId = params.get('watchId')
+        
+        watchById = watch.data.find(function(w){
+            return w.watchid===watchId
+        })
+        type = types.data.find(function(tp){
+            return tp.typeid===watchById.watch_typeid
+        })
+        document.getElementById('typeLink').innerHTML = 
+                '<a href="Categories.html?watchType='+type.typeid+'">'+type.type_name+'</a>'
+
+        imageById = images.data.filter(function(i){
+            return i.watchid===watchId
+        })
+        brand = brands.data.find(function(b){
+            return b.brandid = watchById.brandid
+        })
+        color = colors.data.find(function(c){
+            return c.colorid = watchById.colorid
+        })
+        document.getElementById('rootLink').innerText = watchById.watch_name
+        document.getElementById('productImage').innerHTML = 
+                        '<div class="mySlides">'+
+                                '<img src="'+imageById[0].imageurl+'">'+
+                           ' </div>'+
+                            '<div class="mySlides">'+
+                                '<img src="'+imageById[1].imageurl+'">'+
+                            '</div>'+
+                            '<div class="mySlides">'+
+                                '<img src="'+imageById[2].imageurl+'">'+
+                            '</div>'+
+                           ' <div class="mySlides">'+
+                                '<img src="'+imageById[3].imageurl+'">'+
+                            '</div>'+
+                        '<div class="row" style="display: flex; margin-top: 2%;">'+
+                            '<div class="col-md-3 col-lg-3">'+
+                                '<img class="demo cursor" src="'+imageById[0].imageurl+'"'+
+                                        'style="width: 100%;" onclick="currentSlide(1)">'+
+                           ' </div>'+
+                            '<div class="col-md-3 col-lg-3">'+
+                                '<img class="demo cursor" src="'+imageById[1].imageurl+'"'+
+                                        'style="width: 100%;" onclick="currentSlide(2)">'+
+                            '</div>'+
+                            '<div class="col-md-3 col-lg-3">'+
+                                '<img class="demo cursor" src="'+imageById[2].imageurl+'"'+
+                                        'style="width: 100%;" onclick="currentSlide(3)">'+
+                            '</div>'+
+                            '<div class="col-md-3 col-lg-3">'+
+                                '<img class="demo cursor" src="'+imageById[3].imageurl+'"'+
+                                        'style="width: 100%;" onclick="currentSlide(4)">'+
+                            '</div>'+
+                        '</div>'+
+                    '</div>'
+        
+        document.getElementById('detail').innerHTML = ' <h2 style="font-weight: bold;">'+watchById.watch_name+'</h2>'+
+                '<p style="font-weight: bold;">Product Detail:</p>'+
+                '<p style="color: gray;">Thickness: '+watchById.thickness+' mm</p>'+
+                '<p style="color: gray;">Water Resistance: '+watchById.water_resistance+'</p>'+
+               ' <p style="color: gray;">Brand: '+brand.brand_name+'</p>'+
+                '<h2 id="price" style="color: red;">'+watchById.price.toLocaleString('en-US', {style : 'currency', currency : 'VND'})+'</h2>'+
+                '<label>Color:</label><br>'+
+                '<span class="dot" style="color:'+color.color_name+';"></span><br><br>'+
+                '<label>Quantity:</label><br>'+
+                '<input id="Qty" type="number" min="1" value="1" style="width: 65px;padding: 1%;"><br><br>'+
+                '<label>Available quantity :</label>'+
+                '<p>'+watchById.limit_quantity+'</p>'+
+                '<button id="btnAdd2Cart" style="margin-bottom: 20px;"><i class="material-icons" style="color: white;background-color: black;">shopping_cart</i>Add to Cart</button>'+
+                '<i class="material-icons" id="clickHeart" onclick="likeProduct()">favorite_border</i><br>'+
+                '<a href="#" class="fa fa-facebook"></a>'+
+                '<a href="#" class="fa fa-twitter"></a>'+
+                '<a href="#" class="fa fa-google"></a>'+
+                '<a href="#" class="fa fa-linkedin"></a>'+
+                '<a href="#" class="fa fa-pinterest"></a>'
+        document.getElementById('desWatch').innerHTML = '<p>'+watchById.description+'</p>'      
+        
+        var arr = watch.data.filter(function(w){
+            return w.watch_typeid === type.typeid
+        })
+        var watchRelated = arr.slice(arr.lenght,4)
+        document.getElementById('related').innerHTML = watchRelated.map(function(w){
+            image = images.data.find(function(i){
+                return i.watchid === w.watchid
+            })
+            return(
+                '<div class="col-md-3 col-lg-3">'+
+                        '<div class="card">'+
+                            '<div class="card-header" style="position: relative;;">'+
+                                '<a href="ProductDetail.html?watchId='+w.watchid+'">'+
+                                    '<img src="'+image.imageurl+'"'+
+                                    'id="imageCard">'+
+                                    '<div class="middle">'+
+                                        '<i class="material-icons" style="color: gray;margin-top: 50%;">remove_red_eye</i>'+
+                                    '</div>'+
+                                '</a>'+
+                            '</div>'+
+                            '<div class="card-body" style="width: 100%;margin-bottom: -30px;">'+
+                                '<a href="ProductDetail.html?watchId='+w.watchid+'"" class="txtLinkName"><p id="nameWatch">'+w.watch_name+'</p></a>'+
+                                '<p id="priceWatch">'+w.price.toLocaleString('en-US', {style : 'currency', currency : 'VND'})+'</p>'+
+                            '</div>'+
+                            '<div style="margin-bottom: 20px;">'+
+                                '<button id="btnAdd2Cart"><i class="material-icons" style="color: white;background-color: black;margin-right: 10px;">shopping_cart</i>Add to Cart</button>'+
+                            '</div>'+
+                        '</div>'+
+                    '</div>'
+            )
+        }).join('')
+    }
+        
+    ))
+</script>
 </html>
