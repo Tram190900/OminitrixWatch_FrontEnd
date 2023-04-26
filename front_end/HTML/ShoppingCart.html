@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../CSS/style.css">
+    <!-- Latest compiled and minified CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <!-- Latest compiled JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="../JS/RegularExpressions.js"></script>
+    <title>Shopping Cart</title>
+    <script>
+        window.onscroll = function () { scrollFunction() };
+    </script>
+</head>
+
+<body>
+    <div style="padding: 1%; z-index: 2;">
+        <header>
+            <div class="column">
+                <div class="row">
+                    <div class="col-md-9 col-lg-9"></div>
+                    <div class="col-md-3 col-lg-3">
+                        <div id="loginContainer">
+                            <a href="ShoppingCart.html" style="color: black;"><i
+                                    class="material-icons">shopping_cart</i></a>
+
+                            <!-- Guest -->
+                            <!-- <div id="guest">
+                                <a href="Registration.html">Registration</a> &#124; 
+                                <a href="Login.html">Login</a>
+                            </div> -->
+
+                            <!-- Customer -->
+                            <div class="dropdown">
+                                <a href="Login.html" id="userName" style="display: contents;">
+                                    <i class="material-icons">account_circle</i>User name</a>
+                                <div class="dropdown-content">
+                                    <a href="Admin.html">Admin</a>
+                                    <a href="#">Log Out</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="navbar">
+                    <div class="col-md-3 col-lg-3" style="padding-left: 10%;">
+                        <a href="Home.html"><img src="../Img/logo.png" style="width:80%" /></a>
+                    </div>
+                    <div class="col-md-6 col-lg-6">
+                        <div class="flex-container" id="categories">
+                            <script>
+                                axios.get('../JS/watch_type.json')
+                                .then(function(response){
+                                    document.getElementById('categories').innerHTML = response.data.map(function(type){
+                                        return(
+                                            '<a style="font-size: 25px" href="Categories.html?watchType='+type.typeid+'">'+type.type_name+'&rsquo;s'+'</a>'
+                                        )
+                                    })
+                                })
+                            </script>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-lg-3">
+                        <div class="search">
+                            <input type="text" class="form-control">
+                            <button style="border: none;"><i class="material-icons">search</i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="pathLink">
+                        <a href="Home.html">Home</a> &iota; <a>Shopping Cart</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <section>
+            <div class="column" style="padding: 3% 5% 0 5%;">
+                <div class="col-md-12 col-lg-12" style="display: flex;">
+                    <p id="title">Shopping cart</p>
+                </div>
+                <div class="row">
+                    <!-- List Product in Cart -->
+                    <div class="col-md-8 col-lg-8">
+                        <div class="row" id="productInCart">
+                            <div class="col-md-3 col-lg-3">
+                                <img style="width: 100%;"
+                                    src="https://fossil.scene7.com/is/image/FossilPartners/ES5268-alt?$sfcc_fos_medium$">
+                            </div>
+                            <div class="col-md-4 col-lg-4">
+                                <p style="font-weight: bold;">Carlie Three-Hand Blush Eco Leather Watch</p>
+                                <p>Item #:</p>
+                                <p>Color:</p>
+                            </div>
+                            <div class="col-md-1 col-lg-1">
+                                <label for="price">Price</label>
+                                <p id="price">$4.5</p>
+                            </div>
+                            <div class="col-md-1 col-lg-1">
+                                <form>
+                                    <label for="Qty">Qty</label>
+                                    <input style="width: 100%;" id="Qty" name="Qty" type="number" min="1" value="1">
+                                </form>
+                            </div>
+                            <div class="col-md-1 col-lg-1">
+                                <label for="total">Total</label>
+                                <p id="total">$4.5</p>
+                            </div>
+                            <div class="col-md-1 col-lg-1">
+                                <button style="border-style: none;font-weight: bold;">X</button>
+                            </div>
+                        </div>
+                        <div class="row" id="productInCart">
+                            <div class="col-md-3 col-lg-3">
+                                <img style="width: 100%;"
+                                    src="https://fossil.scene7.com/is/image/FossilPartners/ES5268-alt?$sfcc_fos_medium$">
+                            </div>
+                            <div class="col-md-4 col-lg-4">
+                                <p style="font-weight: bold;">Carlie Three-Hand Blush Eco Leather Watch</p>
+                                <p>Item #:</p>
+                                <p>Color:</p>
+                            </div>
+                            <div class="col-md-1 col-lg-1">
+                                <label for="price">Price</label>
+                                <p id="price">$4.5</p>
+                            </div>
+                            <div class="col-md-1 col-lg-1">
+                                <form>
+                                    <label for="Qty">Qty</label>
+                                    <input style="width: 100%;" id="Qty" name="Qty" type="number" min="1" value="1">
+                                </form>
+                            </div>
+                            <div class="col-md-1 col-lg-1">
+                                <label for="total">Total</label>
+                                <p id="total">$4.5</p>
+                            </div>
+                            <div class="col-md-1 col-lg-1">
+                                <button style="border-style: none;font-weight: bold;">X</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Order Summary -->
+                    <div class="col-md-4 col-lg-4" style="width: 400px;">
+                        <div id="orderSummary">
+                            <p style="font-weight: bold;border-bottom-style: solid;border-bottom-width: 1px;padding-bottom: 5%;">
+                                ORDER SUMMARY</p>
+                            <div class="row">
+                                <div class="col-8">
+                                    <p>Subtotal</p>
+                                </div>
+                                <div class="col-4">
+                                    <p style="font-weight: bold;" id="subtotal">$4.5</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-8">
+                                    <p>Shipping cost</p>
+                                </div>
+                                <div class="col-4">
+                                    <p id="shippingCost">FREE</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-8">
+                                    <p>Estimated Tax</p>
+                                </div>
+                                <div class="col-4">
+                                    <p id="estimatedTax">$0.00</p>
+                                </div>
+                            </div>
+
+                            <div class="row" style="border-top-style: solid;border-top-width: 1px;">
+                                <div class="col-8">
+                                    <p>ESTIMATED TOTAL</p>
+                                </div>
+                                <div class="col-4">
+                                    <p style="font-weight: bold;" id="estimatedTotal">$4.5</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <button id="btnCheckOut"><a href="CheckOut.html">CHECKOUT</a></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <div class="row">
+                <div class="col-md-3 col-lg-3">
+                    <h4 style="font-weight: bold;">Categories</h4>
+                    <a href="Categories.html">Women's</a><br>
+                    <a href="Categories.html">Men's</a><br>
+                    <a href="Categories.html">Collection</a><br>
+                </div>
+                <div class="col-md-3 col-lg-3">
+                    <h4 style="font-weight: bold;">Information</h4>
+                    <a href="#">About us</a><br>
+                    <a href="#">Customer Service</a><br>
+                    <a href="#">Privacy Policy</a><br>
+                    <a href="#">Contact Us</a><br>
+                    <a href="#">Blog</a><br>
+                </div>
+                <div class="col-md-3 col-lg-3">
+                    <h4 style="font-weight: bold;">Contact Us</h4>
+                    <span><i class="material-icons" style="font-size: 17px;">location_on</i> Nguyễn Văn Bảo</span><br>
+                    <span><i class="material-icons" style="font-size: 17px;">phone</i> 01234567891</span><br>
+                    <span><i class="material-icons" style="font-size: 17px;">access_alarm</i> 7 days a week from 9:00 am
+                        to 7:00 pm</span><br>
+                    <span><i class="material-icons" style="font-size: 17px;">mail</i> info@demolink.org</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+
+</html>

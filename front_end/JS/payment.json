@@ -1,0 +1,27 @@
+﻿[
+    {
+        "paymentid": "P01",
+        "status": "paid",
+        "billid": "B01190423"
+    },
+    {
+        "paymentid": "P02",
+        "status": "unpaid",
+        "billid": "B01200423"
+    },
+    {
+        "paymentid": "P03",
+        "status": "paid",
+        "billid": "B01250423"
+    },
+    {
+        "paymentid": "P04",
+        "status": "paid",
+        "billid": "B02190423"
+    },
+    {
+        "paymentid": "P05",
+        "status": "unpaid",
+        "billid": "B02200423"
+    }
+]

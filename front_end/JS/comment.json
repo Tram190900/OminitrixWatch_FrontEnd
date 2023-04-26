@@ -1,0 +1,16 @@
+﻿[
+    {
+        "comment": "Good",
+        "date": "2023-04-25T00:00:00",
+        "likes": 1,
+        "userid": "customer",
+        "watchid": "W01"
+    },
+    {
+        "comment": "Good",
+        "date": "2023-04-19T00:00:00",
+        "likes": 2,
+        "userid": "customer",
+        "watchid": "W10"
+    }
+]

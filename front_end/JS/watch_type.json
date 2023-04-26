@@ -1,0 +1,10 @@
+﻿[
+    {
+        "typeid": "T01",
+        "type_name": "Men"
+    },
+    {
+        "typeid": "T02",
+        "type_name": "Women"
+    }
+]
