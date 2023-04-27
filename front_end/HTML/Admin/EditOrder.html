@@ -60,7 +60,7 @@
                     <div class="col-md-6 col-lg-6">
                         <div class="flex-container" id="categories">
                             <script>
-                                axios.get('../JS/watch_type.json')
+                                axios.get('../../JS/watch_type.json')
                                 .then(function(response){
                                     document.getElementById('categories').innerHTML = response.data.map(function(type){
                                         return(
@@ -134,10 +134,10 @@
                                     <input class="form-control" type="text" id="OdEmail" disabled><br>
 
                                     <label for="OdFirstName">First Name: </label><br>
-                                    <input class="form-control" type="text" id="OdFirstName" disabled><br>
+                                    <input class="form-control" type="text" id="OdFirstName"><br>
 
                                     <label for="OdLastName">Last Name: </label><br>
-                                    <input class="form-control" type="text" id="OdLastName" disabled><br>
+                                    <input class="form-control" type="text" id="OdLastName"><br>
 
                                     <label for="OdPhone">Phone: </label><br>
                                     <input class="form-control" type="text" id="OdPhone"><br>
@@ -155,10 +155,18 @@
                                         ORDER SUMMARY</p>
                                     <div class="row">
                                         <div class="col-8">
+                                            <p>Date Order</p>
+                                        </div>
+                                        <div class="col-4">
+                                            <p style="font-weight: bold;" id="dateOrder"></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-8">
                                             <p>Subtotal</p>
                                         </div>
                                         <div class="col-4">
-                                            <p style="font-weight: bold;" id="subtotal">$4.5</p>
+                                            <p style="font-weight: bold;" id="subtotal"></p>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -169,26 +177,18 @@
                                             <p id="shippingCost">FREE</p>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-8">
-                                            <p>Estimated Tax</p>
-                                        </div>
-                                        <div class="col-4">
-                                            <p id="estimatedTax">$0.00</p>
-                                        </div>
-                                    </div>
         
                                     <div class="row" style="border-top-style: solid;border-top-width: 1px;">
                                         <div class="col-8">
                                             <p>TOTAL</p>
                                         </div>
                                         <div class="col-4">
-                                            <p style="font-weight: bold;" id="estimatedTotal">$4.5</p>
+                                            <p style="font-weight: bold;" id="estimatedTotal"></p>
                                         </div>
                                     </div>
                                 </div>
                                 <div id="productOrder">
-                                    <div class="row" style="border-bottom: 1px solid black;">
+                                    <!-- <div class="row" style="border-bottom: 1px solid black;">
                                         <div class="col-4">
                                             <img src="https://fossil.scene7.com/is/image/FossilPartners/ES5268-alt?$sfcc_fos_medium$"
                                                 style="width: 50%;">
@@ -211,7 +211,7 @@
                                             <p>Color:</p>
                                             <p>Qty: <input type="number" style="width: 50px;"></p>
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <div class="row">
                                         
                                     </div>
@@ -250,5 +250,62 @@
         </footer>
     </div>
 </body>
+<script>
+    var param = new URLSearchParams(document.location.search)
+    var billId = param.get('billId')
+    axios.all([
+        axios.get('../../JS/bill.json'),
+        axios.get('../../JS/bill_detail.json'),
+        axios.get('../../JS/watch.json'),
+        axios.get('../../JS/color.json'),
+        axios.get('../../JS/users.json'),
+        axios.get('../../JS/image.json')
+    ]).then(axios.spread(function(bills,billDetails,watchs,colors,users,iamges){
+         bill = bills.data.find(function(b){
+            return b.billid === billId
+        })
+         billDetail = billDetails.data.find(function(bd){
+            return bd.billid === billId
+        })
+         watch = watchs.data.filter(function(w){
+            return w.watchid === billDetail.watchid
+        })
+         user = users.data.find(function(u){
+            return u.userid === bill.userid
+        })
+        console.log(user.email);
+        document.getElementById('OdEmail').value = user.email 
+        document.getElementById('OdFirstName').value = user.first_name
+        document.getElementById('OdLastName').value = user.last_name
+        document.getElementById('OdPhone').value = user.phone
+        document.getElementById('OdAddress').value = user.address
 
+        document.getElementById('subtotal').innerText = bill.total.toLocaleString('en-US', {style : 'currency', currency : 'VND'})
+        document.getElementById('dateOrder').innerText = bill.date
+        document.getElementById('estimatedTotal').innerText  = bill.total.toLocaleString('en-US', {style : 'currency', currency : 'VND'})
+        
+        document.getElementById('productOrder').innerHTML = watch.map(function(w){
+            color = colors.data.find(function(c){
+                return c.colorid === w.colorid
+            })
+            image = iamges.data.find(function(i){
+                return i.watchid === w.watchid
+            })
+            return(
+                '<div class="row" style="border-bottom: 1px solid black;">'+
+                    '<div class="col-4">'+
+                        '<img src="'+image.imageurl+'"'+
+                                'style="width: 150px;">'+
+                    '</div>'+
+                    '<div class="col-8">'+
+                        '<p style="font-weight: bold;">'+w.watch_name+'</p>'+
+                        '<p>Code: '+w.watchid+'</p>'+
+                        '<p>Color: '+color.color_name+'</p>'+
+                        '<p>Qty: <input type="number" style="width: 50px;" value="'+billDetail.quantity+'"></p>'+
+                        '</div>'+
+                    '</div>'
+            )
+        }).join('')
+    }))
+</script>
 </html>

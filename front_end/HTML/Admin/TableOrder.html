@@ -143,31 +143,17 @@
                                 <a href="#" id="pageNumber">3</a>
                             </div>
                         </div>
-                        <table id="tblOrder">
+                        <table id="tblOrder" class="table table-bordered table-striped">
                             <tr>
                                 <th>Code</th>
+                                <th>Email</th>
                                 <th>Order date</th>
-                                <th>State</th>
+                                <th>status</th>
                                 <th>Total</th>
                                 <th></th>
                             </tr>
-                            <tr>
-                                <td><a class="tablinks" onclick="location.href='EditOrder.html'">abc123</a></td>
-                                <td>12/01/2023</td>
-                                <td>Chờ thanh toán</td>
-                                <td>$4.5</td>
-                                <td>
-                                    <span style="display: flex;">
-                                        <button id="btnEdit" class="tablinks"
-                                            onclick="location.href='EditOrder.html'">
-                                            <i class="material-icons">edit</i>
-                                        </button>
-                                        <button id="btnDelete">
-                                            <i class="material-icons">delete</i>
-                                        </button>
-                                    </span>
-                                </td>
-                            </tr>
+                            <tbody id="bodyTblOrder"></tbody>
+                            
                         </table>
                     </div>
                 </div>
@@ -201,5 +187,40 @@
         </footer>
     </div>
 </body>
-
+<script>
+    axios.all([
+        axios.get('../../JS/bill.json'),
+        axios.get('../../JS/users.json'),
+        axios.get('../../JS/payment.json')
+    ]).then(axios.spread(function(bills,users,payments){
+        document.getElementById('bodyTblOrder').innerHTML = bills.data.map(function(bill){
+            var user = users.data.find(function(u){
+                return u.userid === bill.userid
+            })
+            var payment = payments.data.find(function(p){
+                return p.billid === bill.billid
+            })
+            return(
+                '<tr>'+
+                    '<td><a class="tablinks" onclick="location.href=\'EditOrder.html?billId='+bill.billid+'\'">'+bill.billid+'</a></td>'+
+                    '<td>'+user.email+'</td>'+
+                    '<td>'+bill.date+'</td>'+
+                    '<td>'+payment.status+'</td>'+
+                    '<td>'+bill.total.toLocaleString('en-US', {style : 'currency', currency : 'VND'})+'</td>'+
+                    '<td>'+
+                        '<span style="display: flex;background:none">'+
+                            '<button id="btnEdit"'+
+                                'onclick="location.href=\'EditOrder.html?billId='+bill.billid+'\'">'+
+                                '<i class="material-icons">edit</i>'+
+                            '</button>'+
+                            '<button id="btnDelete">'+
+                                '<i class="material-icons">delete</i>'+
+                            '</button>'+
+                        '</span>'+
+                    '</td>'+
+                '</tr>'
+            )
+        }).join('')
+    }))
+</script>
 </html>

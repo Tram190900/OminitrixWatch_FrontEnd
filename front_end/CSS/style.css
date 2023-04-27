@@ -558,6 +558,7 @@ section label {
 }
 #btnEdit,#btnDelete{
   border: none;
+  background:none;
 }
 #btnEdit :hover, #btnDelete:hover{
   opacity: 0.6;

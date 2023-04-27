@@ -60,7 +60,7 @@
                     <div class="col-md-6 col-lg-6">
                         <div class="flex-container" id="categories">
                             <script>
-                                axios.get('../JS/watch_type.json')
+                                axios.get('../../JS/watch_type.json')
                                 .then(function(response){
                                     document.getElementById('categories').innerHTML = response.data.map(function(type){
                                         return(
@@ -145,7 +145,6 @@
                         </div>
                         <table id="tblCustomers">
                             <tr>
-                                <th>Image</th>
                                 <th>First Name</th>
                                 <th>Last Name</th>
                                 <th>Email</th>
@@ -154,50 +153,7 @@
                                 <th>Address</th>
                                 <th></th>
                             </tr>
-                            <tr>
-                                <td><img style="width: 100%;"
-                                        src="https://tracent.com.vn/wp-content/uploads/2021/12/person-placeholder.png">
-                                </td>
-                                <td>Nguyễn Văn</td>
-                                <td>Bảo</td>
-                                <td>nguyenvanbao@gmail.com</td>
-                                <td>0123456789</td>
-                                <td>Customer</td>
-                                <td>120 Nguyễn Văn Bảo, Gò Vấp, TP.HCM</td>
-                                <td>
-                                    <span style="display: flex;">
-                                        <button id="btnEdit" class="tablinks"
-                                            onclick="openContent(event,'EditCustomer')">
-                                            <i class="material-icons">edit</i>
-                                        </button>
-                                        <button id="btnDelete">
-                                            <i class="material-icons">delete</i>
-                                        </button>
-                                    </span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="width: 100px;"><img style="width: 100%;"
-                                        src="https://tracent.com.vn/wp-content/uploads/2021/12/person-placeholder.png">
-                                </td>
-                                <td>Nguyễn Văn</td>
-                                <td>Bảo</td>
-                                <td>nguyenvanbao@gmail.com</td>
-                                <td>0123456789</td>
-                                <td>Customer</td>
-                                <td>120 Nguyễn Văn Bảo, Gò Vấp, TP.HCM sdfdsfdsfsdfffffffffffff</td>
-                                <td>
-                                    <span style="display: flex;">
-                                        <button id="btnEdit" class="tablinks"
-                                            onclick="openContent(event,'EditCustomer')">
-                                            <i class="material-icons">edit</i>
-                                        </button>
-                                        <button id="btnDelete">
-                                            <i class="material-icons">delete</i>
-                                        </button>
-                                    </span>
-                                </td>
-                            </tr>
+                            <tbody id="bodyTblCustomer"></tbody>
 
                         </table>
                     </div>
@@ -232,5 +188,37 @@
         </footer>
     </div>
 </body>
-
+<script>
+    axios.all([
+        axios.get('../../JS/account.json'),
+        axios.get('../../JS/users.json')
+    ]).then(axios.spread(function(accounts,users){
+        document.getElementById('bodyTblCustomer').innerHTML = users.data.map(function(user){
+            account = accounts.data.find(function(a){
+                return a.userid === user.userid
+            })
+            return(
+                '<tr>'+
+                        '<td>'+user.first_name+'</td>'+
+                        '<td>'+user.last_name+'</td>'+
+                        '<td>'+user.email+'</td>'+
+                        '<td>'+user.phone+'</td>'+
+                        '<td>'+account.role+'</td>'+
+                        '<td>'+user.address+'</td>'+
+                        '<td>'+
+                            '<span style="display: flex;">'+
+                                '<button id="btnEdit" class="tablinks"'+
+                                'onclick="location.href=\'EditCustomer.html?userId='+user.userid+'\'">'+
+                                    '<i class="material-icons">edit</i>'+
+                                '</button>'+
+                                '<button id="btnDelete">'+
+                                    '<i class="material-icons">delete</i>'+
+                                '</button>'+
+                            '</span>'+
+                    '</td>'+
+                '</tr>'
+            )
+        }).join('')
+    }))
+</script>
 </html>
