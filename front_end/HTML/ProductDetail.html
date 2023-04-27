@@ -167,10 +167,10 @@
             return i.watchid===watchId
         })
         brand = brands.data.find(function(b){
-            return b.brandid = watchById.brandid
+            return b.brandid === watchById.brandid
         })
         color = colors.data.find(function(c){
-            return c.colorid = watchById.colorid
+            return c.colorid === watchById.colorid
         })
         document.getElementById('rootLink').innerText = watchById.watch_name
         document.getElementById('productImage').innerHTML = 
@@ -189,19 +189,19 @@
                         '<div class="row" style="display: flex; margin-top: 2%;">'+
                             '<div class="col-md-3 col-lg-3">'+
                                 '<img class="demo cursor" src="'+imageById[0].imageurl+'"'+
-                                        'style="width: 100%;" onclick="currentSlide(1)">'+
+                                        'style="width: 90%;" onclick="currentSlide(1)">'+
                            ' </div>'+
                             '<div class="col-md-3 col-lg-3">'+
                                 '<img class="demo cursor" src="'+imageById[1].imageurl+'"'+
-                                        'style="width: 100%;" onclick="currentSlide(2)">'+
+                                        'style="width: 90%;" onclick="currentSlide(2)">'+
                             '</div>'+
                             '<div class="col-md-3 col-lg-3">'+
                                 '<img class="demo cursor" src="'+imageById[2].imageurl+'"'+
-                                        'style="width: 100%;" onclick="currentSlide(3)">'+
+                                        'style="width: 90%;" onclick="currentSlide(3)">'+
                             '</div>'+
                             '<div class="col-md-3 col-lg-3">'+
                                 '<img class="demo cursor" src="'+imageById[3].imageurl+'"'+
-                                        'style="width: 100%;" onclick="currentSlide(4)">'+
+                                        'style="width: 90%;" onclick="currentSlide(4)">'+
                             '</div>'+
                         '</div>'+
                     '</div>'
