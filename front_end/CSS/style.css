@@ -467,6 +467,11 @@ section label {
   font-size: 15px;
   color: gray;
   text-decoration: none;
+  margin-left: 10px;
+}
+#loginContainer{
+  display: inline-flex;
+  justify-content: center;
 }
 #loginContainer a:hover {
   color: black;

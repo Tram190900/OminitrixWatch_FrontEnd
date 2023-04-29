@@ -15,11 +15,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
+    <script type="text/javascript" src="../../JS/login.js"></script>
+    <script type="text/javascript" src="../../JS/RegularExpressions.js"></script>
+
+
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <title id="title">Admin</title>
     <script>
         window.onscroll = function () { scrollFunction() };
-        window.onload = function () { document.getElementById('leafFinal').textContent = document.getElementById('title').textContent }
+        window.onload = function () { document.getElementById('leafFinal').textContent = document.getElementById('title').textContent
+                                        isCustomer() }
 
     </script>
 </head>
@@ -36,18 +41,17 @@
                                     class="material-icons">shopping_cart</i></a>
 
                             <!-- Guest -->
-                            <!-- <div id="guest">
+                            <div id="guest">
                                 <a href="Registration.html">Registration</a> &#124; 
                                 <a href="Login.html">Login</a>
-                            </div> -->
+                            </div>
 
                             <!-- Customer -->
-                            <div class="dropdown">
-                                <a href="../Login.html" id="userName" style="display: contents;">
-                                    <i class="material-icons">account_circle</i>User name</a>
+                            <div class="dropdown" style="display: none;" id="customer">
+                                <a href="../Login.html" id="userName" style="display: inline-flex;justify-content: center;"></a>
                                 <div class="dropdown-content">
-                                    <a href="TableProduct.html">Admin</a>
-                                    <a href="#">Log Out</a>
+                                    <a href="TableProduct.html" id="roleAdmin">Admin</a>
+                                    <a href="#" onclick="logOut()">Log Out</a>
                                 </div>
                             </div>
                         </div>

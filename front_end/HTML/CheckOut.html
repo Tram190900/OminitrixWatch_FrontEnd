@@ -11,10 +11,16 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <!-- Latest compiled JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <script type="text/javascript" src="../JS/login.js"></script>
     <script type="text/javascript" src="../JS/RegularExpressions.js"></script>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <title>CheckOut</title>
     <script>
         window.onscroll = function () { scrollFunction() };
+        window.onload = function(){isCustomer()}
     </script>
 </head>
 
@@ -30,26 +36,26 @@
                                     class="material-icons">shopping_cart</i></a>
 
                             <!-- Guest -->
-                            <!-- <div id="guest">
+                            <div id="guest" style="display: inline;">
                                 <a href="Registration.html">Registration</a> &#124; 
                                 <a href="Login.html">Login</a>
-                            </div> -->
+                            </div>
 
                             <!-- Customer -->
-                            <div class="dropdown">
-                                <a href="Login.html" id="userName" style="display: contents;">
-                                    <i class="material-icons">account_circle</i>User name</a>
+                            <div class="dropdown" style="display: none;" id="customer">
+                                <a href="Login.html" id="userName" style="display: inline-flex;justify-content: center;"></a>
                                 <div class="dropdown-content">
-                                    <a href="Admin/TableProduct.html">Admin</a>
-                                    <a href="#">Log Out</a>
+                                    <a href="Admin/TableProduct.html" id="roleAdmin">Admin</a>
+                                    <a href="#" onclick="logOut()">Log Out</a>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
                 <div class="row" id="navbar">
                     <div class="col-md-3 col-lg-3" style="padding-left: 10%;">
-                        <a href="Home.jsp"><img src="../Img/logo.png" style="width:80%" /></a>
+                        <a href="Home.html"><img src="../Img/logo.png" style="width:80%" /></a>
                     </div>
                     <div class="col-md-6 col-lg-6">
                         <div class="flex-container" id="categories">
@@ -73,16 +79,16 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="pathLink">
-                        <a href="Home.html">Home</a> &iota; <a>Check Out</a>
+                    <div class="col-md-12 col-lg-12">
+                        <img src="https://www.ernestjones.co.uk/content-root/shops/luxury-watches-boutique.cdo/images/201910181000/EJ19W81_LuxuryWatchBanner_1200x392.jpg"
+                            style="margin-top: 2%; width: 100%;">
                     </div>
-
                 </div>
             </div>
         </header>
 
         <section>
-            <div class="column" style="padding: 3% 5% 0 5%;">
+            <div class="column">
                 <div class="col-md-12 col-lg-12" style="display: flex;">
                     <p id="title">Check out</p>
                 </div>
