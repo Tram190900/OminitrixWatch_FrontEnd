@@ -15,6 +15,8 @@
 
     <script type="text/javascript" src="../JS/RegularExpressions.js"></script>
     <script type="text/javascript" src="../JS/login.js"></script>
+    <script type="text/javascript" src="../JS/cart.js"></script>
+    
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <title>Home</title>
@@ -125,8 +127,9 @@
                                                 '<p id="priceWatch">'+watch.price.toLocaleString('en-US', {style : 'currency', currency : 'VND'})+'</p>'+
                                             '</div>'+
                                             '<div style="margin-bottom: 20px;">'+
-                                                '<button id="btnAdd2Cart"><i class="material-icons"'+
-                                                        'style="color: white;background-color: black;margin-right: 10px;">shopping_cart</i>Add'+
+                                                '<button id="btnAdd2Cart" onclick="add2Cart(\''+watch.watchid+'\')"><i class="material-icons"'+
+                                                        'style="color: white;background-color: black;margin-right: 10px;"'+
+                                                        '>shopping_cart</i>Add'+
                                                     'to Cart</button>'+
                                             '</div>'+
                                     ' </div>'+
@@ -138,7 +141,7 @@
                     </script>
                     </div>
                 </div>
-
+                </script>
                 <!-- Danh sách Brand -->
                 <div class="row">
                     <div class="col-md-12 col-lg-12">
@@ -161,7 +164,7 @@
 
                 <!-- Danh sách đồng hồ nam -->
                 <div class="row">
-                    <h4 style="font-weight: bold;" id="container">MEN'S</h4>
+                    <h4 style="font-weight: bold;" id="container" >MEN'S</h4>
                 </div>
                 <div class="row" id="watchMen">
                     <script>
@@ -196,7 +199,7 @@
                                                 '<p id="priceWatch">'+watch.price.toLocaleString('en-US', {style : 'currency', currency : 'VND'})+'</p>'+
                                             '</div>'+
                                             '<div style="margin-bottom: 20px;">'+
-                                                '<button id="btnAdd2Cart"><i class="material-icons"'+
+                                                '<button id="btnAdd2Cart" onclick="add2Cart(\''+watch.watchid+'\')"><i class="material-icons"'+
                                                         'style="color: white;background-color: black;margin-right: 10px;">shopping_cart</i>Add'+
                                                     'to Cart</button>'+
                                             '</div>'+
@@ -264,5 +267,4 @@
 
     </div>
 </body>
-
 </html>

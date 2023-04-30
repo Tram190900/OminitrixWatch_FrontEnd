@@ -94,63 +94,65 @@
                 </div>
                 <div class="row">
                     <!-- List Product in Cart -->
-                    <div class="col-md-8 col-lg-8">
-                        <div class="row" id="productInCart">
-                            <div class="col-md-3 col-lg-3">
-                                <img style="width: 100%;"
-                                    src="https://fossil.scene7.com/is/image/FossilPartners/ES5268-alt?$sfcc_fos_medium$">
-                            </div>
-                            <div class="col-md-4 col-lg-4">
-                                <p style="font-weight: bold;">Carlie Three-Hand Blush Eco Leather Watch</p>
-                                <p>Item #:</p>
-                                <p>Color:</p>
-                            </div>
-                            <div class="col-md-1 col-lg-1">
-                                <label for="price">Price</label>
-                                <p id="price">$4.5</p>
-                            </div>
-                            <div class="col-md-1 col-lg-1">
-                                <form>
-                                    <label for="Qty">Qty</label>
-                                    <input style="width: 100%;" id="Qty" name="Qty" type="number" min="1" value="1">
-                                </form>
-                            </div>
-                            <div class="col-md-1 col-lg-1">
-                                <label for="total">Total</label>
-                                <p id="total">$4.5</p>
-                            </div>
-                            <div class="col-md-1 col-lg-1">
-                                <button style="border-style: none;font-weight: bold;">X</button>
-                            </div>
-                        </div>
-                        <div class="row" id="productInCart">
-                            <div class="col-md-3 col-lg-3">
-                                <img style="width: 100%;"
-                                    src="https://fossil.scene7.com/is/image/FossilPartners/ES5268-alt?$sfcc_fos_medium$">
-                            </div>
-                            <div class="col-md-4 col-lg-4">
-                                <p style="font-weight: bold;">Carlie Three-Hand Blush Eco Leather Watch</p>
-                                <p>Item #:</p>
-                                <p>Color:</p>
-                            </div>
-                            <div class="col-md-1 col-lg-1">
-                                <label for="price">Price</label>
-                                <p id="price">$4.5</p>
-                            </div>
-                            <div class="col-md-1 col-lg-1">
-                                <form>
-                                    <label for="Qty">Qty</label>
-                                    <input style="width: 100%;" id="Qty" name="Qty" type="number" min="1" value="1">
-                                </form>
-                            </div>
-                            <div class="col-md-1 col-lg-1">
-                                <label for="total">Total</label>
-                                <p id="total">$4.5</p>
-                            </div>
-                            <div class="col-md-1 col-lg-1">
-                                <button style="border-style: none;font-weight: bold;">X</button>
-                            </div>
-                        </div>
+                    <div class="col-md-8 col-lg-8" id="listProductinCart">
+                        <script>
+                            var products = JSON.parse(sessionStorage.getItem('cart'))
+                            var subtotal = 0.0
+                            axios.all([
+                                axios.get('../JS/watch.json'),
+                                axios.get('../JS/color.json'),
+                                axios.get('../JS/image.json')
+                            ]).then(axios.spread(function(watchs,colors,images){
+                                document.getElementById('listProductinCart').innerHTML = products.map(function(product){
+                                    watch = watchs.data.find(function(w){
+                                        return w.watchid === product.watchid
+                                    })
+                                    color = colors.data.find(function(c){
+                                        return c.colorid === watch.colorid
+                                    })
+                                    image = images.data.find(function(i){
+                                        return i.watchid === product.watchid
+                                    })
+                                    total = watch.price * product.quantity
+                                    subtotal += total
+                                    return(
+                                        '<div class="row" id="productInCart">'+
+                                            '<div class="col-md-3 col-lg-3">'+
+                                                '<img style="width: 100px;height:120px"'+
+                                                    'src="'+image.imageurl+'">'+
+                                            '</div>'+
+                                            '<div class="col-md-4 col-lg-4">'+
+                                                '<p style="font-weight: bold;">'+watch.watch_name+'</p>'+
+                                                '<span class="dot" style="background-color:'+color.color_name+'"></span>'+
+                                            '</div>'+
+                                            '<div class="col-md-1 col-lg-1">'+
+                                                '<label for="price">Price</label>'+
+                                                '<p id="price">'+watch.price.toLocaleString('en-US', {style : 'currency', currency : 'VND'})+'</p>'+
+                                            '</div>'+
+                                            '<div class="col-md-1 col-lg-1">'+
+                                                '<form>'+
+                                                    '<label for="Qty">Qty</label>'+
+                                                    '<input style="width: 100%;" id="Qty" name="Qty" type="number"'+
+                                                    ' min="1" value="'+product.quantity+'" onchange="changeQuantity()">'+
+                                                '</form>'+
+                                            '</div>'+
+                                            '<div class="col-md-1 col-lg-1">'+
+                                                '<label for="total">Total</label>'+
+                                                '<p id="total">'+total.toLocaleString('en-US', {style : 'currency', currency : 'VND'})+'</p>'+
+                                            '</div>'+
+                                            '<div class="col-md-1 col-lg-1">'+
+                                                '<button style="border-style: none;font-weight: bold;">X</button>'+
+                                            '</div>'+
+                                        '</div>'
+                                        
+                                    )
+                                }).join('')
+                                document.getElementById('subtotal').innerText = subtotal.toLocaleString('en-US', {style : 'currency', currency : 'VND'})
+                                document.getElementById('estimatedTotal').innerText = subtotal.toLocaleString('en-US', {style : 'currency', currency : 'VND'})
+                            }))
+                            
+                            
+                        </script>
                     </div>
                     
                     <!-- Order Summary -->
@@ -163,7 +165,7 @@
                                     <p>Subtotal</p>
                                 </div>
                                 <div class="col-4">
-                                    <p style="font-weight: bold;" id="subtotal">$4.5</p>
+                                    <p style="font-weight: bold;" id="subtotal"></p>
                                 </div>
                             </div>
                             <div class="row">
@@ -174,21 +176,12 @@
                                     <p id="shippingCost">FREE</p>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-8">
-                                    <p>Estimated Tax</p>
-                                </div>
-                                <div class="col-4">
-                                    <p id="estimatedTax">$0.00</p>
-                                </div>
-                            </div>
-
                             <div class="row" style="border-top-style: solid;border-top-width: 1px;">
                                 <div class="col-8">
                                     <p>ESTIMATED TOTAL</p>
                                 </div>
                                 <div class="col-4">
-                                    <p style="font-weight: bold;" id="estimatedTotal">$4.5</p>
+                                    <p style="font-weight: bold;" id="estimatedTotal"></p>
                                 </div>
                             </div>
                         </div>
