@@ -14,12 +14,14 @@
 
     <script type="text/javascript" src="../JS/login.js"></script>
     <script type="text/javascript" src="../JS/RegularExpressions.js"></script>
+    <script type="text/javascript" src="../JS/cart.js"></script>
 
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <title>Login</title>
     <script>
-        window.onscroll = function() {scrollFunction()};
+        // window.onscroll = function() {scrollFunction()};
+        window.onload = function(){quantityInCart()}
     </script>
 </head>
 <body>
@@ -30,8 +32,11 @@
                     <div class="col-md-9 col-lg-9"></div>
                     <div class="col-md-3 col-lg-3">
                         <div id="loginContainer">
-                            <a href="ShoppingCart.html" style="color: black;"><i
+                            <span>
+                                <a href="ShoppingCart.html" style="color: black;position: relative;"><i
                                     class="material-icons">shopping_cart</i></a>
+                                    <p id="quantityCart"></p>
+                            </span>
 
                             <!-- Guest -->
                             <div id="guest">
@@ -57,11 +62,11 @@
                     <div class="col-md-6 col-lg-6">
                         <div class="flex-container" id="categories">
                             <script>
-                                axios.get('../JS/watch_type.json')
+                                axios.get('http://localhost:9000/ominitrix/type')
                                 .then(function(response){
                                     document.getElementById('categories').innerHTML = response.data.map(function(type){
                                         return(
-                                            '<a style="font-size: 25px" href="Categories.html?watchType='+type.typeid+'">'+type.type_name+'&rsquo;s'+'</a>'
+                                            '<a style="font-size: 25px" href="Categories.html?watchType='+type.typeID+'">'+type.typeName+'</a>'
                                         )
                                     }).join('')
                                 })

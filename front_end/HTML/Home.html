@@ -21,8 +21,9 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <title>Home</title>
     <script>
-        window.onscroll = function () { scrollFunction() };
-        window.onload = function(){isCustomer()}
+        // window.onscroll = function () { scrollFunction() };
+        window.onload = function(){isCustomer();
+                                    quantityInCart()}
     </script>
 </head>
 
@@ -34,8 +35,11 @@
                     <div class="col-md-9 col-lg-9"></div>
                     <div class="col-md-3 col-lg-3">
                         <div id="loginContainer">
-                            <a href="ShoppingCart.html" style="color: black;"><i
+                            <span>
+                                <a href="ShoppingCart.html" style="color: black;position: relative;"><i
                                     class="material-icons">shopping_cart</i></a>
+                                    <p id="quantityCart"></p>
+                            </span>
 
                             <!-- Guest -->
                             <div id="guest" style="display: inline;">
@@ -45,11 +49,17 @@
 
                             <!-- Customer -->
                             <div class="dropdown" style="display: none;" id="customer">
-                                <a href="Login.html" id="userName" style="display: inline-flex;justify-content: center;"></a>
+                                <a id="userName" style="display: inline-flex;justify-content: center;"></a>
                                 <div class="dropdown-content">
                                     <a href="Admin/TableProduct.html" id="roleAdmin">Admin</a>
                                     <a href="#" onclick="logOut()">Log Out</a>
                                 </div>
+                                <script>
+                                    if('userid' in sessionStorage){
+                                        user = JSON.parse(sessionStorage.getItem('userid'))
+                                        document.getElementById('userName').href = 'ProfileUser.html?userId='+user.userID+''
+                                    }
+                                </script>
                             </div>
 
                         </div>
@@ -62,11 +72,11 @@
                     <div class="col-md-6 col-lg-6">
                         <div class="flex-container" id="categories">
                             <script>
-                                axios.get('../JS/watch_type.json')
+                                axios.get('http://localhost:9000/ominitrix/type')
                                 .then(function(response){
                                     document.getElementById('categories').innerHTML = response.data.map(function(type){
                                         return(
-                                            '<a style="font-size: 25px" href="Categories.html?watchType='+type.typeid+'">'+type.type_name+'&rsquo;s'+'</a>'
+                                            '<a style="font-size: 25px" href="Categories.html?watchType='+type.typeID+'">'+type.typeName+'</a>'
                                         )
                                     }).join('')
                                 })
@@ -91,28 +101,25 @@
         <section>
             <div class="column">
                 <div class="row">
-                    <h4 style="font-weight: bold;" id="container">WOMEN'S</h4>
+                    <h4 style="font-weight: bold;" id="container">Sport</h4>
                 </div>
                 <!-- Danh sách đồng hồ nữ -->
-                <div class="row" id="watchWomen">
+                <div class="row" id="watchSport">
                     <script>
-                        axios.all([
-                            axios.get('../JS/image.json'),
-                            axios.get('../JS/watch.json')
-                        ]).then(axios.spread(function(images,watchs){
-                            watchWomen = watchs.data.filter(function(watch){
-                                return watch.watch_gender===false 
+                        axios.get('http://localhost:9000/ominitrix/watch')
+                            .then(function(watchs){
+                            watchSport = watchs.data.filter(function(watch){
+                                return watch.typeID==='T01' 
                             }).slice(0,4)
-                            document.getElementById('watchWomen').innerHTML = watchWomen.map(function(watch){
-                                imageWatch = images.data.find(function(i){
-                                    return i.watchid===watch.watchid
-                                })
+                            console.log(watchSport);
+                            document.getElementById('watchSport').innerHTML = watchSport.map(function(watch){
+                                imageWatch = watch.images[0]
                                 return(
                                     '<div class="col-md-3 col-lg-3">'+
                                         '<div class="card">'+
                                             '<div class="card-header" style="position: relative;;">'+
-                                            ' <a href="ProductDetail.html?watchId='+watch.watchid+'">'+
-                                                    '<img src="'+imageWatch.imageurl+'"'+
+                                            ' <a href="ProductDetail.html?watchId='+watch.watchID+'">'+
+                                                    '<img src="'+imageWatch+'"'+
                                                         'id="imageCard">'+
                                                     '<div class="middle">'+
                                                         '<i class="material-icons"'+
@@ -121,13 +128,13 @@
                                             ' </a>'+
                                             '</div>'+
                                             '<div class="card-body" style="width: 100%;margin-bottom: -30px;">'+
-                                                '<a href="ProductDetail.html?watchId='+watch.watchid+'  " class="txtLinkName">'+
-                                                    '<p id="nameWatch">'+watch.watch_name+'</p>'+
+                                                '<a href="ProductDetail.html?watchId='+watch.watchID+'  " class="txtLinkName">'+
+                                                    '<p id="nameWatch">'+watch.watchName+'</p>'+
                                                 '</a>'+
                                                 '<p id="priceWatch">'+watch.price.toLocaleString('en-US', {style : 'currency', currency : 'VND'})+'</p>'+
                                             '</div>'+
                                             '<div style="margin-bottom: 20px;">'+
-                                                '<button id="btnAdd2Cart" onclick="add2Cart(\''+watch.watchid+'\')"><i class="material-icons"'+
+                                                '<button id="btnAdd2Cart" onclick="add2Cart(\''+watch.watchID+'\')"><i class="material-icons"'+
                                                         'style="color: white;background-color: black;margin-right: 10px;"'+
                                                         '>shopping_cart</i>Add'+
                                                     'to Cart</button>'+
@@ -136,7 +143,7 @@
                                 ' </div>'
                                 )
                                 }).join('');
-                        }))
+                        })
                         
                     </script>
                     </div>
@@ -164,27 +171,23 @@
 
                 <!-- Danh sách đồng hồ nam -->
                 <div class="row">
-                    <h4 style="font-weight: bold;" id="container" >MEN'S</h4>
+                    <h4 style="font-weight: bold;" id="container" >Fashion</h4>
                 </div>
-                <div class="row" id="watchMen">
+                <div class="row" id="watchFashion">
                     <script>
-                        axios.all([
-                            axios.get('../JS/image.json'),
-                            axios.get('../JS/watch.json')
-                        ]).then(axios.spread(function(images,watchs){
-                            watchMen = watchs.data.filter(function(watch){
-                                return watch.watch_gender===true 
+                        axios.get('http://localhost:9000/ominitrix/watch')
+                            .then((function(watchs){
+                                watchFashion = watchs.data.filter(function(watch){
+                                return watch.typeID==='T02' 
                             }).slice(0,4)
-                            document.getElementById('watchMen').innerHTML = watchMen.map(function(watch){
-                                imageWatch = images.data.find(function(i){
-                                    return i.watchid===watch.watchid
-                                })
+                            document.getElementById('watchFashion').innerHTML = watchFashion.map(function(watch){
+                                imageWatch = watch.images[0]
                                 return(
                                     '<div class="col-md-3 col-lg-3">'+
                                         '<div class="card">'+
                                             '<div class="card-header" style="position: relative;;">'+
-                                            ' <a href="ProductDetail.html?watchId='+watch.watchid+'">'+
-                                                    '<img src="'+imageWatch.imageurl+'"'+
+                                            ' <a href="ProductDetail.html?watchId='+watch.watchID+'">'+
+                                                    '<img src="'+imageWatch+'"'+
                                                         'id="imageCard">'+
                                                     '<div class="middle">'+
                                                         '<i class="material-icons"'+
@@ -193,13 +196,13 @@
                                             ' </a>'+
                                             '</div>'+
                                             '<div class="card-body" style="width: 100%;margin-bottom: -30px;">'+
-                                                '<a href="ProductDetail.html?watchId='+watch.watchid+'  " class="txtLinkName">'+
-                                                    '<p id="nameWatch">'+watch.watch_name+'</p>'+
+                                                '<a href="ProductDetail.html?watchId='+watch.watchID+'  " class="txtLinkName">'+
+                                                    '<p id="nameWatch">'+watch.watchName+'</p>'+
                                                 '</a>'+
                                                 '<p id="priceWatch">'+watch.price.toLocaleString('en-US', {style : 'currency', currency : 'VND'})+'</p>'+
                                             '</div>'+
                                             '<div style="margin-bottom: 20px;">'+
-                                                '<button id="btnAdd2Cart" onclick="add2Cart(\''+watch.watchid+'\')"><i class="material-icons"'+
+                                                '<button id="btnAdd2Cart" onclick="add2Cart(\''+watch.watchID+'\')"><i class="material-icons"'+
                                                         'style="color: white;background-color: black;margin-right: 10px;">shopping_cart</i>Add'+
                                                     'to Cart</button>'+
                                             '</div>'+

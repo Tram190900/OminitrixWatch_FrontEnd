@@ -15,12 +15,14 @@
 
     <script type="text/javascript" src="../JS/login.js"></script>
     <script type="text/javascript" src="../JS/RegularExpressions.js"></script>
+    <script type="text/javascript" src="../JS/cart.js"></script>
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <title>Shopping Cart</title>
     <script>
-        window.onscroll = function () { scrollFunction() };
-        window.onload = function(){isCustomer()}
+        // window.onscroll = function () { scrollFunction() };
+        window.onload = function(){isCustomer()
+                                    quantityInCart()}
     </script>
 </head>
 
@@ -32,9 +34,11 @@
                     <div class="col-md-9 col-lg-9"></div>
                     <div class="col-md-3 col-lg-3">
                         <div id="loginContainer">
-                            <a href="ShoppingCart.html" style="color: black;"><i
+                            <span>
+                                <a href="ShoppingCart.html" style="color: black;position: relative;"><i
                                     class="material-icons">shopping_cart</i></a>
-
+                                    <p id="quantityCart"></p>
+                            </span>
                             <!-- Guest -->
                             <div id="guest" style="display: inline;">
                                 <a href="Registration.html">Registration</a> &#124; 
@@ -48,6 +52,12 @@
                                     <a href="Admin/TableProduct.html" id="roleAdmin">Admin</a>
                                     <a href="#" onclick="logOut()">Log Out</a>
                                 </div>
+                                <script>
+                                    if('userid' in sessionStorage){
+                                        user = JSON.parse(sessionStorage.getItem('userid'))
+                                        document.getElementById('userName').href = 'ProfileUser.html?userId='+user.userID+''
+                                    }
+                                </script>
                             </div>
 
                         </div>
@@ -60,11 +70,11 @@
                     <div class="col-md-6 col-lg-6">
                         <div class="flex-container" id="categories">
                             <script>
-                                axios.get('../JS/watch_type.json')
+                                axios.get('http://localhost:9000/ominitrix/type')
                                 .then(function(response){
                                     document.getElementById('categories').innerHTML = response.data.map(function(type){
                                         return(
-                                            '<a style="font-size: 25px" href="Categories.html?watchType='+type.typeid+'">'+type.type_name+'&rsquo;s'+'</a>'
+                                            '<a style="font-size: 25px" href="Categories.html?watchType='+type.typeID+'">'+type.typeName+'</a>'
                                         )
                                     }).join('')
                                 })
@@ -77,11 +87,10 @@
                             <button style="border: none;"><i class="material-icons">search</i></button>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12 col-lg-12">
-                        <img src="https://www.ernestjones.co.uk/content-root/shops/luxury-watches-boutique.cdo/images/201910181000/EJ19W81_LuxuryWatchBanner_1200x392.jpg"
-                            style="margin-top: 2%; width: 100%;">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="pathLink">
+                            <a href="Home.html">Home</a> &iota;  <span>ShoppingCart</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -99,31 +108,29 @@
                             var products = JSON.parse(sessionStorage.getItem('cart'))
                             var subtotal = 0.0
                             axios.all([
-                                axios.get('../JS/watch.json'),
-                                axios.get('../JS/color.json'),
-                                axios.get('../JS/image.json')
+                                axios.get('http://localhost:9000/ominitrix/watch'),
+                                axios.get('http://localhost:9000/ominitrix/color')
                             ]).then(axios.spread(function(watchs,colors,images){
                                 document.getElementById('listProductinCart').innerHTML = products.map(function(product){
+                                    console.log(product);
                                     watch = watchs.data.find(function(w){
-                                        return w.watchid === product.watchid
+                                        return w.watchID === product.watchID
                                     })
                                     color = colors.data.find(function(c){
-                                        return c.colorid === watch.colorid
+                                        return c.colorID === watch.colorID
                                     })
-                                    image = images.data.find(function(i){
-                                        return i.watchid === product.watchid
-                                    })
+
                                     total = watch.price * product.quantity
                                     subtotal += total
                                     return(
-                                        '<div class="row" id="productInCart">'+
+                                        ['<div class="row" id="productInCart">'+
                                             '<div class="col-md-3 col-lg-3">'+
                                                 '<img style="width: 100px;height:120px"'+
-                                                    'src="'+image.imageurl+'">'+
+                                                    'src="'+watch.images[0]+'">'+
                                             '</div>'+
                                             '<div class="col-md-4 col-lg-4">'+
-                                                '<p style="font-weight: bold;">'+watch.watch_name+'</p>'+
-                                                '<span class="dot" style="background-color:'+color.color_name+'"></span>'+
+                                                '<p style="font-weight: bold;">'+watch.watchName+'</p>'+
+                                                '<span class="dot" style="background-color:'+color.colorName+'"></span>'+
                                             '</div>'+
                                             '<div class="col-md-1 col-lg-1">'+
                                                 '<label for="price">Price</label>'+
@@ -133,24 +140,24 @@
                                                 '<form>'+
                                                     '<label for="Qty">Qty</label>'+
                                                     '<input style="width: 100%;" id="Qty" name="Qty" type="number"'+
-                                                    ' min="1" value="'+product.quantity+'" onchange="changeQuantity()">'+
+                                                    ' min="1" value="'+product.quantity+'" onchange="total = changeQuantity(\''+watch.price+'\',\''+watch.watchID+'\')">'+
                                                 '</form>'+
                                             '</div>'+
                                             '<div class="col-md-1 col-lg-1">'+
                                                 '<label for="total">Total</label>'+
-                                                '<p id="total">'+total.toLocaleString('en-US', {style : 'currency', currency : 'VND'})+'</p>'+
+                                                '<p id="total">'+( total = watch.price * product.quantity).toLocaleString('en-US', {style : 'currency', currency : 'VND'})+'</p>'+
                                             '</div>'+
                                             '<div class="col-md-1 col-lg-1">'+
-                                                '<button style="border-style: none;font-weight: bold;">X</button>'+
+                                                '<button style="border-style: none;font-weight: bold;" onclick="removeToCart(\''+watch.watchID+'\')">X</button>'+
                                             '</div>'+
-                                        '</div>'
-                                        
+                                        '</div>']
                                     )
+                                    
                                 }).join('')
                                 document.getElementById('subtotal').innerText = subtotal.toLocaleString('en-US', {style : 'currency', currency : 'VND'})
                                 document.getElementById('estimatedTotal').innerText = subtotal.toLocaleString('en-US', {style : 'currency', currency : 'VND'})
                             }))
-                            
+                            console.log(document.getElementsByName('Qty').value);
                             
                         </script>
                     </div>
@@ -186,7 +193,9 @@
                             </div>
                         </div>
                         <div>
-                            <button id="btnCheckOut"><a href="CheckOut.html">CHECKOUT</a></button>
+                            <button id="btnCheckOut" onload="if(!'listWatchInCart' in sessionStorage) {
+                                document.getElementById('btnCheckOut').disabled =true
+                            }"><a href="CheckOut.html">CHECKOUT</a></button>
                         </div>
                     </div>
                 </div>

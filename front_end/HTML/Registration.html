@@ -14,13 +14,15 @@
 
     <script type="text/javascript" src="../JS/login.js"></script>
     <script type="text/javascript" src="../JS/RegularExpressions.js"></script>
+    <script type="text/javascript" src="../JS/cart.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <title>Registration</title>
     <script>
-        window.onscroll =  function() {scrollFunction()};
-        window.onload = function(){isCustomer()}
+        // window.onscroll =  function() {scrollFunction()};
+        window.onload = function(){isCustomer()
+                                 quantityInCart()}
     </script>
 </head>
 <body>
@@ -31,8 +33,11 @@
                     <div class="col-md-9 col-lg-9"></div>
                     <div class="col-md-3 col-lg-3">
                         <div id="loginContainer">
-                            <a href="ShoppingCart.html" style="color: black;"><i
+                            <span>
+                                <a href="ShoppingCart.html" style="color: black;position: relative;"><i
                                     class="material-icons">shopping_cart</i></a>
+                                    <p id="quantityCart"></p>
+                            </span>
 
                             <!-- Guest -->
                             <div id="guest">
@@ -47,6 +52,12 @@
                                     <a href="Admin/TableProduct.html" id="roleAdmin">Admin</a>
                                     <a href="#" onclick="logOut()">Log Out</a>
                                 </div>
+                                <script>
+                                    if('userid' in sessionStorage){
+                                        user = JSON.parse(sessionStorage.getItem('userid'))
+                                        document.getElementById('userName').href = 'ProfileUser.html?userId='+user.userID+''
+                                    }
+                                </script>
                             </div>
                         </div>
                     </div>
@@ -58,11 +69,11 @@
                     <div class="col-md-6 col-lg-6">
                         <div class="flex-container" id="categories">
                             <script>
-                                axios.get('../JS/watch_type.json')
+                                axios.get('http://localhost:9000/ominitrix/type')
                                 .then(function(response){
                                     document.getElementById('categories').innerHTML = response.data.map(function(type){
                                         return(
-                                            '<a style="font-size: 25px" href="Categories.html?watchType='+type.typeid+'">'+type.type_name+'&rsquo;s'+'</a>'
+                                            '<a style="font-size: 25px" href="Categories.html?watchType='+type.typeID+'">'+type.typeName+'</a>'
                                         )
                                     })
                                 })
@@ -115,7 +126,7 @@
                     </form>
                 </div>
                 <div class="col-md-12 col-lg-12" style="display: flex;justify-content: center;">
-                    <button id="btnAdd2Cart" type="submit" onclick="registration()">Send</button>
+                    <button id="btnAdd2Cart" onclick="registration()">Send</button>
                 </div>
             </div>
         </section>

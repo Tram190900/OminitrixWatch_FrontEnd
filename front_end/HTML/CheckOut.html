@@ -15,12 +15,14 @@
 
     <script type="text/javascript" src="../JS/login.js"></script>
     <script type="text/javascript" src="../JS/RegularExpressions.js"></script>
+    <script type="text/javascript" src="../JS/cart.js"></script>
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <title>CheckOut</title>
     <script>
-        window.onscroll = function () { scrollFunction() };
-        window.onload = function(){isCustomer()}
+        // window.onscroll = function () { scrollFunction() };
+        window.onload = function(){isCustomer()
+                                    quantityInCart()}
     </script>
 </head>
 
@@ -32,9 +34,11 @@
                     <div class="col-md-9 col-lg-9"></div>
                     <div class="col-md-3 col-lg-3">
                         <div id="loginContainer">
-                            <a href="ShoppingCart.html" style="color: black;"><i
+                            <span>
+                                <a href="ShoppingCart.html" style="color: black;position: relative;"><i
                                     class="material-icons">shopping_cart</i></a>
-
+                                    <p id="quantityCart"></p>
+                            </span>
                             <!-- Guest -->
                             <div id="guest" style="display: inline;">
                                 <a href="Registration.html">Registration</a> &#124; 
@@ -48,6 +52,12 @@
                                     <a href="Admin/TableProduct.html" id="roleAdmin">Admin</a>
                                     <a href="#" onclick="logOut()">Log Out</a>
                                 </div>
+                                <script>
+                                    if('userid' in sessionStorage){
+                                        user = JSON.parse(sessionStorage.getItem('userid'))
+                                        document.getElementById('userName').href = 'ProfileUser.html?userId='+user.userID+''
+                                    }
+                                </script>
                             </div>
 
                         </div>
@@ -60,11 +70,11 @@
                     <div class="col-md-6 col-lg-6">
                         <div class="flex-container" id="categories">
                             <script>
-                                axios.get('../JS/watch_type.json')
+                                axios.get('http://localhost:9000/ominitrix/type')
                                 .then(function(response){
                                     document.getElementById('categories').innerHTML = response.data.map(function(type){
                                         return(
-                                            '<a style="font-size: 25px" href="Categories.html?watchType='+type.typeid+'">'+type.type_name+'&rsquo;s'+'</a>'
+                                            '<a style="font-size: 25px" href="Categories.html?watchType='+type.typeID+'">'+type.typeName+'</a>'
                                         )
                                     }).join('')
                                 })
@@ -77,11 +87,10 @@
                             <button style="border: none;"><i class="material-icons">search</i></button>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12 col-lg-12">
-                        <img src="https://www.ernestjones.co.uk/content-root/shops/luxury-watches-boutique.cdo/images/201910181000/EJ19W81_LuxuryWatchBanner_1200x392.jpg"
-                            style="margin-top: 2%; width: 100%;">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="pathLink">
+                            <a href="Home.html">Home</a> &iota; <span>CheckOut</span>
+                        </div>
                     </div>
                 </div>
             </div>

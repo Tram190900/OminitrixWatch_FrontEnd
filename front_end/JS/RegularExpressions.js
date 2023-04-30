@@ -1,4 +1,3 @@
-
 function checkEmail() {
   var email = document.getElementById("email");
   var filter =

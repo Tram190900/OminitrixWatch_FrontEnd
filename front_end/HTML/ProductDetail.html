@@ -15,13 +15,15 @@
 
     <script type="text/javascript" src="../JS/login.js"></script>
     <script type="text/javascript" src="../JS/RegularExpressions.js"></script>
+    <script type="text/javascript" src="../JS/cart.js"></script>
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <title>Product Detail</title>
     <script>
-        window.onscroll = function() {scrollFunction()};
+        // window.onscroll = function() {scrollFunction()};
         window.onload = function(){currentSlide(1) 
-                                    isCustomer()}
+                                    isCustomer()
+                                    quantityInCart()}
     </script>
 </head>
 <body>
@@ -32,9 +34,11 @@
                     <div class="col-md-9 col-lg-9"></div>
                     <div class="col-md-3 col-lg-3">
                         <div id="loginContainer">
-                            <a href="ShoppingCart.html" style="color: black;"><i
+                            <span>
+                                <a href="ShoppingCart.html" style="color: black;position: relative;"><i
                                     class="material-icons">shopping_cart</i></a>
-
+                                    <p id="quantityCart"></p>
+                            </span>
                             <!-- Guest -->
                             <div id="guest">
                                 <a href="Registration.html">Registration</a> &#124; 
@@ -48,6 +52,12 @@
                                     <a href="Admin/TableProduct.html" id="roleAdmin">Admin</a>
                                     <a href="#" onclick="logOut()">Log Out</a>
                                 </div>
+                                <script>
+                                    if('userid' in sessionStorage){
+                                        user = JSON.parse(sessionStorage.getItem('userid'))
+                                        document.getElementById('userName').href = 'ProfileUser.html?userId='+user.userID+''
+                                    }
+                                </script>
                             </div>
                         </div>
                     </div>
@@ -59,11 +69,11 @@
                     <div class="col-md-6 col-lg-6">
                         <div class="flex-container" id="categories">
                             <script>
-                                axios.get('../JS/watch_type.json')
+                                axios.get('http://localhost:9000/ominitrix/type')
                                 .then(function(response){
                                     document.getElementById('categories').innerHTML = response.data.map(function(type){
                                         return(
-                                            '<a style="font-size: 25px" href="Categories.html?watchType='+type.typeid+'">'+type.type_name+'&rsquo;s'+'</a>'
+                                            '<a style="font-size: 25px" href="Categories.html?watchType='+type.typeID+'">'+type.typeName+'</a>'
                                         )
                                     }).join('')
                                 })
@@ -147,122 +157,115 @@
     </div>
 </body>
 <script>
-    axios.all([
-        axios.get('../JS/watch.json'),
-        axios.get('../JS/image.json'),
-        axios.get('../JS/brand.json'),
-        axios.get('../JS/color.json'),
-        axios.get('../JS/watch_type.json')
-    ]).then(axios.spread(function(watch,images,brands,colors,types){
-        const params = new URLSearchParams(document.location.search)
-        const watchId = params.get('watchId')
-        
-        watchById = watch.data.find(function(w){
-            return w.watchid===watchId
-        })
-        type = types.data.find(function(tp){
-            return tp.typeid===watchById.watch_typeid
-        })
-        document.getElementById('typeLink').innerHTML = 
-                '<a href="Categories.html?watchType='+type.typeid+'">'+type.type_name+'</a>'
+    const params = new URLSearchParams(document.location.search)
+    const watchId = params.get('watchId')
+    axios.get('http://localhost:9000/ominitrix/watch/'+watchId)
+        .then(function(res){
+            var watch = res.data
+            var type = null
+            axios.get('http://localhost:9000/ominitrix/brand/'+watch.brandID)
+                            .then(function(res){
+                                document.getElementById('brand').innerText = 'Brand: '+res.data.brandName
+                            })
+            var color = axios.get('http://localhost:9000/ominitrix/color/'+watch.colorID)
+                                .then(function(res){
+                                    document.querySelector('.dot').style.backgroundColor = res.data.colorName
+                                })                   
+            axios.get('http://localhost:9000/ominitrix/type/'+watch.typeID)
+                                .then(function(res){
+                                    document.getElementById('typeLink').innerHTML = 
+                                            '<a href="Categories.html?watchType='+res.data.typeID+'">'+res.data.typeName+'</a>'
+                                    type = res.data
+                                })
 
-        imageById = images.data.filter(function(i){
-            return i.watchid===watchId
-        })
-        brand = brands.data.find(function(b){
-            return b.brandid === watchById.brandid
-        })
-        color = colors.data.find(function(c){
-            return c.colorid === watchById.colorid
-        })
-        document.getElementById('rootLink').innerText = watchById.watch_name
-        document.getElementById('productImage').innerHTML = 
-                        '<div class="mySlides">'+
-                                '<img src="'+imageById[0].imageurl+'">'+
-                           ' </div>'+
+            document.getElementById('rootLink').innerText = watch.watchName
+            document.getElementById('productImage').innerHTML = 
                             '<div class="mySlides">'+
-                                '<img src="'+imageById[1].imageurl+'">'+
+                                    '<img src="'+watch.images[0]+'">'+
+                            ' </div>'+
+                                '<div class="mySlides">'+
+                                    '<img src="'+watch.images[1]+'">'+
+                                '</div>'+
+                                '<div class="mySlides">'+
+                                    '<img src="'+watch.images[2]+'">'+
+                                '</div>'+
+                            ' <div class="mySlides">'+
+                                    '<img src="'+watch.images[3]+'">'+
+                                '</div>'+
+                            '<div class="row" style="display: flex; margin-top: 2%;">'+
+                                '<div class="col-md-3 col-lg-3">'+
+                                    '<img class="demo cursor" src="'+watch.images[0]+'"'+
+                                            'style="width: 90%;" onclick="currentSlide(1)">'+
+                            ' </div>'+
+                                '<div class="col-md-3 col-lg-3">'+
+                                    '<img class="demo cursor" src="'+watch.images[1]+'"'+
+                                            'style="width: 90%;" onclick="currentSlide(2)">'+
+                                '</div>'+
+                                '<div class="col-md-3 col-lg-3">'+
+                                    '<img class="demo cursor" src="'+watch.images[2]+'"'+
+                                            'style="width: 90%;" onclick="currentSlide(3)">'+
+                                '</div>'+
+                                '<div class="col-md-3 col-lg-3">'+
+                                    '<img class="demo cursor" src="'+watch.images[3]+'"'+
+                                            'style="width: 90%;" onclick="currentSlide(4)">'+
+                                '</div>'+
                             '</div>'+
-                            '<div class="mySlides">'+
-                                '<img src="'+imageById[2].imageurl+'">'+
-                            '</div>'+
-                           ' <div class="mySlides">'+
-                                '<img src="'+imageById[3].imageurl+'">'+
-                            '</div>'+
-                        '<div class="row" style="display: flex; margin-top: 2%;">'+
-                            '<div class="col-md-3 col-lg-3">'+
-                                '<img class="demo cursor" src="'+imageById[0].imageurl+'"'+
-                                        'style="width: 90%;" onclick="currentSlide(1)">'+
-                           ' </div>'+
-                            '<div class="col-md-3 col-lg-3">'+
-                                '<img class="demo cursor" src="'+imageById[1].imageurl+'"'+
-                                        'style="width: 90%;" onclick="currentSlide(2)">'+
-                            '</div>'+
-                            '<div class="col-md-3 col-lg-3">'+
-                                '<img class="demo cursor" src="'+imageById[2].imageurl+'"'+
-                                        'style="width: 90%;" onclick="currentSlide(3)">'+
-                            '</div>'+
-                            '<div class="col-md-3 col-lg-3">'+
-                                '<img class="demo cursor" src="'+imageById[3].imageurl+'"'+
-                                        'style="width: 90%;" onclick="currentSlide(4)">'+
-                            '</div>'+
-                        '</div>'+
-                    '</div>'
-        
-        document.getElementById('detail').innerHTML = ' <h2 style="font-weight: bold;">'+watchById.watch_name+'</h2>'+
-                '<p style="font-weight: bold;">Product Detail:</p>'+
-                '<p style="color: gray;">Thickness: '+watchById.thickness+' mm</p>'+
-                '<p style="color: gray;">Water Resistance: '+watchById.water_resistance+'</p>'+
-               ' <p style="color: gray;">Brand: '+brand.brand_name+'</p>'+
-                '<h2 id="price" style="color: red;">'+watchById.price.toLocaleString('en-US', {style : 'currency', currency : 'VND'})+'</h2>'+
-                '<label>Color:</label><br>'+
-                '<span class="dot" style="background-color:'+color.color_name+';"></span><br><br>'+
-                '<label>Quantity:</label><br>'+
-                '<input id="Qty" type="number" min="1" value="1" style="width: 65px;padding: 1%;"><br><br>'+
-                '<label>Available quantity :</label>'+
-                '<p>'+watchById.limit_quantity+'</p>'+
-                '<button id="btnAdd2Cart" style="margin-bottom: 20px;"><i class="material-icons" style="color: white;background-color: black;">shopping_cart</i>Add to Cart</button>'+
-                '<i class="material-icons" id="clickHeart" onclick="likeProduct()">favorite_border</i><br>'+
-                '<a href="#" class="fa fa-facebook"></a>'+
-                '<a href="#" class="fa fa-twitter"></a>'+
-                '<a href="#" class="fa fa-google"></a>'+
-                '<a href="#" class="fa fa-linkedin"></a>'+
-                '<a href="#" class="fa fa-pinterest"></a>'
-        document.getElementById('desWatch').innerHTML = '<p>'+watchById.description+'</p>'      
-        
-        var arr = watch.data.filter(function(w){
-            return w.watch_typeid === type.typeid
-        })
-        var watchRelated = arr.slice(arr.lenght,4)
-        document.getElementById('related').innerHTML = watchRelated.map(function(w){
-            image = images.data.find(function(i){
-                return i.watchid === w.watchid
-            })
-            return(
-                '<div class="col-md-3 col-lg-3">'+
-                        '<div class="card">'+
-                            '<div class="card-header" style="position: relative;;">'+
-                                '<a href="ProductDetail.html?watchId='+w.watchid+'">'+
-                                    '<img src="'+image.imageurl+'"'+
-                                    'id="imageCard">'+
-                                    '<div class="middle">'+
-                                        '<i class="material-icons" style="color: gray;margin-top: 50%;">remove_red_eye</i>'+
-                                    '</div>'+
-                                '</a>'+
-                            '</div>'+
-                            '<div class="card-body" style="width: 100%;margin-bottom: -30px;">'+
-                                '<a href="ProductDetail.html?watchId='+w.watchid+'"" class="txtLinkName"><p id="nameWatch">'+w.watch_name+'</p></a>'+
-                                '<p id="priceWatch">'+w.price.toLocaleString('en-US', {style : 'currency', currency : 'VND'})+'</p>'+
-                            '</div>'+
-                            '<div style="margin-bottom: 20px;">'+
-                                '<button id="btnAdd2Cart" onclick="add2Cart(\''+w.watchid+'\')"><i class="material-icons" style="color: white;background-color: black;margin-right: 10px;">shopping_cart</i>Add to Cart</button>'+
-                            '</div>'+
-                        '</div>'+
-                    '</div>'
-            )
-        }).join('')
-    }
-        
-    ))
+                        '</div>'
+            
+            document.getElementById('detail').innerHTML = ' <h2 style="font-weight: bold;">'+watch.watchName+'</h2>'+
+                    '<p style="font-weight: bold;">Product Detail:</p>'+
+                    '<p style="color: gray;">Thickness: '+watch.thickness+' mm</p>'+
+                    '<p style="color: gray;">Water Resistance: '+watch.waterResistance+'</p>'+
+                    '<p id="brand" style="color: gray;">Brand: </p>'+
+                    '<h2 id="price" style="color: red;">'+watch.price.toLocaleString('en-US', {style : 'currency', currency : 'VND'})+'</h2>'+
+                    '<label>Color:</label><br>'+
+                    '<span class="dot"></span><br><br>'+
+                    '<label>Quantity:</label><br>'+
+                    '<input id="Qty" type="number" min="1" value="1" style="width: 65px;padding: 1%;"><br><br>'+
+                    '<label>Available quantity :</label>'+
+                    '<p>'+watch.limitQuantity+'</p>'+
+                    '<button id="btnAdd2Cart" onclick="add2Cart(\''+watch.watchID+'\')" style="margin-bottom: 20px;"><i class="material-icons" style="color: white;background-color: black;">shopping_cart</i>Add to Cart</button>'+
+                    '<i class="material-icons" id="clickHeart" onclick="likeProduct()">favorite_border</i><br>'+
+                    '<a href="#" class="fa fa-facebook"></a>'+
+                    '<a href="#" class="fa fa-twitter"></a>'+
+                    '<a href="#" class="fa fa-google"></a>'+
+                    '<a href="#" class="fa fa-linkedin"></a>'+
+                    '<a href="#" class="fa fa-pinterest"></a>'
+            document.getElementById('desWatch').innerHTML = '<p>'+watch.description+'</p>'      
+            
+            // var arr = res.data.filter(function(w){
+            //     return w.TypeID === type
+            // })
+            // var watchRelated = arr.slice(arr.lenght,4)
+            // document.getElementById('related').innerHTML = watchRelated.map(function(w){
+            //     image = images.data.find(function(i){
+            //         return i.watchid === w.watchid
+            //     })
+            //     return(
+            //         '<div class="col-md-3 col-lg-3">'+
+            //                 '<div class="card">'+
+            //                     '<div class="card-header" style="position: relative;;">'+
+            //                         '<a href="ProductDetail.html?watchId='+w.watchid+'">'+
+            //                             '<img src="'+image.imageurl+'"'+
+            //                             'id="imageCard">'+
+            //                             '<div class="middle">'+
+            //                                 '<i class="material-icons" style="color: gray;margin-top: 50%;">remove_red_eye</i>'+
+            //                             '</div>'+
+            //                         '</a>'+
+            //                     '</div>'+
+            //                     '<div class="card-body" style="width: 100%;margin-bottom: -30px;">'+
+            //                         '<a href="ProductDetail.html?watchId='+w.watchid+'"" class="txtLinkName"><p id="nameWatch">'+w.watch_name+'</p></a>'+
+            //                         '<p id="priceWatch">'+w.price.toLocaleString('en-US', {style : 'currency', currency : 'VND'})+'</p>'+
+            //                     '</div>'+
+            //                     '<div style="margin-bottom: 20px;">'+
+            //                         '<button id="btnAdd2Cart" onclick="add2Cart(\''+w.watchid+'\')"><i class="material-icons" style="color: white;background-color: black;margin-right: 10px;">shopping_cart</i>Add to Cart</button>'+
+            //                     '</div>'+
+            //                 '</div>'+
+            //             '</div>'
+            //     )
+            // }).join('')
+        }
+            
+        )
 </script>
 </html>

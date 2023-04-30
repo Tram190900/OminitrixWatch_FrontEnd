@@ -458,7 +458,7 @@ section label {
 }
 /*#endregion*/
 
-/*#region STT Login*/
+/*#region STT Login, IconCart*/
 #guest{
     display: inline;
 }
@@ -468,6 +468,7 @@ section label {
   color: gray;
   text-decoration: none;
   margin-left: 10px;
+  
 }
 #loginContainer{
   display: inline-flex;
@@ -499,6 +500,18 @@ section label {
 }
 .dropdown-content a:hover {
     background-color: #ddd;
+}
+#quantityCart{
+  height: 17px;
+  width: 17px;
+  border:1px solid black;
+  font-size: 12px;
+  text-align: center;
+  font-weight: bold;
+  border-radius: 10px;
+  background-color: white;
+  position: absolute;
+  top: 10px;
 }
 /*#endregion*/
 

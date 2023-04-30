@@ -17,14 +17,16 @@
 
     <script type="text/javascript" src="../../JS/login.js"></script>
     <script type="text/javascript" src="../../JS/RegularExpressions.js"></script>
+    <script type="text/javascript" src="../../JS/cart.js"></script>
 
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <title id="title">Admin</title>
     <script>
-        window.onscroll = function () { scrollFunction() };
+        // window.onscroll = function () { scrollFunction() };
         window.onload = function () { document.getElementById('leafFinal').textContent = document.getElementById('title').textContent
-                                        isCustomer() }
+                                        isCustomer()
+                                        quantityInCart() }
 
     </script>
 </head>
@@ -37,13 +39,15 @@
                     <div class="col-md-9 col-lg-9"></div>
                     <div class="col-md-3 col-lg-3">
                         <div id="loginContainer">
-                            <a href="../ShoppingCart.html" style="color: black;"><i
+                            <span>
+                                <a href="../ShoppingCart.html" style="color: black;position: relative;"><i
                                     class="material-icons">shopping_cart</i></a>
-
+                                    <p id="quantityCart"></p>
+                            </span>
                             <!-- Guest -->
                             <div id="guest">
-                                <a href="Registration.html">Registration</a> &#124; 
-                                <a href="Login.html">Login</a>
+                                <a href="../Registration.html">Registration</a> &#124; 
+                                <a href="../Login.html">Login</a>
                             </div>
 
                             <!-- Customer -->
@@ -53,6 +57,12 @@
                                     <a href="TableProduct.html" id="roleAdmin">Admin</a>
                                     <a href="#" onclick="logOut()">Log Out</a>
                                 </div>
+                                <script>
+                                    if('userid' in sessionStorage){
+                                        user = JSON.parse(sessionStorage.getItem('userid'))
+                                        document.getElementById('userName').href = '../ProfileUser.html?userId='+user.userID+''
+                                    }
+                                </script>
                             </div>
                         </div>
                     </div>
@@ -64,11 +74,11 @@
                     <div class="col-md-6 col-lg-6">
                         <div class="flex-container" id="categories">
                             <script>
-                                axios.get('../../JS/watch_type.json')
+                                axios.get('http://localhost:9000/ominitrix/type')
                                 .then(function(response){
                                     document.getElementById('categories').innerHTML = response.data.map(function(type){
                                         return(
-                                            '<a style="font-size: 25px" href="Categories.html?watchType='+type.typeid+'">'+type.type_name+'&rsquo;s'+'</a>'
+                                            '<a style="font-size: 25px" href="../Categories.html?watchType='+type.typeID+'">'+type.typeName+'</a>'
                                         )
                                     }).join('')
                                 })
@@ -149,6 +159,7 @@
                         </div>
                         <table id="tblCustomers">
                             <tr>
+                                <th>Image</th>
                                 <th>First Name</th>
                                 <th>Last Name</th>
                                 <th>Email</th>
@@ -194,25 +205,32 @@
 </body>
 <script>
     axios.all([
-        axios.get('../../JS/account.json'),
-        axios.get('../../JS/users.json')
+        axios.get('http://localhost:9000/ominitrix/account'),
+        axios.get('http://localhost:9000/ominitrix/user')
     ]).then(axios.spread(function(accounts,users){
         document.getElementById('bodyTblCustomer').innerHTML = users.data.map(function(user){
             account = accounts.data.find(function(a){
-                return a.userid === user.userid
+                return a.userName === user.userID
             })
+            role = null
+            if(account.role){
+                role = 'Admin'
+            }else{
+                role = 'Customer'
+            }
             return(
                 '<tr>'+
-                        '<td>'+user.first_name+'</td>'+
-                        '<td>'+user.last_name+'</td>'+
+                        '<td><img src="'+user.avatar+'" style="wight:50px,height:50px"/></td>'+
+                        '<td>'+user.firstName+'</td>'+
+                        '<td>'+user.lastName+'</td>'+
                         '<td>'+user.email+'</td>'+
                         '<td>'+user.phone+'</td>'+
-                        '<td>'+account.role+'</td>'+
+                        '<td>'+role+'</td>'+
                         '<td>'+user.address+'</td>'+
                         '<td>'+
                             '<span style="display: flex;">'+
                                 '<button id="btnEdit" class="tablinks"'+
-                                'onclick="location.href=\'EditCustomer.html?userId='+user.userid+'\'">'+
+                                'onclick="location.href=\'EditCustomer.html?userId='+user.userID+'\'">'+
                                     '<i class="material-icons">edit</i>'+
                                 '</button>'+
                                 '<button id="btnDelete">'+

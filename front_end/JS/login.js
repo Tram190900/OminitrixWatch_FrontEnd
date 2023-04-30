@@ -1,6 +1,4 @@
-
 function registration(){
-    var userid = "customer05"
                 var first_name = document.getElementById('firstName').value
                 var last_name = document.getElementById('lastName').value
                 var phone = document.getElementById('phone').value
@@ -8,24 +6,26 @@ function registration(){
                 var password = document.getElementById('password').value
     
                 var user={
-                    "userid" :userid,
+                    "userID":email,
                     "address": "",
                     "email": email,
-                    "first_name": first_name,
-                    "last_name": last_name,
-                    "phone": phone
+                    "firstName": first_name,
+                    "lastName": last_name,
+                    "phone": phone,
+                    "otp":null,
+                    "otpexpire":null
                 }
                 var account ={
-                    "userid": userid,
                     "password": password,
-                    "role": "customer"
+                    "role": "false"
                 }
-                
-                axios.post('https://6447c77c7bb84f5a3e48a467.mockapi.io/users', user)
+                axios.post('http://localhost:9000/ominitrix/user/add', user)
                     .then(function(response){
-                    if (response.status == 201) {
-                        axios.post('https://6447c77c7bb84f5a3e48a467.mockapi.io/account',account)
+                        console.log(response.status);
+                    if (response.status == 201||response.status == 200) {
+                        axios.post('http://localhost:9000/ominitrix/account/add',account.password)
                             .then(function(response){
+                                console.log(response.status);
                                 if(response.status==201 || response.status==200){
                                     location.href = '../HTML/Home.html' 
                                     sessionStorage.setItem('userid',JSON.stringify(user))
@@ -46,7 +46,7 @@ function isCustomer(){
 
             document.getElementById('guest').style.display ="none"
             document.getElementById('customer').style.display ="inline"
-            document.getElementById('userName').innerHTML = '<i class="material-icons">account_circle</i>'+user.last_name+''
+            document.getElementById('userName').innerHTML = '<i class="material-icons">account_circle</i>'+user.lastName+''
             if(account.role==="customer"){
                 document.getElementById('roleAdmin').style.display="none"
                 console.log('customer');
@@ -69,19 +69,22 @@ function logOut(){
     document.getElementById('guest').style.display ="inline"
     document.getElementById('customer').style.display ="none"
     console.log('userid dont exit');
+    if('cart' in sessionStorage){
+        sessionStorage.removeItem('cart')
+    }
 }
 
 function login(){
     var email = document.getElementById('email').value
     var password = document.getElementById('password').value
-    axios.get('../JS/users.json')
+    axios.get('http://localhost:9000/ominitrix/user')
             .then(function(response){
                 let user = response.data.find(function(u){
                     return u.email===email
                 })
                 console.log(user);
                 if(typeof(user)!='undefined'){
-                    axios.get('../JS/account.json')
+                    axios.get('http://localhost:9000/ominitrix/account')
                     .then(function(response){
                         let account = response.data.find(function(a){
                             return a.userid === user.userid
