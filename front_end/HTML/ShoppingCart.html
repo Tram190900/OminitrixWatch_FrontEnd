@@ -21,8 +21,37 @@
     <title>Shopping Cart</title>
     <script>
         // window.onscroll = function () { scrollFunction() };
-        window.onload = function(){isCustomer()
-                                    quantityInCart()}
+        window.onload = function(){
+            if(isCustomer()){
+                var listWatchInCart = []
+                axios.all([
+                    axios.get('http://localhost:9000/ominitrix/bill'),
+                    axios.get('http://localhost:9000/ominitrix/payment')
+                ]).then(axios.spread(function(bills, payments){
+                    bill = bills.data.filter(function(b){
+                        user = JSON.parse(sessionStorage.getItem('userid'))
+                        return b.userID === user.userID
+                    })
+                    var payment
+                    bill.forEach(element => {
+                        payment = payments.data.find(function(p){
+                            return p.billID === element.billID && p.status === 'unpaid'
+                        })
+                    });
+                    axios.get('http://localhost:9000/ominitrix/bill-detail/'+payment.billID)
+                        .then(function(res){
+                            res.data.map(function(b){
+                                    listWatchInCart.push({
+                                    "watchID":b.watchID,
+                                    "quantity":b.quantity,
+                                    "price": b.price
+                                })
+                            })
+                            sessionStorage.setItem('cart',JSON.stringify(listWatchInCart))
+                        })
+                }))
+            quantityInCart()}
+        }
     </script>
 </head>
 
@@ -105,59 +134,61 @@
                     <!-- List Product in Cart -->
                     <div class="col-md-8 col-lg-8" id="listProductinCart">
                         <script>
-                            var products = JSON.parse(sessionStorage.getItem('cart'))
-                            var subtotal = 0.0
-                            axios.all([
-                                axios.get('http://localhost:9000/ominitrix/watch'),
-                                axios.get('http://localhost:9000/ominitrix/color')
-                            ]).then(axios.spread(function(watchs,colors,images){
-                                document.getElementById('listProductinCart').innerHTML = products.map(function(product){
-                                    console.log(product);
-                                    watch = watchs.data.find(function(w){
-                                        return w.watchID === product.watchID
-                                    })
-                                    color = colors.data.find(function(c){
-                                        return c.colorID === watch.colorID
-                                    })
+                            if('cart' in sessionStorage){
+                                var products = JSON.parse(sessionStorage.getItem('cart'))
+                                var subtotal = 0.0
+                                axios.all([
+                                    axios.get('http://localhost:9000/ominitrix/watch'),
+                                    axios.get('http://localhost:9000/ominitrix/color')
+                                ]).then(axios.spread(function(watchs,colors,images){
+                                    document.getElementById('listProductinCart').innerHTML = products.map(function(product){
+                                        console.log(product);
+                                        watch = watchs.data.find(function(w){
+                                            return w.watchID === product.watchID
+                                        })
+                                        color = colors.data.find(function(c){
+                                            return c.colorID === watch.colorID
+                                        })
 
-                                    total = watch.price * product.quantity
+                                        // total = watch.price * product.quantity
+                                        return(
+                                            '<div class="row" id="productInCart">'+
+                                                '<div class="col-md-3 col-lg-3">'+
+                                                    '<img style="width: 100px;height:120px"'+
+                                                        'src="'+watch.images[0]+'">'+
+                                                '</div>'+
+                                                '<div class="col-md-4 col-lg-4">'+
+                                                    '<p style="font-weight: bold;">'+watch.watchName+'</p>'+
+                                                    '<span class="dot" style="background-color:'+color.colorName+'"></span>'+
+                                                '</div>'+
+                                                '<div class="col-md-1 col-lg-1">'+
+                                                    '<label for="price">Price</label>'+
+                                                    '<p id="price">'+watch.price.toLocaleString('en-US', {style : 'currency', currency : 'VND'})+'</p>'+
+                                                '</div>'+
+                                                '<div class="col-md-1 col-lg-1">'+
+                                                    '<form>'+
+                                                        '<label for="Qty">Qty</label>'+
+                                                        '<input style="width: 100%;" id="Qty" class="Qty'+watch.watchID+'" type="number"'+
+                                                        ' min="1" value="'+product.quantity+'" onchange="changeQuantity(\''+watch.price+'\',\''+watch.watchID+'\')">'+
+                                                    '</form>'+
+                                                '</div>'+
+                                                '<div class="col-md-1 col-lg-1">'+
+                                                    '<label for="total">Total</label>'+
+                                                    '<p id="total" class="total'+watch.watchID+'">'+(watch.price * product.quantity).toLocaleString('en-US', {style : 'currency', currency : 'VND'})+'</p>'+
+                                                '</div>'+
+                                                '<div class="col-md-1 col-lg-1">'+
+                                                    '<button style="border-style: none;font-weight: bold;" onclick="removeToCart(\''+watch.watchID+'\')">X</button>'+
+                                                '</div>'+
+                                            '</div>'
+                                        )
+                                        
+                                    }).join('')
                                     subtotal += total
-                                    return(
-                                        ['<div class="row" id="productInCart">'+
-                                            '<div class="col-md-3 col-lg-3">'+
-                                                '<img style="width: 100px;height:120px"'+
-                                                    'src="'+watch.images[0]+'">'+
-                                            '</div>'+
-                                            '<div class="col-md-4 col-lg-4">'+
-                                                '<p style="font-weight: bold;">'+watch.watchName+'</p>'+
-                                                '<span class="dot" style="background-color:'+color.colorName+'"></span>'+
-                                            '</div>'+
-                                            '<div class="col-md-1 col-lg-1">'+
-                                                '<label for="price">Price</label>'+
-                                                '<p id="price">'+watch.price.toLocaleString('en-US', {style : 'currency', currency : 'VND'})+'</p>'+
-                                            '</div>'+
-                                            '<div class="col-md-1 col-lg-1">'+
-                                                '<form>'+
-                                                    '<label for="Qty">Qty</label>'+
-                                                    '<input style="width: 100%;" id="Qty" name="Qty" type="number"'+
-                                                    ' min="1" value="'+product.quantity+'" onchange="total = changeQuantity(\''+watch.price+'\',\''+watch.watchID+'\')">'+
-                                                '</form>'+
-                                            '</div>'+
-                                            '<div class="col-md-1 col-lg-1">'+
-                                                '<label for="total">Total</label>'+
-                                                '<p id="total">'+( total = watch.price * product.quantity).toLocaleString('en-US', {style : 'currency', currency : 'VND'})+'</p>'+
-                                            '</div>'+
-                                            '<div class="col-md-1 col-lg-1">'+
-                                                '<button style="border-style: none;font-weight: bold;" onclick="removeToCart(\''+watch.watchID+'\')">X</button>'+
-                                            '</div>'+
-                                        '</div>']
-                                    )
-                                    
-                                }).join('')
-                                document.getElementById('subtotal').innerText = subtotal.toLocaleString('en-US', {style : 'currency', currency : 'VND'})
-                                document.getElementById('estimatedTotal').innerText = subtotal.toLocaleString('en-US', {style : 'currency', currency : 'VND'})
-                            }))
-                            console.log(document.getElementsByName('Qty').value);
+                                    document.getElementById('subtotal').value = subtotal.toLocaleString('en-US', {style : 'currency', currency : 'VND'})
+                                    document.getElementById('estimatedTotal').innerText = subtotal.toLocaleString('en-US', {style : 'currency', currency : 'VND'})
+                                }))
+                                console.log(document.getElementsByName('Qty').value);
+                            }
                             
                         </script>
                     </div>
@@ -172,7 +203,7 @@
                                     <p>Subtotal</p>
                                 </div>
                                 <div class="col-4">
-                                    <p style="font-weight: bold;" id="subtotal"></p>
+                                    <input style="font-weight: bold;width: 100%;" id="subtotal" type="text" disabled />
                                 </div>
                             </div>
                             <div class="row">

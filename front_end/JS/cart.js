@@ -1,9 +1,8 @@
 var listWatchInCart = []
 function add2Cart(watchid){
-    
     listWatchInCart.push({
         "watchID":watchid,
-        "quantity":1
+        "quantity":1,
     })
     sessionStorage.setItem('cart',JSON.stringify(listWatchInCart))
     document.getElementById('quantityCart').innerText = listWatchInCart.length
@@ -11,14 +10,19 @@ function add2Cart(watchid){
     
 }
 function changeQuantity(price,watchid){
-    qty = parseInt(document.getElementById('Qty').value)
+    qty = parseInt(document.querySelector('.Qty'+watchid).value)
     arr = JSON.parse(sessionStorage.getItem('cart'))
     index = arr.findIndex((item=>item.watchID===watchid))
-    arr[index].quantity = qty
-    document.getElementById('total').innerText = (price*qty).toLocaleString('en-US', {style : 'currency', currency : 'VND'})
+    newQty = arr[index].quantity = qty
+    total = price*qty
+    document.querySelector('.total'+watchid).innerText = (total).toLocaleString('en-US', {style : 'currency', currency : 'VND'})
+
+    
+
     sessionStorage.setItem('cart',JSON.stringify(arr))
     return price*qty
 }
+
 function removeToCart(watchID){
     arr = JSON.parse(sessionStorage.getItem('cart'))
     arrNew = arr.find(function(a){
@@ -27,9 +31,10 @@ function removeToCart(watchID){
     sessionStorage.setItem('cart',JSON.stringify(arrNew))
     location.reload()
 }
+
 function quantityInCart(){
-    arr = JSON.parse(sessionStorage.getItem('cart'))
     if('cart' in sessionStorage){
+        arr = JSON.parse(sessionStorage.getItem('cart'))
         document.getElementById('quantityCart').innerText = arr.length
     }else{
         document.getElementById('quantityCart').innerText = '0'

@@ -29,7 +29,7 @@ function registration(){
                                 if(response.status==201 || response.status==200){
                                     location.href = '../HTML/Home.html' 
                                     sessionStorage.setItem('userid',JSON.stringify(user))
-                                    sessionStorage.setItem('account',JSON.stringify(account))
+                                    sessionStorage.setItem('account',JSON.stringify(account.role))
                                 }
                             })    
                     }    
@@ -54,11 +54,13 @@ function isCustomer(){
                 document.getElementById('roleAdmin').style.display="inline"
                 console.log('admin');
             }
-            console.log("exit");
+            console.log("exist");
+            return true
         }else{
             document.getElementById('guest').style.display ="inline"
             document.getElementById('customer').style.display ="none"
-            console.log('userid dont exit');
+            console.log('userid dont exist');
+            return false
         }
     
 }
@@ -72,6 +74,7 @@ function logOut(){
     if('cart' in sessionStorage){
         sessionStorage.removeItem('cart')
     }
+    location.href = '../HTML/Home.html'
 }
 
 function login(){
@@ -83,17 +86,14 @@ function login(){
                     return u.email===email
                 })
                 console.log(user);
-                if(typeof(user)!='undefined'){
-                    axios.get('http://localhost:9000/ominitrix/account')
+                if(typeof(user)!=='undefined'){
+                    axios.get('http://localhost:9000/ominitrix/account/'+user.userID)
                     .then(function(response){
-                        let account = response.data.find(function(a){
-                            return a.userid === user.userid
-                        })
-                        if(typeof(account)!='undefined'){
-                            if(account.password===password){
+                        if(typeof(response.data)!=='undefined'){
+                            if(response.data.password===password){
                                 location.href = '../HTML/Home.html' 
                                 sessionStorage.setItem('userid',JSON.stringify(user))
-                                sessionStorage.setItem('account',JSON.stringify(account))
+                                sessionStorage.setItem('account',JSON.stringify(response.data.password))
                             }else{
                                 alert('Password sai. Nhập lại password')
                                 document.getElementById('password').focus()
