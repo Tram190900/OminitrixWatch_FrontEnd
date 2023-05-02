@@ -50,12 +50,13 @@ function isCustomer(){
             if(account.role==="customer"){
                 document.getElementById('roleAdmin').style.display="none"
                 console.log('customer');
+                return true
             }else if(account.role==='admin'){
                 document.getElementById('roleAdmin').style.display="inline"
                 console.log('admin');
+                return false
             }
             console.log("exist");
-            return true
         }else{
             document.getElementById('guest').style.display ="inline"
             document.getElementById('customer').style.display ="none"

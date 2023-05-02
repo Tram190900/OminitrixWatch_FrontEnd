@@ -16,6 +16,7 @@
     <script type="text/javascript" src="../JS/login.js"></script>
     <script type="text/javascript" src="../JS/RegularExpressions.js"></script>
     <script type="text/javascript" src="../JS/cart.js"></script>
+    <script type="text/javascript" src="../JS/watch.js"></script>
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <title>Categories</title>
@@ -117,14 +118,6 @@
                     <ul id="listCategory">
                         <h4 style="font-weight: bold;margin-bottom: 8%;">Filter By</h4>
                         <li>
-                            <p style="font-weight: bold;">Price</p>
-                            <div style="display: flex; color: lightgrey;">
-                                <input type="text" id="inputPrice" placeholder="Min">
-                                &minus;
-                                <input type="text" id="inputPrice" placeholder="Max">
-                            </div>
-                        </li>
-                        <li>
                             <p style="font-weight: bold;">Brand</p>
                             <form>
                                 <div id="chkBrand"></div>
@@ -133,7 +126,7 @@
                                     .then(function(response){
                                         document.getElementById('chkBrand').innerHTML = response.data.map(function(brand){
                                             return(
-                                                '<input id="'+brand.brandID+'" name="'+brand.brandID+'" type="checkbox" value="'+brand.brandName+'">'+'&nbsp;'+
+                                                '<input id="'+brand.brandID+'" name="'+brand.brandID+'" type="checkbox" value="'+brand.brandID+'" onclick ="findByBrand(\''+brand.brandID+'\')">'+'&nbsp;'+
                                                 '<label for="'+brand.brandID+'">'+brand.brandName+'</label><br>'
                                             )
                                         }).join('')
@@ -142,6 +135,12 @@
                             </form>
                         </li>
                         <li>
+                            <p style="font-weight: bold;">Price</p>
+                            <div style="display: flex; color: lightgrey;margin-bottom: 20px;">
+                                <input type="text" id="inputPrice" placeholder="Min">
+                                &minus;
+                                <input type="text" id="inputPrice" placeholder="Max">
+                            </div>
                             <div style="display: flex; justify-content: space-around;">
                                 <button id="btnAdd2Cart"> Apply </button>
                                 <button id="btnAdd2Cart"> Clear </button>

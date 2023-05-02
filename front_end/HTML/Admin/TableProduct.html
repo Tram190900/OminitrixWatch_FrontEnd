@@ -18,7 +18,7 @@
     <script type="text/javascript" src="../../JS/login.js"></script>
     <script type="text/javascript" src="../../JS/RegularExpressions.js"></script>
     <script type="text/javascript" src="../../JS/cart.js"></script>
-
+    <script type="text/javascript" src="../../JS/watch.js"></script>
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <title id="title">Admin</title>
@@ -144,37 +144,39 @@
                             <button id="btnAdd" class="tablinks" onclick="location.href='AddProduct.html'">
                                 Add product</button>
                         </span>
-                        <form id="group-input">
-                            <input class="form-control" type="text" id="txtName" placeholder="Name">
-                            <select id="sortByBrand">
-                                <script>
-                                    axios.get('http://localhost:9000/ominitrix/brand')
-                                        .then(function(res){
-                                            document.getElementById('sortByBrand').innerHTML = '<option>Brand: </option>'+
-                                            res.data.map(function(brand){
-                                                return(
-                                                    '<option value='+brand.brandID+'>'+brand.brandName+'</option>'
-                                                )
+                        <div style="display: flex;">
+                            <form id="group-input">
+                                <!-- <input class="form-control" type="text" id="txtName" placeholder="Name"> -->
+                                <select id="sortByBrand" style="width: 200px;" onchange="adminFindByBrand(this)">
+                                    <script>
+                                        axios.get('http://localhost:9000/ominitrix/brand')
+                                            .then(function(res){
+                                                document.getElementById('sortByBrand').innerHTML = '<option>Brand: </option>'+
+                                                res.data.map(function(brand){
+                                                    return(
+                                                        '<option value='+brand.brandID+'>'+brand.brandName+'</option>'
+                                                    )
+                                                })
                                             })
-                                        })
-                                </script>
-                            </select>
-
-                            <select id="sortByType">
-                                <script>
-                                    axios.get('http://localhost:9000/ominitrix/type')
-                                        .then(function(res){
-                                            document.getElementById('sortByType').innerHTML = '<option>Type: </option>'+
-                                            res.data.map(function(type){
-                                                return(
-                                                    '<option value='+type.typeID+'>'+type.typeName+'</option>'
-                                                )
+                                    </script>
+                                </select>
+                                
+                                <select id="sortByType" style="width: 200px;" onchange="adminFindByType(this)">
+                                    <script>
+                                        axios.get('http://localhost:9000/ominitrix/type')
+                                            .then(function(res){
+                                                document.getElementById('sortByType').innerHTML = '<option>Type: </option>'+
+                                                res.data.map(function(type){
+                                                    return(
+                                                        '<option value='+type.typeID+'>'+type.typeName+'</option>'
+                                                    )
+                                                })
                                             })
-                                        })
-                                </script>
-                            </select>
-                            <button id="btnFilter">Filter</button>
-                        </form>
+                                    </script>
+                                </select>
+                            </form>
+                            <button id="btnFilter" style="height: 43px;" onclick="location.reload()">Reset</button>
+                        </div>
                         <div style="position: relative; margin:40px 0px 90px 0px;">
                             <div id="pageNumber" style="position: absolute; right: 0px;">
                                 <a class="active" href="#">1</a>
@@ -230,53 +232,55 @@
             </div>
         </footer>
     </div>
+    <script>
+        axios.all([
+            axios.get('http://localhost:9000/ominitrix/watch'),
+            axios.get('http://localhost:9000/ominitrix/brand'),
+            axios.get('http://localhost:9000/ominitrix/type'),
+            axios.get('http://localhost:9000/ominitrix/color')
+        ]).then(axios.spread(function(watchs,brands,types,colors){
+            document.getElementById('bobyTblProduct').innerHTML = watchs.data.map(function(watch){
+                brand = brands.data.find(function(b){
+                    return b.brandID === watch.brandID
+                })
+                type = types.data.find(function(t){
+                    return t.typeID === watch.typeID
+                })
+                color = colors.data.find(function(c){
+                    return c.colorID === watch.colorID
+                })
+                return(
+                    '<tr>'+
+                    '<td><img style="width: 120px;height:130px"'+
+                                'src="'+watch.images[0]+'">'+
+                        '</td>'+
+                        '<td style="width: 260px;">'+watch.watchName+'</td>'+
+                        '<td>'+brand.brandName+'</td>'+
+                        '<td>'+type.typeName+'</td>'+
+                        '<td><span class="dot" style="background-color:'+color.colorName+' ;"></span>'+
+                        '</td>'+
+                        '<td>'+watch.thickness+' mm</td>'+
+                        '<td id="water">'+watch.watchGender+'</td>'+
+                        '<td>'+watch.price.toLocaleString('en-US', {style : 'currency', currency : 'VND'})+'</td>'+
+                        '<td>'+watch.limitQuantity+'</td>'+
+                        '<td>'+watch.voteLike+'</td>'+
+                        '<td>'+
+                            '<span style="display: flex;background:none">'+
+                                '<button id="btnEdit"'+
+                                    'onclick="location.href=\'AddProduct.html?watchId='+watch.watchID+'\'">'+
+                                    '<i class="material-icons">edit</i>'+
+                                '</button>'+
+                                '<button id="btnEdit" onclick="deleteById(\''+watch.watchID+'\')">'+
+                                    '<i class="material-icons">delete</i>'+
+                                '</button>'+
+                            '</span>'+
+                        '</td>'+
+                        '</tr>'
+                )
+                
+            }).join('')
+        }))
+    </script>
 </body>
-<script>
-    axios.all([
-        axios.get('http://localhost:9000/ominitrix/watch'),
-        axios.get('http://localhost:9000/ominitrix/brand'),
-        axios.get('http://localhost:9000/ominitrix/type'),
-        axios.get('http://localhost:9000/ominitrix/color')
-    ]).then(axios.spread(function(watchs,brands,types,colors){
-        document.getElementById('bobyTblProduct').innerHTML = watchs.data.map(function(watch){
-            brand = brands.data.find(function(b){
-                return b.brandID === watch.brandID
-            })
-            type = types.data.find(function(t){
-                return t.typeID === watch.typeID
-            })
-            color = colors.data.find(function(c){
-                return c.colorID === watch.colorID
-            })
-            return(
-                '<tr>'+
-                '<td><img style="width: 120px;height:130px"'+
-                            'src="'+watch.images[0]+'">'+
-                    '</td>'+
-                    '<td style="width: 260px;">'+watch.watchName+'</td>'+
-                    '<td id="brand">'+brand.brandName+'</td>'+
-                    '<td id="type">'+type.typeName+'</td>'+
-                    '<td><span class="dot" style="background-color:'+color.colorName+' ;"></span>'+
-                    '</td>'+
-                    '<td>'+watch.thickness+' mm</td>'+
-                    '<td id="water">'+watch.watchGender+'</td>'+
-                    '<td>'+watch.price.toLocaleString('en-US', {style : 'currency', currency : 'VND'})+'</td>'+
-                    '<td>'+watch.limitQuantity+'</td>'+
-                    '<td>'+watch.voteLike+'</td>'+
-                    '<td>'+
-                        '<span style="display: flex;background:none">'+
-                            '<button id="btnEdit">'+
-                                '<i class="material-icons">edit</i>'+
-                            '</button>'+
-                            '<button id="btnEdit">'+
-                                '<i class="material-icons">delete</i>'+
-                            '</button>'+
-                        '</span>'+
-                    '</td>'+
-                    '</tr>'
-            )
-            
-        }).join('')
-    }))
-</script>
+
 </html>

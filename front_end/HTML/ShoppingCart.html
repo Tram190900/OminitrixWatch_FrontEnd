@@ -135,7 +135,7 @@
                     <div class="col-md-8 col-lg-8" id="listProductinCart">
                         <script>
                             if('cart' in sessionStorage){
-                                var products = JSON.parse(sessionStorage.getItem('cart'))
+                                var products =JSON.parse(sessionStorage.getItem('cart'))
                                 var subtotal = 0.0
                                 axios.all([
                                     axios.get('http://localhost:9000/ominitrix/watch'),
@@ -150,7 +150,7 @@
                                             return c.colorID === watch.colorID
                                         })
 
-                                        // total = watch.price * product.quantity
+                                        subtotal += (watch.price * product.quantity)
                                         return(
                                             '<div class="row" id="productInCart">'+
                                                 '<div class="col-md-3 col-lg-3">'+
@@ -183,7 +183,7 @@
                                         )
                                         
                                     }).join('')
-                                    subtotal += total
+                                    
                                     document.getElementById('subtotal').value = subtotal.toLocaleString('en-US', {style : 'currency', currency : 'VND'})
                                     document.getElementById('estimatedTotal').innerText = subtotal.toLocaleString('en-US', {style : 'currency', currency : 'VND'})
                                 }))

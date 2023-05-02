@@ -17,6 +17,8 @@
     <script type="text/javascript" src="../../JS/login.js"></script>
     <script type="text/javascript" src="../../JS/RegularExpressions.js"></script>
     <script type="text/javascript" src="../../JS/cart.js"></script>
+    <script type="text/javascript" src="../../JS/user.js"></script>
+
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <title id="title">Admin</title>
@@ -137,7 +139,7 @@
                     <!-- Edit customers -->
                     <div id="EditCustomer">
                         <h3>Edit customers</h3>
-                        <form class="row">
+                        <form class="row" enctype="multipart/form-data">
                             <div class="col-md-3 col-lg-3">
                                 <img src="https://st2.depositphotos.com/2234823/8227/i/600/depositphotos_82277240-stock-photo-image.jpg"
                                     id="preview"><br>
@@ -145,7 +147,6 @@
                                     placeholder="Avatar" name="image_uploads" onchange="previewIamge(event)">
                             </div>
                             <div class="col-md-8 col-lg-8" style="padding:0% 10% 0% 5%;">
-                                <form id="group-input">
                                     <label for="email">Email: </label>
                                     <input type="text" id="email" class="form-control" disabled><br>
 
@@ -169,12 +170,13 @@
                                             onblur="checkEmpty('newAddress','errorNewAddress')">
                                     <p id="errorNewAddress"></p>
 
-                                    <button id="btnSave"><i class="material-icons">save</i>Save</button>
-                                    <button id="btnCancel"><i class="material-icons">cancel</i>Cancel</button>
-                                </form>
                             </div>
 
                         </form>
+                        <div style="margin-top: 20px;">
+                            <button id="btnSave" onclick="editUser()"><i class="material-icons">save</i>Save</button>
+                            <button id="btnCancel"><i class="material-icons">cancel</i>Cancel</button>
+                        </div>
                     </div>
                 </div>
             </div>

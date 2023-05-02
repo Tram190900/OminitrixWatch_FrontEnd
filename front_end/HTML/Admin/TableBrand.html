@@ -145,13 +145,34 @@
                             <button id="btnFilter">Filter</button>
                             <button id="btnAdd">Add</button>
                         </form>
-                        <table id="tblBrands">
+                        <table id="tblBrands" style="width: 80%;">
                             <tr>
                                 <th>Brand ID</th>
                                 <th>Brand Name</th>
                                 <th></th>
                             </tr>
-                            <tr>
+                            <tbody id="bodyTblBrand"></tbody>
+                            <script>
+                                axios.get('http://localhost:9000/ominitrix/brand')
+                                    .then(function(res){
+                                        document.getElementById('bodyTblBrand').innerHTML = res.data.map(function(brand){
+                                            return(
+                                                '<tr>'+
+                                                    '<td>'+brand.brandID+'</td>'+
+                                                    '<td>'+brand.brandName+'</td>'+
+                                                    '<td>'+
+                                                        '<span style="display: flex;">'+
+                                                            '<button id="btnDelete">'+
+                                                                '<i class="material-icons">delete</i>'+
+                                                            '</button>'+
+                                                    ' </span>'+
+                                                    '</td>'+
+                                               ' </tr>'
+                                            )
+                                        }).join('')
+                                    })
+                            </script>
+                            <!-- <tr>
                                 <td>#123</td>
                                 <td>Breitling</td>
                                 <td>
@@ -161,7 +182,7 @@
                                         </button>
                                     </span>
                                 </td>
-                            </tr>
+                            </tr> -->
                         </table>
                     </div>
                 </div>

@@ -621,10 +621,6 @@ section label {
   margin-right: 30px;
   height: 40px;
 }
-#sortByBrand, #sortByType,#sortByPrice{
-  border-radius: 5px;
-  margin-right: 10px;
-}
 /*#endregion*/
 
 /*#region Customers content*/

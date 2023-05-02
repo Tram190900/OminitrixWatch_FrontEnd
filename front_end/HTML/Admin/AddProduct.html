@@ -17,6 +17,7 @@
     <script type="text/javascript" src="../../JS/login.js"></script>
     <script type="text/javascript" src="../../JS/RegularExpressions.js"></script>
     <script type="text/javascript" src="../../JS/cart.js"></script>
+    <script type="text/javascript" src="../../JS/watch.js"></script>
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <title id="title">Admin</title>
@@ -138,77 +139,116 @@
                     <div id="AddProducts">
                         <h3>Add Products</h3>
                         <div class="row">
-                            <div class="col-md-6 col-lg-6">
-                                <form id="group-input">
-                                    <label for="newWName">Watch name:</label>
-                                    <input class="form-control" type="text" id="newWName"
-                                            onblur="checkEmpty('newWName','errorNewName')">
-                                    <p id="errorNewName"></p>
+                            <div class="col-md-12 col-lg-12">
+                                <form id="group-input" enctype="multipart/form-data" onsubmit="return false">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <label for="newWName">Watch name:</label>
+                                            <input class="form-control" type="text" id="newWName"
+                                                    onblur="checkEmpty('newWName','errorNewName')">
+                                            <p id="errorNewName"></p>
 
-                                    <div style="display: inline-flex;align-items: center;">
-                                        <label>Brand: </label>
-                                        <select id="sortBy">
-                                            <option>Name brand 01</option>
-                                            <option>Name brand 02</option>
-                                        </select>
+                                            <div style="display: inline-flex;align-items: center;">
+                                                <label>Brand: </label>
+                                                <select id="sortBy" class="brand">
+                                                    <script>
+                                                        axios.get('http://localhost:9000/ominitrix/brand')
+                                                            .then(function(res){
+                                                                document.querySelector('.brand').innerHTML =     
+                                                                    res.data.map(function(c){
+                                                                        return(
+                                                                            '<option value="'+c.brandID+'">'+c.brandName+'</option>'
+                                                                        )
+                                                                    })
+                                                            })
+                                                    </script>
+                                                </select>
 
-                                        <label>Type: </label>
-                                        <select id="sortBy">
-                                            <option>Name brand 01</option>
-                                            <option>Name brand 02</option>
-                                        </select>
-                                    </div>
+                                                <label>Type: </label>
+                                                <select id="sortBy" class="type">
+                                                    <script>
+                                                        axios.get('http://localhost:9000/ominitrix/type')
+                                                            .then(function(res){
+                                                                document.querySelector('.type').innerHTML =     
+                                                                    res.data.map(function(c){
+                                                                        return(
+                                                                            '<option value="'+c.typeID+'">'+c.typeName+'</option>'
+                                                                        )
+                                                                    })
+                                                            })
+                                                    </script>
+                                                </select>
+                                            </div>
 
-                                    <div style="display: inline-flex;align-items: center;">
-                                        <input type="checkbox" id="newWResistance" style="margin-right:10px">
-                                        <label for="newWResistance" style="margin-right: 80px;">Water Resistance</label>
+                                            <div style="display: inline-flex;align-items: center;">
+                                                <input type="checkbox" id="newWResistance" style="margin-right:10px">
+                                                <label for="newWResistance" style="margin-right: 80px;">Water Resistance</label>
 
-                                        <input type="checkbox" id="newWGender" style="margin-right:10px">
-                                        <label for="newWGender">Watch Gender</label>
-                                    </div>
+                                                <input type="checkbox" id="newWGender" style="margin-right:10px">
+                                                <label for="newWGender">Watch Gender</label>
+                                            </div>
 
-                                    <div style="display: inline-flex;">
-                                        <div style="margin-right: 40px;">
-                                            <label for="newWColor">Color: </label>
-                                            <input class="form-control" type="text" id="newWColor"
-                                                onblur="checkEmpty('newWColor','erroeNewColor')">
-                                            <p id="erroeNewColor"></p>
+                                            <div style="display: inline-flex;">
+                                                <div style="margin-right: 40px;">
+                                                    <label for="newWColor">Color: </label>
+                                                    <select id="sortBy" class="color">
+                                                        <script>
+                                                            axios.get('http://localhost:9000/ominitrix/color')
+                                                                .then(function(res){
+                                                                    document.querySelector('.color').innerHTML =    
+                                                                        res.data.map(function(c){
+                                                                            return(
+                                                                                '<option value="'+c.colorID+'">'+c.colorName+'</option>'
+                                                                            )
+                                                                        })
+                                                                })
+                                                        </script>
+                                                    </select>
+                                                    <!-- <input class="form-control" type="text" id="newWColor"
+                                                        onblur="checkEmpty('newWColor','erroeNewColor')">
+                                                    <p id="erroeNewColor"></p> -->
+                                                </div>
+
+                                                <div>
+                                                    <label for="newWPrice">Price: </label>
+                                                    <input class="form-control" type="text" id="newWPrice" placeholder="$"
+                                                            onblur="checkEmpty('newWPrice','errorNewPrice')">
+                                                    <p id="errorNewPrice"></p>
+                                                </div>
+                                            </div>
+
+                                            <div style="display: inline-flex;align-items: center;">
+                                                <div style="margin-right: 40px;">
+                                                    <label for="newWThickness">Thickness: </label>
+                                                    <input class="form-control" type="text" id="newWThickness"
+                                                    style="margin-right: 10px;" placeholder="mm">
+                                                </div>
+
+                                                <div>
+                                                    <label for="newWQuantity">Quantity: </label>
+                                                    <input class="form-control" type="number" id="newWQuantity" min="1">
+                                                </div>
+                                            </div>
                                         </div>
-
-                                        <div>
-                                            <label for="newWPrice">Price: </label>
-                                            <input class="form-control" type="text" id="newWPrice" placeholder="$"
-                                                    onblur="checkEmpty('newWPrice','errorNewPrice')">
-                                            <p id="errorNewPrice"></p>
-                                        </div>
-                                    </div>
-
-                                    <div style="display: inline-flex;align-items: center;">
-                                        <div style="margin-right: 40px;">
-                                            <label for="newWThickness">Thickness: </label>
-                                            <input class="form-control" type="text" id="newWThickness"
-                                            style="margin-right: 10px;" placeholder="mm">
-                                        </div>
-
-                                        <div>
-                                            <label for="newWQuantity">Quantity: </label>
-                                            <input class="form-control" type="number" id="newWQuantity" min="1">
+                                        <div class="col-6">
+                                            <label for="newDescription">Description:</label><br>
+                                            <textarea id="newDescription" rows="7" cols="73"></textarea><br>
+            
+                                            <label for="Images">Images:</label><br>
+                                            <input type="file" multiple accept="image/*" id="fileImage" onchange="previewImages(event)">
+                                            <div class="row" id="Images"></div>
                                         </div>
                                     </div>
                                     <div style="margin-top: 5%;">
-                                        <button id="btnSave"><i class="material-icons">save</i>Save</button>
+                                        <button id="btnSave" onclick="{
+                                                voteLike = parseInt(sessionStorage.getItem('voteLike'))
+                                                updateWatch(watchId,voteLike)
+                                        }"><i class="material-icons">save</i>Save</button>
                                         <button id="btnCancel"><i class="material-icons">cancel</i>Cancel</button>
                                     </div>
                                 </form>
                             </div>
-                            <div class="col-md-6 col-lg-6">
-                                <label for="newDescription">Description:</label><br>
-                                <textarea id="newDescription" rows="7" cols="73"></textarea><br>
-
-                                <label for="Images">Images:</label><br>
-                                <input type="file" multiple accept="image/*" onchange="previewImages(event)">
-                                <div class="row" id="Images"></div>
-                            </div>
+                            
 
                         </div>
                     </div>
@@ -242,6 +282,65 @@
             </div>
         </footer>
     </div>
+    <script>
+        var param = new URLSearchParams(document.location.search)
+        var watchId = param.get('watchId')
+        if(watchId){
+            axios.get('http://localhost:9000/ominitrix/watch/'+watchId)
+                .then(function(watch){
+                    axios.get('http://localhost:9000/ominitrix/brand/'+watch.data.brandID)
+                    .then(function(res){
+                        const select = document.querySelector('.brand')
+                        const options = Array.from(select.options)
+                        const optionSelect = options.find(item => item.text===res.data.brandName)
+                        optionSelect.selected = true
+                    })
+
+                    axios.get('http://localhost:9000/ominitrix/type/'+watch.data.typeID)
+                        .then(function(res){
+                            const select = document.querySelector('.type')
+                            const options = Array.from(select.options)
+                            const optionSelect = options.find(item => item.text===res.data.typeName)
+                            optionSelect.selected = true
+                        })
+
+                    axios.get('http://localhost:9000/ominitrix/color/'+watch.data.colorID)
+                        .then(function(res){
+                            const select = document.querySelector('.color')
+                            const options = Array.from(select.options)
+                            const optionSelect = options.find(item => item.text===res.data.colorName)
+                            optionSelect.selected = true
+                        })
+
+                    document.getElementById('newWName').value=watch.data.watchName
+
+                    if(watch.data.waterResistance){
+                        document.getElementById('newWResistance').checked = true
+                    }else{
+                        document.getElementById('newWResistance').checked = false
+                    }
+
+                    if(watch.data.watchGender){
+                        document.getElementById('newWGender').checked = true
+                    }else{
+                        document.getElementById('newWGender').checked = false
+                    }
+
+                    document.getElementById('newWPrice').value = watch.data.price
+                    document.getElementById('newWThickness').value = watch.data.thickness
+                    document.getElementById('newWQuantity').value = watch.data.limitQuantity
+                    document.getElementById('newDescription').value = watch.data.description
+                    document.getElementById('Images').innerHTML = watch.data.images.map(function(img){
+                        return(
+                            '<image style="width:150px" src="'+img+'">'
+                        )
+                    }).join('')
+                    sessionStorage.setItem('voteLike',watch.data.voteLike)
+                })
+        }else{
+            
+        }
+    </script>
 </body>
 
 </html>

@@ -266,31 +266,30 @@
 </body>
 <script>
     var param = new URLSearchParams(document.location.search)
-    var billId = param.get('billId')
+    var billID = param.get('billId')
     axios.all([
-        axios.get('../../JS/bill.json'),
-        axios.get('../../JS/bill_detail.json'),
-        axios.get('../../JS/watch.json'),
-        axios.get('../../JS/color.json'),
-        axios.get('../../JS/users.json'),
-        axios.get('../../JS/image.json')
-    ]).then(axios.spread(function(bills,billDetails,watchs,colors,users,iamges){
+        axios.get('http://localhost:9000/ominitrix/bill'),
+        axios.get('http://localhost:9000/ominitrix/bill-detail'),
+        axios.get('http://localhost:9000/ominitrix/watch'),
+        axios.get('http://localhost:9000/ominitrix/color'),
+        axios.get('http://localhost:9000/ominitrix/user')
+    ]).then(axios.spread(function(bills,billDetails,watchs,colors,users){
          bill = bills.data.find(function(b){
-            return b.billid === billId
+            return b.billID === billID
         })
          billDetail = billDetails.data.find(function(bd){
-            return bd.billid === billId
+            return bd.billID === billID
         })
          watch = watchs.data.filter(function(w){
-            return w.watchid === billDetail.watchid
+            return w.watchID=== billDetail.watchID
         })
          user = users.data.find(function(u){
-            return u.userid === bill.userid
+            return u.userID === bill.userID
         })
         console.log(user.email);
         document.getElementById('OdEmail').value = user.email 
-        document.getElementById('OdFirstName').value = user.first_name
-        document.getElementById('OdLastName').value = user.last_name
+        document.getElementById('OdFirstName').value = user.firstName
+        document.getElementById('OdLastName').value = user.lastName
         document.getElementById('OdPhone').value = user.phone
         document.getElementById('OdAddress').value = user.address
 
@@ -302,19 +301,16 @@
             color = colors.data.find(function(c){
                 return c.colorid === w.colorid
             })
-            image = iamges.data.find(function(i){
-                return i.watchid === w.watchid
-            })
             return(
                 '<div class="row" style="border-bottom: 1px solid black;">'+
                     '<div class="col-4">'+
-                        '<img src="'+image.imageurl+'"'+
+                        '<img src="'+w.images[0]+'"'+
                                 'style="width: 150px;">'+
                     '</div>'+
                     '<div class="col-8">'+
-                        '<p style="font-weight: bold;">'+w.watch_name+'</p>'+
-                        '<p>Code: '+w.watchid+'</p>'+
-                        '<p>Color: '+color.color_name+'</p>'+
+                        '<p style="font-weight: bold;">'+w.watchName+'</p>'+
+                        '<p>Code: '+w.watchID+'</p>'+
+                        '<p>Color: '+color.colorName+'</p>'+
                         '<p>Qty: <input type="number" style="width: 50px;" value="'+billDetail.quantity+'"></p>'+
                         '</div>'+
                     '</div>'
