@@ -114,7 +114,45 @@
                       </div>
                       
                       <div id="Review" class="tabcontent">
-                        <h3>Review</h3>
+                        <div style=" width: 70%; float: left;height: 500px; ">
+                            <div class="col-12" style="display: flex;padding:2%;">
+                                <input class="form-control" type="text" placeholder="Comments"> 
+                                <button id="btnAdd2Cart" style="margin-left: 30px;">Post</button>
+                            </div>
+                            <div id="commentBox">
+                                <!-- <div class="row" id="commentItem" >
+                                    <img class="col-1" src="#" style="width: 45px; height: 45px;border: 1px solid black;border-radius: 25px;">
+                                    <div class="col-10">
+                                        <p style="font-weight: bold;font-size: 12px;">User Name</p>
+                                        <p style="font-size: 12px;">Date</p>
+                                        <p style="text-align: left;">Comment</p>
+                                    </div>
+                                </div> -->
+                                <script>
+                                    axios.all([
+                                        axios.get('http://localhost:9000/ominitrix/comment'),
+                                        axios.get('http://localhost:9000/ominitrix/user')
+                                    ]).then(axios.spread(function(comments,users){
+                                        document.getElementById('commentBox').innerHTML = comments.data.map(function(comment){
+                                            user = users.data.find(function(u){
+                                                return u.userID===comment.userID
+                                            })
+                                            return(
+                                                '<div class="row" id="commentItem" style="border-bottom: 1px solid #ccc;margin-top:10px">'+
+                                                    '<img class="col-1" src="'+user.avatar+'" style="width: 45px; height: 45px;border: 1px solid black;border-radius: 25px;">'+
+                                                    '<div class="col-10">'+
+                                                        '<p style="font-weight: bold;font-size: 12px;">'+user.lastName+'</p>'+
+                                                       ' <p style="font-size: 12px;">'+comment.date+'</p>'+
+                                                        '<p style="text-align: left;">'+comment.comment+'</p>'+
+                                                   ' </div>'+
+                                               ' </div>'
+                                            )
+                                        }).join('')
+                                    }))
+                                </script>
+                            </div>
+                        </div>
+                        
                       </div>
                 </div>
 

@@ -48,7 +48,7 @@ function isCustomer(){
 
             document.getElementById('guest').style.display ="none"
             document.getElementById('customer').style.display ="inline"
-            document.getElementById('userName').innerHTML = '<i class="material-icons">account_circle</i>'+user.lastName+''
+            document.getElementById('userName').innerHTML = '<img src="'+user.avatar+'" stype="height:30px;wight:30px;border-radius:10px"/>'+user.lastName+''
             if(account.role===false){
                 document.getElementById('roleAdmin').style.display="none"
                 console.log('customer');
