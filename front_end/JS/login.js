@@ -17,7 +17,9 @@ function registration(){
                 }
                 var account ={
                     "password": password,
-                    "role": "false"
+                    "role": "false",
+                    "userName":user.userID,
+                    "user_id":user.userID
                 }
                 axios.post('http://localhost:9000/ominitrix/user/add', user)
                     .then(function(response){
@@ -29,7 +31,7 @@ function registration(){
                                 if(response.status==201 || response.status==200){
                                     location.href = '../HTML/Home.html' 
                                     sessionStorage.setItem('userid',JSON.stringify(user))
-                                    sessionStorage.setItem('account',JSON.stringify(account.role))
+                                    sessionStorage.setItem('account',JSON.stringify(account))
                                 }
                             })    
                     }    
@@ -47,11 +49,11 @@ function isCustomer(){
             document.getElementById('guest').style.display ="none"
             document.getElementById('customer').style.display ="inline"
             document.getElementById('userName').innerHTML = '<i class="material-icons">account_circle</i>'+user.lastName+''
-            if(account.role==="customer"){
+            if(account.role===false){
                 document.getElementById('roleAdmin').style.display="none"
                 console.log('customer');
                 return true
-            }else if(account.role==='admin'){
+            }else if(account.role===true){
                 document.getElementById('roleAdmin').style.display="inline"
                 console.log('admin');
                 return false
@@ -94,7 +96,7 @@ function login(){
                             if(response.data.password===password){
                                 location.href = '../HTML/Home.html' 
                                 sessionStorage.setItem('userid',JSON.stringify(user))
-                                sessionStorage.setItem('account',JSON.stringify(response.data.password))
+                                sessionStorage.setItem('account',JSON.stringify(response.data))
                             }else{
                                 alert('Password sai. Nhập lại password')
                                 document.getElementById('password').focus()
