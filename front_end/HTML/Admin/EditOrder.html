@@ -18,6 +18,7 @@
     <script type="text/javascript" src="../../JS/login.js"></script>
     <script type="text/javascript" src="../../JS/RegularExpressions.js"></script>
     <script type="text/javascript" src="../../JS/cart.js"></script>
+    <script type="text/javascript" src="../../JS/bill.js"></script>
 
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -148,16 +149,16 @@
                                     <input class="form-control" type="text" id="OdEmail" disabled><br>
 
                                     <label for="OdFirstName">First Name: </label><br>
-                                    <input class="form-control" type="text" id="OdFirstName"><br>
+                                    <input class="form-control" type="text" id="OdFirstName" disabled><br>
 
                                     <label for="OdLastName">Last Name: </label><br>
-                                    <input class="form-control" type="text" id="OdLastName"><br>
+                                    <input class="form-control" type="text" id="OdLastName" disabled><br>
 
                                     <label for="OdPhone">Phone: </label><br>
-                                    <input class="form-control" type="text" id="OdPhone"><br>
+                                    <input class="form-control" type="text" id="OdPhone" disabled><br>
 
                                     <label for="OdAddress">Address: </label><br>
-                                    <input class="form-control" type="text" id="OdAddress"><br>
+                                    <input class="form-control" type="text" id="OdAddress" disabled><br>
 
                                     <button id="btnSave"><i class="material-icons">save</i>Save</button>
                                     <button id="btnCancel"><i class="material-icons">cancel</i>Cancel</button>
@@ -267,6 +268,7 @@
 <script>
     var param = new URLSearchParams(document.location.search)
     var billID = param.get('billId')
+    var subtotal = 0
     axios.all([
         axios.get('http://localhost:9000/ominitrix/bill'),
         axios.get('http://localhost:9000/ominitrix/bill-detail'),
@@ -274,48 +276,49 @@
         axios.get('http://localhost:9000/ominitrix/color'),
         axios.get('http://localhost:9000/ominitrix/user')
     ]).then(axios.spread(function(bills,billDetails,watchs,colors,users){
-         bill = bills.data.find(function(b){
+        bill = bills.data.find(function(b){
             return b.billID === billID
         })
-         billDetail = billDetails.data.find(function(bd){
+        billDetail = billDetails.data.filter(function(bd){
             return bd.billID === billID
         })
-         watch = watchs.data.filter(function(w){
-            return w.watchID=== billDetail.watchID
-        })
-         user = users.data.find(function(u){
+        user = users.data.find(function(u){
             return u.userID === bill.userID
         })
-        console.log(user.email);
+        console.log(user);
         document.getElementById('OdEmail').value = user.email 
         document.getElementById('OdFirstName').value = user.firstName
         document.getElementById('OdLastName').value = user.lastName
         document.getElementById('OdPhone').value = user.phone
         document.getElementById('OdAddress').value = user.address
-
-        document.getElementById('subtotal').innerText = bill.total.toLocaleString('en-US', {style : 'currency', currency : 'VND'})
         document.getElementById('dateOrder').innerText = bill.date
-        document.getElementById('estimatedTotal').innerText  = bill.total.toLocaleString('en-US', {style : 'currency', currency : 'VND'})
-        
-        document.getElementById('productOrder').innerHTML = watch.map(function(w){
-            color = colors.data.find(function(c){
-                return c.colorid === w.colorid
+
+        document.getElementById('productOrder').innerHTML = billDetail.map(function(b){
+            watch = watchs.data.find(function(w){
+                return w.watchID === b.watchID
             })
+            color = colors.data.find(function(c){
+                return c.colorid === watch.colorid
+            })
+            subtotal = subtotal + (watch.price * b.quantity)
             return(
                 '<div class="row" style="border-bottom: 1px solid black;">'+
                     '<div class="col-4">'+
-                        '<img src="'+w.images[0]+'"'+
-                                'style="width: 150px;">'+
+                        '<img src="'+watch.images[0]+'"'+
+                                'style="width: 150px;height:180px">'+
                     '</div>'+
                     '<div class="col-8">'+
-                        '<p style="font-weight: bold;">'+w.watchName+'</p>'+
-                        '<p>Code: '+w.watchID+'</p>'+
+                        '<p style="font-weight: bold;">'+watch.watchName+'</p>'+
+                        '<p>Code: '+watch.watchID+'</p>'+
                         '<p>Color: '+color.colorName+'</p>'+
-                        '<p>Qty: <input type="number" style="width: 50px;" value="'+billDetail.quantity+'"></p>'+
+                        '<p>Qty: <input type="number" style="width: 50px;" id="quantity'+watch.watchID+'" value="'+b.quantity+'" onchange="changeQuantityInBill(\''+watch.watchID+'\','+b.price+',\''+billID+'\')"></p>'+
                         '</div>'+
                     '</div>'
+                    
             )
         }).join('')
+        document.getElementById('subtotal').innerText = subtotal.toLocaleString('en-US', {style : 'currency', currency : 'VND'})
+        document.getElementById('estimatedTotal').innerText  = subtotal.toLocaleString('en-US', {style : 'currency', currency : 'VND'})
     }))
 </script>
 </html>

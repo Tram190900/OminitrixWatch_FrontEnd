@@ -18,6 +18,7 @@
     <script type="text/javascript" src="../../JS/login.js"></script>
     <script type="text/javascript" src="../../JS/RegularExpressions.js"></script>
     <script type="text/javascript" src="../../JS/cart.js"></script>
+    <script type="text/javascript" src="../../JS/customer.js"></script>
 
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -141,15 +142,17 @@
                         <span style="display: inline-flex;">
                             <a style="font-size: 27px;margin-right: 20px;">Customers</a>
                         </span>
-                        <form id="group-input">
+                        <form id="group-input" >
                             <input class="form-control" type="text" id="userEmail" placeholder="Email">
                             <input class="form-control" type="text" id="userPhone" placeholder="Phone">
-                            <select id="sortBy" style="border-radius: 5px;">
+                            <select id="sortByRole" onchange="filterByRole()" style="border-radius: 5px;">
                                 <option>Role</option>
-                                <option>Price: Hight to Low</option>
+                                <option value="Admin">Admin</option>
+                                <option value="Customer">Customer</option>
                             </select>
-                            <button id="btnAdd">Filter</button>
+                            
                         </form>
+                        <button style="margin-left: 5%;height: 40px;" id="btnAdd" onclick="filter()">Filter</button>
                         <div style="position: relative; margin:40px 0px 90px 0px;">
                             <div id="pageNumber" style="position: absolute; right: 0px;">
                                 <a class="active" href="#">1</a>

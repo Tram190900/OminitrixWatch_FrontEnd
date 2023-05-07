@@ -242,7 +242,7 @@
                                     <div style="margin-top: 5%;">
                                         <button id="btnSave" onclick="{
                                                 voteLike = parseInt(sessionStorage.getItem('voteLike'))
-                                                addWatch(watchId,voteLike)
+                                                updateWatch(watchId,voteLike)
                                         }"><i class="material-icons">save</i>Save</button>
                                         <button id="btnCancel"><i class="material-icons">cancel</i>Cancel</button>
                                     </div>
@@ -282,7 +282,65 @@
             </div>
         </footer>
     </div>
-    
+    <script>
+        var param = new URLSearchParams(document.location.search)
+        var watchId = param.get('watchId')
+        if(watchId){
+            axios.get('http://localhost:9000/ominitrix/watch/'+watchId)
+                .then(function(watch){
+                    axios.get('http://localhost:9000/ominitrix/brand/'+watch.data.brandID)
+                    .then(function(res){
+                        const select = document.querySelector('.brand')
+                        const options = Array.from(select.options)
+                        const optionSelect = options.find(item => item.text===res.data.brandName)
+                        optionSelect.selected = true
+                    })
+
+                    axios.get('http://localhost:9000/ominitrix/type/'+watch.data.typeID)
+                        .then(function(res){
+                            const select = document.querySelector('.type')
+                            const options = Array.from(select.options)
+                            const optionSelect = options.find(item => item.text===res.data.typeName)
+                            optionSelect.selected = true
+                        })
+
+                    axios.get('http://localhost:9000/ominitrix/color/'+watch.data.colorID)
+                        .then(function(res){
+                            const select = document.querySelector('.color')
+                            const options = Array.from(select.options)
+                            const optionSelect = options.find(item => item.text===res.data.colorName)
+                            optionSelect.selected = true
+                        })
+
+                    document.getElementById('newWName').value=watch.data.watchName
+
+                    if(watch.data.waterResistance){
+                        document.getElementById('newWResistance').checked = true
+                    }else{
+                        document.getElementById('newWResistance').checked = false
+                    }
+
+                    if(watch.data.watchGender){
+                        document.getElementById('newWGender').checked = true
+                    }else{
+                        document.getElementById('newWGender').checked = false
+                    }
+
+                    document.getElementById('newWPrice').value = watch.data.price
+                    document.getElementById('newWThickness').value = watch.data.thickness
+                    document.getElementById('newWQuantity').value = watch.data.limitQuantity
+                    document.getElementById('newDescription').value = watch.data.description
+                    document.getElementById('Images').innerHTML = watch.data.images.map(function(img){
+                        return(
+                            '<image style="width:150px" src="'+img+'">'
+                        )
+                    }).join('')
+                    sessionStorage.setItem('voteLike',watch.data.voteLike)
+                })
+        }else{
+            
+        }
+    </script>
 </body>
 
 </html>

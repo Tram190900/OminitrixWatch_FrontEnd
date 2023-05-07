@@ -16,6 +16,7 @@
     <script type="text/javascript" src="../JS/login.js"></script>
     <script type="text/javascript" src="../JS/RegularExpressions.js"></script>
     <script type="text/javascript" src="../JS/cart.js"></script>
+    <script type="text/javascript" src="../JS/comment.js"></script>
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <title>Product Detail</title>
@@ -116,10 +117,10 @@
                       <div id="Review" class="tabcontent">
                         <div style=" width: 70%; float: left;height: 500px; ">
                             <div class="col-12" style="display: flex;padding:2%;">
-                                <input class="form-control" type="text" placeholder="Comments"> 
-                                <button id="btnAdd2Cart" style="margin-left: 30px;">Post</button>
+                                <input class="form-control" id="commentContent" type="text" placeholder="Comments"> 
+                                <button id="btnAdd2Cart" style="margin-left: 30px;" onclick="postComment(watchId)">Post</button>
                             </div>
-                            <div id="commentBox">
+                            <div id="commentBox" style="overflow: scroll;height: 450px;">
                                 <!-- <div class="row" id="commentItem" >
                                     <img class="col-1" src="#" style="width: 45px; height: 45px;border: 1px solid black;border-radius: 25px;">
                                     <div class="col-10">
@@ -129,26 +130,9 @@
                                     </div>
                                 </div> -->
                                 <script>
-                                    axios.all([
-                                        axios.get('http://localhost:9000/ominitrix/comment'),
-                                        axios.get('http://localhost:9000/ominitrix/user')
-                                    ]).then(axios.spread(function(comments,users){
-                                        document.getElementById('commentBox').innerHTML = comments.data.map(function(comment){
-                                            user = users.data.find(function(u){
-                                                return u.userID===comment.userID
-                                            })
-                                            return(
-                                                '<div class="row" id="commentItem" style="border-bottom: 1px solid #ccc;margin-top:10px">'+
-                                                    '<img class="col-1" src="'+user.avatar+'" style="width: 45px; height: 45px;border: 1px solid black;border-radius: 25px;">'+
-                                                    '<div class="col-10">'+
-                                                        '<p style="font-weight: bold;font-size: 12px;">'+user.lastName+'</p>'+
-                                                       ' <p style="font-size: 12px;">'+comment.date+'</p>'+
-                                                        '<p style="text-align: left;">'+comment.comment+'</p>'+
-                                                   ' </div>'+
-                                               ' </div>'
-                                            )
-                                        }).join('')
-                                    }))
+                                    params = new URLSearchParams(document.location.search)
+                                    watchId = params.get('watchId')
+                                    loadComment(watchId)
                                 </script>
                             </div>
                         </div>

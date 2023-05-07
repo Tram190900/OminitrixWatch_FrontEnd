@@ -39,6 +39,9 @@ function updateWatch(watchID, voteLike) {
     for (var i = 0; i < images.length; i++) {
         lst.push(images[i].getAttribute("src"));
     }
+    console.log(brandID);
+    console.log(typeID);
+    console.log(colorID);
     axios
         .put("http://localhost:9000/ominitrix/watch/update", {
             watchID: watchID,
@@ -288,4 +291,57 @@ function adminFindByBrand(brandID) {
     } else {
         location.reload();
     }
+}
+
+function addWatch(watchID, voteLike){
+    console.log("add");
+    const price = document.getElementById("newWPrice").value;
+    const thichness = document.getElementById("newWThickness").value;
+    const quantity = document.getElementById("newWQuantity").value;
+    const description = document.getElementById("newDescription").value;
+    const watchName = document.getElementById("newWName").value;
+    var waterResistance = false;
+    if (document.getElementById("newWResistance").checked == true) {
+        waterResistance = true;
+    }
+    var watchGender = false;
+    if (document.getElementById("newWResistance").checked == true) {
+        watchGender = true;
+    }
+    const typeID = document.querySelector(".type").value;
+
+    const brandID = document.querySelector(".brand").value;
+
+    const colorID = document.querySelector(".color").value;
+
+    const images = document.querySelector("#Images").getElementsByTagName("img");
+    const lst = [];
+    for (var i = 0; i < images.length; i++) {
+        lst.push(images[i].getAttribute("src"));
+    }
+    console.log(brandID);
+    console.log(typeID);
+    console.log(colorID);
+    console.log(lst);
+    axios
+        .post("http://localhost:9000/ominitrix/watch/add", {
+            watchID: "W11",
+            watchName: watchName,
+            price: price,
+            waterResistance: waterResistance,
+            description: description,
+            thickness: thichness,
+            watchGender: watchGender,
+            voteLike: voteLike,
+            limitQuantity: quantity,
+            colorID: colorID,
+            typeID: typeID,
+            brandID: brandID,
+            images: lst,
+        })
+        .then(function (res) {
+            if (res.status == 200) {
+                location.href = "../Admin/TableProduct.html";
+            }
+        });
 }

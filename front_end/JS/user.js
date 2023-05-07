@@ -5,8 +5,25 @@ function editUser(){
     const phone = document.getElementById('newPhone').value 
     const address = document.getElementById('newAddress').value 
     const userID= (JSON.parse(sessionStorage.getItem('userid'))).userID
-    const avatar = document.getElementById('image_uploads').toDataURL("image/png")
+    const avatar = document.getElementById('image_uploads').value
     console.log(avatar);
+    axios({
+        method: 'put',
+        uri:'http://localhost:9000/ominitrix/user/update',
+        params:{
+            fileName: avatar
+        },
+        data:{
+            userID:userID,
+            address: address,
+            email: email,
+            firstName: fName,
+            lastName: lName,
+            phone: phone,
+            avatar:avatar
+        },
+        
+    })
     // axios.put('http://localhost:9000/ominitrix/user/update',{
     //     userID:userID,
     //     address: address,

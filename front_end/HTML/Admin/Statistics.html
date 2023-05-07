@@ -17,13 +17,13 @@
 
     <script type="text/javascript" src="../../JS/login.js"></script>
     <script type="text/javascript" src="../../JS/RegularExpressions.js"></script>
-    <script type="text/javascript" src="../..JS/cart.js"></script>
+    <script type="text/javascript" src="../../JS/cart.js"></script>
+    <script type="text/javascript" src="../../JS/bill.js"></script>
 
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <title id="title">Admin</title>
     <script>
-        // window.onscroll = function () { scrollFunction() };
         window.onload = function () { document.getElementById('leafFinal').textContent = document.getElementById('title').textContent 
                                         isCustomer()
                                         quantityInCart()}
@@ -145,7 +145,20 @@
                                 <canvas id="revenueByYear" style="width:100%;max-width:600px"></canvas>
                                 <script>
                                     var xValues = ["01", "02", "03", "04", "05","06","07","08","09","10","11","12"];
-                                    var yValues = [55, 49, 44, 24, 15,0,0,0,0,0,0,0];
+                                    const th1 = totalByMonth(1)
+                                    const th2 = totalByMonth(2)
+                                    const th3 = totalByMonth(3)
+                                    const th4 = totalByMonth(4)
+                                    const th5 = totalByMonth(5)
+                                    const th6 = totalByMonth(6)
+                                    const th7 = totalByMonth(7)
+                                    const th8 = totalByMonth(8)
+                                    const th9 = totalByMonth(9)
+                                    const th10 = totalByMonth(10)
+                                    const th11 = totalByMonth(11)
+                                    const th12 = totalByMonth(12)
+                                    const yValues = [th1,th2,th3,th4,th5,th6,th7,th8,th9,th10,th11,th12];
+                                    console.log(yValues);
                                     
                                     new Chart("revenueByYear", {
                                     type: "bar",
@@ -234,6 +247,7 @@
             </div>
         </footer>
     </div>
+    
 </body>
 
 </html>
