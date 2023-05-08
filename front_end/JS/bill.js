@@ -63,3 +63,78 @@ function totalByMonth(month){
             console.log(err);
         });
 }
+function addBill(){
+    user = JSON.parse(sessionStorage.getItem('userid'))
+    var userID = user.userID
+
+    total = parseFloat(sessionStorage.getItem('total'))
+    date = new Date()
+
+    var index = 0
+    axios.get('http://localhost:9000/ominitrix/bill')
+        .then(function(res){
+            index += Object.entries(res.data).length
+            axios.post('http://localhost:9000/ominitrix/bill/add',{
+                    "date": date,
+                    "total": total,
+                    "userID": userID,
+                    "billID":"B_"+(index+1)
+                }).then(function(res){
+                    if(res.status==200){
+                        console.log(res.data.billID);
+                        var billID = res.data.billID
+                        cart = JSON.parse(sessionStorage.getItem('cart'))
+                        cart.forEach(item=>{
+                            axios.post('http://localhost:9000/ominitrix/bill-detail/add',{
+                                "quantity": item.quantity,
+                                "price": item.price,
+                                "watchID": item.watchID,
+                                "billID":billID
+                            }).then(function(res){
+                                console.log(res.data);
+                            })
+                            axios.post('http://localhost:9000/ominitrix/payment/add',{
+                                "status": "paid",
+                                "billID":billID
+                            }).then(function(res){
+                                console.log(res.data);
+                                sessionStorage.removeItem('cart')
+                                location.reload()
+                            })
+                        })
+                        
+                    }
+                })
+        })
+    // axios.post('http://localhost:9000/ominitrix/bill/add',{
+    //     "date": date,
+    //     "total": total,
+    //     "userID": userID,
+    //     "billID":"B_"+(index+1)
+    // }).then(function(res){
+    //     if(res.status==200){
+    //         console.log(res.data.billID);
+    //         var billID = res.data.billID
+    //         cart = JSON.parse(sessionStorage.getItem('cart'))
+    //         cart.forEach(item=>{
+    //             axios.post('http://localhost:9000/ominitrix/bill-detail/add',{
+    //                 "quantity": item.quantity,
+    //                 "price": item.price,
+    //                 "watchID": item.watchID,
+    //                 "billID":billID
+    //             }).then(function(res){
+    //                 console.log(res.data);
+    //             })
+    //             axios.post('http://localhost:9000/ominitrix/payment/add',{
+    //                 "status": "paid",
+    //                 "billID":billID
+    //             }).then(function(res){
+    //                 console.log(res.data);
+    //                 sessionStorage.removeItem('cart')
+    //                 location.reload()
+    //             })
+    //         })
+            
+    //     }
+    //  })
+}

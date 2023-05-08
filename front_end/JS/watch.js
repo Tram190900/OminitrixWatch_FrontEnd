@@ -293,7 +293,7 @@ function adminFindByBrand(brandID) {
     }
 }
 
-function addWatch(watchID, voteLike){
+function addWatch(){
     console.log("add");
     const price = document.getElementById("newWPrice").value;
     const thichness = document.getElementById("newWThickness").value;
@@ -325,14 +325,13 @@ function addWatch(watchID, voteLike){
     console.log(lst);
     axios
         .post("http://localhost:9000/ominitrix/watch/add", {
-            watchID: "W11",
             watchName: watchName,
             price: price,
             waterResistance: waterResistance,
             description: description,
             thickness: thichness,
             watchGender: watchGender,
-            voteLike: voteLike,
+            voteLike: 0,
             limitQuantity: quantity,
             colorID: colorID,
             typeID: typeID,
@@ -343,5 +342,7 @@ function addWatch(watchID, voteLike){
             if (res.status == 200) {
                 location.href = "../Admin/TableProduct.html";
             }
+        }).catch(function(err){
+            console.log(err);
         });
 }

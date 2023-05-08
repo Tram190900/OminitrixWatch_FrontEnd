@@ -13,6 +13,7 @@ header a {
 header a:hover {
   color: gray;
 }
+
 .flex-container {
   height: 100%;
   padding-left: 10%;

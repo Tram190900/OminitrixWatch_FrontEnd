@@ -1,9 +1,10 @@
-function add2Cart(watchid) {
+function add2Cart(watchid,price) {
   if ("cart" in sessionStorage) {
     listWatchInCart = JSON.parse(sessionStorage.getItem("cart"));
     listWatchInCart.push({
       watchID: watchid,
       quantity: 1,
+      price:price
     });
     sessionStorage.setItem("cart", JSON.stringify(listWatchInCart));
     document.getElementById("quantityCart").innerText = listWatchInCart.length;
@@ -13,6 +14,7 @@ function add2Cart(watchid) {
     listWatchInCart.push({
       watchID: watchid,
       quantity: 1,
+      price:price
     });
     sessionStorage.setItem("cart", JSON.stringify(listWatchInCart));
     document.getElementById("quantityCart").innerText = listWatchInCart.length;
@@ -44,7 +46,7 @@ function removeToCart(watchID) {
       return a.watchID !== watchID;
     })
   );
-
+  
   sessionStorage.setItem("cart", JSON.stringify(arrNew));
   location.reload()
 }

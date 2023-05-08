@@ -3,8 +3,8 @@ function registration(){
                 var last_name = document.getElementById('lastName').value
                 var phone = document.getElementById('phone').value
                 var email = document.getElementById('email').value
-                var password = document.getElementById('password').value
-    
+                var password = document.getElementById('confirmPassword').value
+
                 var user={
                     "userID":email,
                     "address": "",
@@ -16,22 +16,23 @@ function registration(){
                     "otpexpire":null
                 }
                 var account ={
-                    "password": password,
-                    "role": "false",
                     "userName":user.userID,
+                    "password": password,
+                    "role": false,
                     "user_id":user.userID
                 }
                 axios.post('http://localhost:9000/ominitrix/user/add', user)
                     .then(function(response){
                         console.log(response.status);
                     if (response.status == 201||response.status == 200) {
-                        axios.post('http://localhost:9000/ominitrix/account/add',account.password)
+                        axios.post('http://localhost:9000/ominitrix/account/add',account)
                             .then(function(response){
                                 console.log(response.status);
                                 if(response.status==201 || response.status==200){
-                                    location.href = '../HTML/Home.html' 
+                                    
                                     sessionStorage.setItem('userid',JSON.stringify(user))
                                     sessionStorage.setItem('account',JSON.stringify(account))
+                                    location.href = '../HTML/Home.html'
                                 }
                             })    
                     }    
@@ -52,11 +53,9 @@ function isCustomer(){
             if(account.role===false){
                 document.getElementById('roleAdmin').style.display="none"
                 console.log('customer');
-                return true
             }else if(account.role===true){
                 document.getElementById('roleAdmin').style.display="inline"
                 console.log('admin');
-                return false
             }
             console.log("exist");
         }else{
@@ -77,7 +76,7 @@ function logOut(){
     if('cart' in sessionStorage){
         sessionStorage.removeItem('cart')
     }
-    location.href = '../HTML/Home.html'
+    history.go()
 }
 
 function login(){

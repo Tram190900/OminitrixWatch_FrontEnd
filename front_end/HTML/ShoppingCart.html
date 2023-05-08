@@ -22,7 +22,7 @@
     <script>
         // window.onscroll = function () { scrollFunction() };
         window.onload = function(){
-            if(isCustomer()){
+            if(!isCustomer()){
                 var listWatchInCart = []
                 axios.all([
                     axios.get('http://localhost:9000/ominitrix/bill'),
@@ -38,19 +38,22 @@
                             return p.billID === element.billID && p.status === 'unpaid'
                         })
                     });
-                    axios.get('http://localhost:9000/ominitrix/bill-detail/'+payment.billID)
+                    if(payment!=null){
+                        axios.get('http://localhost:9000/ominitrix/bill-detail/'+payment.billID)
                         .then(function(res){
                             res.data.map(function(b){
                                     listWatchInCart.push({
                                     "watchID":b.watchID,
                                     "quantity":b.quantity,
-                                    "price": b.price
                                 })
                             })
                             sessionStorage.setItem('cart',JSON.stringify(listWatchInCart))
                         })
+                    }
+                    
                 }))
-            quantityInCart()}
+            }
+            quantityInCart()
         }
     </script>
 </head>
@@ -132,6 +135,10 @@
                 </div>
                 <div class="row">
                     <!-- List Product in Cart -->
+                    <div>
+                        <a>Are you a returning customer?</a><a href="Login.html"
+                            style="font-weight: bold;text-decoration: underline;">Login</a>
+                    </div>
                     <div class="col-md-8 col-lg-8" id="listProductinCart">
                         <script>
                             if('cart' in sessionStorage){
@@ -183,8 +190,8 @@
                                         )
                                         
                                     }).join('')
-                                    
-                                    document.getElementById('subtotal').value = subtotal.toLocaleString('en-US', {style : 'currency', currency : 'VND'})
+                                    sessionStorage.setItem('total',subtotal)
+                                    document.getElementById('subtotal').innerText = subtotal.toLocaleString('en-US', {style : 'currency', currency : 'VND'})
                                     document.getElementById('estimatedTotal').innerText = subtotal.toLocaleString('en-US', {style : 'currency', currency : 'VND'})
                                 }))
                                 console.log(document.getElementsByName('Qty').value);
@@ -203,7 +210,7 @@
                                     <p>Subtotal</p>
                                 </div>
                                 <div class="col-4">
-                                    <input style="font-weight: bold;width: 100%;" id="subtotal" type="text" disabled />
+                                    <p style="font-weight: bold;width: 100%;" id="subtotal" type="text"></p>
                                 </div>
                             </div>
                             <div class="row">
