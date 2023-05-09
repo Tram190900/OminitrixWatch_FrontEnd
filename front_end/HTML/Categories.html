@@ -137,13 +137,13 @@
                         <li>
                             <p style="font-weight: bold;">Price</p>
                             <div style="display: flex; color: lightgrey;margin-bottom: 20px;">
-                                <input type="text" id="inputPrice" placeholder="Min">
+                                <input type="number" class="priceMin" id="inputPrice" placeholder="Min">
                                 &minus;
-                                <input type="text" id="inputPrice" placeholder="Max">
+                                <input type="number" class="priceMax" id="inputPrice" placeholder="Max">
                             </div>
                             <div style="display: flex; justify-content: space-around;">
-                                <button id="btnAdd2Cart"> Apply </button>
-                                <button id="btnAdd2Cart"> Clear </button>
+                                <button id="btnAdd2Cart" onclick="sortMaxMin()"> Apply </button>
+                                <button id="btnAdd2Cart" onclick="location.reload()"> Clear </button>
                             </div>
                         </li>
                     </ul>
@@ -154,6 +154,7 @@
                             <div class="col-md-6 col-lg-6">
                                 <label id="sortBy" style="font-size: 15px;font-weight: bold;">Sort by</label>
                                 <select id="sortBy" style="font-size: 15px;">
+                                    <option>All</option>
                                     <option>Price: Low to Hight</option>
                                     <option>Price: Hight to Low</option>
                                 </select>
