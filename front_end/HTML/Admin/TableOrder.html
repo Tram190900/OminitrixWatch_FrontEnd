@@ -215,6 +215,7 @@
             var payment = payments.data.find(function(p){
                 return p.billID === bill.billID
             })
+            console.log(payment);
             return(
                 '<tr>'+
                     '<td><a class="tablinks" onclick="location.href=\'EditOrder.html?billId='+bill.billID+'\'">'+bill.billID+'</a></td>'+

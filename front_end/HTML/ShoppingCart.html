@@ -45,6 +45,7 @@
                                     listWatchInCart.push({
                                     "watchID":b.watchID,
                                     "quantity":b.quantity,
+                                    "price":res.data.price
                                 })
                             })
                             sessionStorage.setItem('cart',JSON.stringify(listWatchInCart))
@@ -162,7 +163,7 @@
                                             '<div class="row" id="productInCart">'+
                                                 '<div class="col-md-3 col-lg-3">'+
                                                     '<img style="width: 100px;height:120px"'+
-                                                        'src="'+watch.images[0]+'">'+
+                                                        'src="http://localhost:9000/'+watch.images[0]+'">'+
                                                 '</div>'+
                                                 '<div class="col-md-4 col-lg-4">'+
                                                     '<p style="font-weight: bold;">'+watch.watchName+'</p>'+

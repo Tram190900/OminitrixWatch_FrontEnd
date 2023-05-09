@@ -33,36 +33,39 @@ function updateWatch(watchID, voteLike) {
     const brandID = document.querySelector(".brand").value;
 
     const colorID = document.querySelector(".color").value;
-
-    const images = document.querySelector("#Images").getElementsByTagName("img");
-    const lst = [];
-    for (var i = 0; i < images.length; i++) {
-        lst.push(images[i].getAttribute("src"));
-    }
-    console.log(brandID);
-    console.log(typeID);
     console.log(colorID);
-    axios
-        .put("http://localhost:9000/ominitrix/watch/update", {
-            watchID: watchID,
-            watchName: watchName,
-            price: price,
-            waterResistance: waterResistance,
-            description: description,
-            thickness: thichness,
-            watchGender: watchGender,
-            voteLike: voteLike,
-            limitQuantity: quantity,
-            colorID: colorID,
-            typeID: typeID,
-            brandID: brandID,
-            images: lst,
-        })
+
+    const images = Array.from(document.querySelector("#fileImage").files);
+    const data = new FormData()
+    images.forEach(item =>{
+        data.append("fileName",item)
+    })
+
+    data.append("watchName",watchName)
+    data.append("price",price)
+    data.append("waterResistance",waterResistance)
+    data.append("description",description)
+    data.append("thickness",thichness)
+    data.append("watchGender",watchGender)
+    data.append("voteLike",voteLike)
+    data.append("limitQuantity",quantity)
+    data.append("colorID",colorID)
+    data.append("typeID",typeID)
+    data.append("brandID",brandID)
+    data.append("watchID", watchID)
+
+    axios({
+        method: 'put',
+        url:'http://localhost:9000/ominitrix/watch/update',
+        headers: { "Content-Type": "multipart/form-data" },
+        data:data,
+    })
         .then(function (res) {
-            if (res.status == 200) {
-                location.href = "../Admin/TableProduct.html";
-            }
+            location.href = "../Admin/TableProduct.html";
+        }).catch(function(err){
+            console.log(err);
         });
+        
 }
 
 function findByBrand(brandId) {
@@ -82,7 +85,7 @@ function findByBrand(brandId) {
                         '<a href="ProductDetail.html?watchId=' +
                         watch.watchID +
                         '">' +
-                        '<img src="' +
+                        '<img src="http://localhost:9000/' +
                         watch.images[0] +
                         '"' +
                         'id="imageCard">' +
@@ -145,7 +148,7 @@ function adminFindByType(typeID) {
                             return (
                                 "<tr>" +
                                 '<td><img style="width: 120px;height:130px"' +
-                                'src="' +
+                                'src="http://localhost:9000/' +
                                 watch.images[0] +
                                 '">' +
                                 "</td>" +
@@ -232,7 +235,7 @@ function adminFindByBrand(brandID) {
                             return (
                                 "<tr>" +
                                 '<td><img style="width: 120px;height:130px"' +
-                                'src="' +
+                                'src="http://localhost:9000/' +
                                 watch.images[0] +
                                 '">' +
                                 "</td>" +
@@ -295,54 +298,52 @@ function adminFindByBrand(brandID) {
 
 function addWatch(){
     console.log("add");
-    const price = document.getElementById("newWPrice").value;
-    const thichness = document.getElementById("newWThickness").value;
-    const quantity = document.getElementById("newWQuantity").value;
-    const description = document.getElementById("newDescription").value;
-    const watchName = document.getElementById("newWName").value;
-    var waterResistance = false;
+    const addprice = document.getElementById("newWPrice").value;
+    const addthichness = document.getElementById("newWThickness").value;
+    const addquantity = document.getElementById("newWQuantity").value;
+    const adddescription = document.getElementById("newDescription").value;
+    const addwatchName = document.getElementById("newWName").value;
+    var addwaterResistance = false;
     if (document.getElementById("newWResistance").checked == true) {
-        waterResistance = true;
+        addwaterResistance = true;
     }
-    var watchGender = false;
+    var addwatchGender = false;
     if (document.getElementById("newWResistance").checked == true) {
-        watchGender = true;
+        addwatchGender = true;
     }
-    const typeID = document.querySelector(".type").value;
+    const addtypeID = document.querySelector(".type").value;
 
-    const brandID = document.querySelector(".brand").value;
+    const addbrandID = document.querySelector(".brand").value;
 
-    const colorID = document.querySelector(".color").value;
+    const addcolorID = document.querySelector(".color").value;
 
-    const images = document.querySelector("#Images").getElementsByTagName("img");
-    const lst = [];
-    for (var i = 0; i < images.length; i++) {
-        lst.push(images[i].getAttribute("src"));
-    }
-    console.log(brandID);
-    console.log(typeID);
-    console.log(colorID);
-    console.log(lst);
-    axios
-        .post("http://localhost:9000/ominitrix/watch/add", {
-            watchName: watchName,
-            price: price,
-            waterResistance: waterResistance,
-            description: description,
-            thickness: thichness,
-            watchGender: watchGender,
-            voteLike: 0,
-            limitQuantity: quantity,
-            colorID: colorID,
-            typeID: typeID,
-            brandID: brandID,
-            images: lst,
-        })
+    const images = Array.from(document.getElementById("fileImage").files);
+    const data = new FormData()
+    images.forEach(item =>{
+        data.append("fileName",item)
+    })
+    data.append("watchName",addwatchName)
+    data.append("price",addprice)
+    data.append("waterResistance",addwaterResistance)
+    data.append("description",adddescription)
+    data.append("thickness",addthichness)
+    data.append("watchGender",addwatchGender)
+    data.append("voteLike",0)
+    data.append("limitQuantity",addquantity)
+    data.append("colorID",addcolorID)
+    data.append("typeID",addtypeID)
+    data.append("brandID",addbrandID)
+
+    axios({
+        method: 'post',
+        url:'http://localhost:9000/ominitrix/watch/add',
+        headers: { "Content-Type": "multipart/form-data" },
+        data:data,
+    })
         .then(function (res) {
-            if (res.status == 200) {
-                location.href = "../Admin/TableProduct.html";
-            }
+            location.href = "../Admin/TableProduct.html";
         }).catch(function(err){
             console.log(err);
         });
+        
 }

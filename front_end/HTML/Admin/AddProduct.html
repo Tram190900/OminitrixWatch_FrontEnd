@@ -232,20 +232,19 @@
                                         </div>
                                         <div class="col-6">
                                             <label for="newDescription">Description:</label><br>
-                                            <textarea id="newDescription" rows="7" cols="73"></textarea><br>
+                                            <textarea id="newDescription" rows="4" cols="73"></textarea><br>
             
                                             <label for="Images">Images:</label><br>
                                             <input type="file" multiple accept="image/*" id="fileImage" onchange="previewImages(event)">
                                             <div class="row" id="Images"></div>
                                         </div>
                                     </div>
-                                    <div style="margin-top: 5%;">
-                                        <button id="btnSave" onclick="{
-                                                addWatch()
-                                        }"><i class="material-icons">save</i>Save</button>
-                                        <button id="btnCancel"><i class="material-icons">cancel</i>Cancel</button>
-                                    </div>
+                                    
                                 </form>
+                                <div style="margin-top: 5%;">
+                                    <button id="btnSave" onclick="addWatch()"><i class="material-icons">save</i>Save</button>
+                                    <button id="btnCancel"><i class="material-icons">cancel</i>Cancel</button>
+                                </div>
                             </div>
                             
 

@@ -219,6 +219,7 @@
             document.getElementById('newLName').value = response.data.lastName
             document.getElementById('newPhone').value = response.data.phone
             document.getElementById('newAddress').value = response.data.address
+            document.getElementById('preview').src = 'http://localhost:9000/'+response.data.avatar 
         })
 </script>
 </html>
