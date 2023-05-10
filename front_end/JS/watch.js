@@ -387,3 +387,72 @@ function sortMaxMin(){
             }
         })
 }
+
+function sortByPrice(sort){
+    console.log(sort.value);
+    const params = new URLSearchParams(document.location.search)
+    const type = params.get('watchType')
+    if(sort.value=='-1'){
+        axios.get('http://localhost:9000/ominitrix/watch/find-by-type/'+type)
+            .then(function(watchs){
+                watchAfter = watchs.data.sort(function(a,b){
+                    return a.price-b.price
+                })
+                document.getElementById('listWatch').innerHTML = watchAfter.map(function(w){
+                    return(
+                        '<div class="col-md-4 col-lg-4" style="margin-bottom: 20px;">'+
+                            '<div class="card">'+
+                                '<div class="card-header" style="position: relative;">'+
+                                    '<a href="ProductDetail.html?watchId='+w.watchID+'">'+
+                                        '<img src="http://localhost:9000/'+w.images[0]+'"'+'id="imageCard">'+
+                                        '<div class="middle">'+
+                                            '<i class="material-icons" style="color: gray;margin-top: 50%;">remove_red_eye</i>'+
+                                        '</div>'+
+                                    '</a>'+
+                                '</div>'+
+                                '<div class="card-body" style="width: 100%;margin-bottom: -30px;">'+
+                                    '<a href="ProductDetail.html?watchId='+w.watchID+'" class="txtLinkName"><p id="nameWatch">'+w.watchName+'</p></a>'+
+                                    '<p id="priceWatch">'+w.price.toLocaleString('en-US', {style : 'currency', currency : 'VND'})+'</p>'+
+                                '</div>'+
+                                '<div style="margin-bottom: 20px;">'+
+                                    '<button id="btnAdd2Cart" onclick="add2Cart(\''+w.watchID+'\',\''+w.price+'\')"><i class="material-icons" style="color: white;background-color: black;margin-right: 10px;">shopping_cart</i>Add to Cart</button>'+
+                                '</div>'+
+                            '</div>'+
+                       ' </div>'
+                    )
+                }).join('')
+            })
+    }else if(sort.value=="1"){
+        axios.get('http://localhost:9000/ominitrix/watch/find-by-type/'+type)
+            .then(function(watchs){
+                watchAfter = watchs.data.sort(function(a,b){
+                    return b.price-a.price
+                })
+                document.getElementById('listWatch').innerHTML = watchAfter.map(function(w){
+                    return(
+                        '<div class="col-md-4 col-lg-4" style="margin-bottom: 20px;">'+
+                            '<div class="card">'+
+                                '<div class="card-header" style="position: relative;">'+
+                                    '<a href="ProductDetail.html?watchId='+w.watchID+'">'+
+                                        '<img src="http://localhost:9000/'+w.images[0]+'"'+'id="imageCard">'+
+                                        '<div class="middle">'+
+                                            '<i class="material-icons" style="color: gray;margin-top: 50%;">remove_red_eye</i>'+
+                                        '</div>'+
+                                    '</a>'+
+                                '</div>'+
+                                '<div class="card-body" style="width: 100%;margin-bottom: -30px;">'+
+                                    '<a href="ProductDetail.html?watchId='+w.watchID+'" class="txtLinkName"><p id="nameWatch">'+w.watchName+'</p></a>'+
+                                    '<p id="priceWatch">'+w.price.toLocaleString('en-US', {style : 'currency', currency : 'VND'})+'</p>'+
+                                '</div>'+
+                                '<div style="margin-bottom: 20px;">'+
+                                    '<button id="btnAdd2Cart" onclick="add2Cart(\''+w.watchID+'\',\''+w.price+'\')"><i class="material-icons" style="color: white;background-color: black;margin-right: 10px;">shopping_cart</i>Add to Cart</button>'+
+                                '</div>'+
+                            '</div>'+
+                       ' </div>'
+                    )
+                }).join('')
+            })
+    }else{
+        location.reload()
+    }
+}

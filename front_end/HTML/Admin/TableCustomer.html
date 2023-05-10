@@ -22,7 +22,7 @@
 
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <title id="title">Admin</title>
+    <title id="title">Table Customer</title>
     <script>
         // window.onscroll = function () { scrollFunction() };
         window.onload = function () { document.getElementById('leafFinal').textContent = document.getElementById('title').textContent
@@ -167,7 +167,7 @@
                                 <th>Last Name</th>
                                 <th>Email</th>
                                 <th>Phone</th>
-                                <th>Role</th>
+                                <!-- <th>Role</th> -->
                                 <th>Address</th>
                                 <th></th>
                             </tr>
@@ -212,23 +212,24 @@
         axios.get('http://localhost:9000/ominitrix/user')
     ]).then(axios.spread(function(accounts,users){
         document.getElementById('bodyTblCustomer').innerHTML = users.data.map(function(user){
-            account = accounts.data.find(function(a){
+            const account = accounts.data.find(function(a){
                 return a.userName === user.userID
             })
-            role = null
-            if(account.role){
-                role = 'Admin'
-            }else{
-                role = 'Customer'
-            }
+            // accrole = null
+            // if(account.role==='true'){
+            //     accrole = 'Admin'
+            // }else{
+            //     accrole = 'Customer'
+            // }
+            // console.log(account.role);
             return(
                 '<tr>'+
-                        '<td><img src="'+user.avatar+'" style="wight:50px,height:50px"/></td>'+
+                        '<td><img style="height:50px;wight:50px;border-radius:50px" src="http://localhost:9000/'+user.avatar+'"/></td>'+
                         '<td>'+user.firstName+'</td>'+
                         '<td>'+user.lastName+'</td>'+
                         '<td>'+user.email+'</td>'+
                         '<td>'+user.phone+'</td>'+
-                        '<td>'+role+'</td>'+
+                        // '<td>'+account.role+'</td>'+
                         '<td>'+user.address+'</td>'+
                         '<td>'+
                             '<span style="display: flex;">'+

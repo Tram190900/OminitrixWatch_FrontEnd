@@ -20,7 +20,7 @@
     <script type="text/javascript" src="../../JS/cart.js"></script>
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <title id="title">Admin</title>
+    <title id="title">Table Brand</title>
     <script>
         // window.onscroll = function () { scrollFunction() };
         window.onload = function () { document.getElementById('leafFinal').textContent = document.getElementById('title').textContent
@@ -141,9 +141,9 @@
                             <a style="font-size: 27px;margin-right: 20px;">Brands</a>
                         </span>
                         <form id="group-input">
-                            <input type="text" placeholder="Name" class="form-control">
+                            <input type="text" placeholder="Name" id="brandName" class="form-control">
+                            <button id="btnAdd" onclick="addBrand()">Add</button>
                             <button id="btnFilter">Filter</button>
-                            <button id="btnAdd">Add</button>
                         </form>
                         <table id="tblBrands" style="width: 80%;">
                             <tr>
@@ -162,7 +162,7 @@
                                                     '<td>'+brand.brandName+'</td>'+
                                                     '<td>'+
                                                         '<span style="display: flex;">'+
-                                                            '<button id="btnDelete">'+
+                                                            '<button id="btnDelete" onclick="deleteBrand(\''+brand.brandID+'\')">'+
                                                                 '<i class="material-icons">delete</i>'+
                                                             '</button>'+
                                                     ' </span>'+
@@ -215,6 +215,24 @@
             </div>
         </footer>
     </div>
+    <script>
+        function addBrand(){
+            name = document.getElementById('brandName').value
+            axios.post('http://localhost:9000/ominitrix/brand/add',{
+                brandName: name
+            }).then(function(res){
+                if(res.status==201){
+                    location.reload()
+                }
+            })
+        }
+        function deleteBrand(brandID){
+            axios.delete('http://localhost:9000/ominitrix/brand/'+brandID)
+                .then(function(res){
+                    location.reload()
+                })
+        }
+    </script>
 </body>
 
 </html>

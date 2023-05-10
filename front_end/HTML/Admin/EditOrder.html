@@ -22,7 +22,7 @@
 
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <title id="title">Admin</title>
+    <title id="title">Detail Order</title>
     <script>
         // window.onscroll = function () { scrollFunction() };
         window.onload = function () { document.getElementById('leafFinal').textContent = document.getElementById('title').textContent
@@ -140,7 +140,7 @@
                     <!-- Edit order -->
                     <div id="EditOrder">
                         <span style="display: inline-flex;">
-                            <a style="font-size: 27px;margin-right: 20px;">Edit order</a>
+                            <a style="font-size: 27px;margin-right: 20px;">Detail order</a>
                         </span>
                         <div class="row">
                             <div class="col-md-5 col-lg-5">
@@ -160,8 +160,8 @@
                                     <label for="OdAddress">Address: </label><br>
                                     <input class="form-control" type="text" id="OdAddress" disabled><br>
 
-                                    <button id="btnSave"><i class="material-icons">save</i>Save</button>
-                                    <button id="btnCancel"><i class="material-icons">cancel</i>Cancel</button>
+                                    <!-- <button id="btnSave"><i class="material-icons">save</i>Save</button>
+                                    <button id="btnCancel"><i class="material-icons">cancel</i>Cancel</button> -->
                                 </form>
                             </div>
                             <div class="col-md-7 col-lg-7" style="padding: 0% 10% 0% 5%;">
@@ -203,30 +203,6 @@
                                     </div>
                                 </div>
                                 <div id="productOrder">
-                                    <!-- <div class="row" style="border-bottom: 1px solid black;">
-                                        <div class="col-4">
-                                            <img src="https://fossil.scene7.com/is/image/FossilPartners/ES5268-alt?$sfcc_fos_medium$"
-                                                style="width: 50%;">
-                                        </div>
-                                        <div class="col-8">
-                                            <p style="font-weight: bold;">Carlie Three-Hand Blush Eco Leather Watch</p>
-                                            <p>Item #:</p>
-                                            <p>Color:</p>
-                                            <p>Qty: <input type="number" style="width: 50px;"></p>
-                                        </div>
-                                    </div>
-                                    <div class="row" style="border-bottom: 1px solid black;">
-                                        <div class="col-4">
-                                            <img src="https://fossil.scene7.com/is/image/FossilPartners/ES5268-alt?$sfcc_fos_medium$"
-                                                style="width: 50%;">
-                                        </div>
-                                        <div class="col-8">
-                                            <p style="font-weight: bold;">Carlie Three-Hand Blush Eco Leather Watch</p>
-                                            <p>Item #:</p>
-                                            <p>Color:</p>
-                                            <p>Qty: <input type="number" style="width: 50px;"></p>
-                                        </div>
-                                    </div> -->
                                     <div class="row">
                                         
                                     </div>
@@ -304,14 +280,14 @@
             return(
                 '<div class="row" style="border-bottom: 1px solid black;">'+
                     '<div class="col-4">'+
-                        '<img src="'+watch.images[0]+'"'+
-                                'style="width: 150px;height:180px">'+
+                        '<img src="http://localhost:9000/'+watch.images[0]+'"'+
+                                'style="width: 80%;height:190px">'+
                     '</div>'+
                     '<div class="col-8">'+
                         '<p style="font-weight: bold;">'+watch.watchName+'</p>'+
                         '<p>Code: '+watch.watchID+'</p>'+
                         '<p>Color: '+color.colorName+'</p>'+
-                        '<p>Qty: <input type="number" style="width: 50px;" id="quantity'+watch.watchID+'" value="'+b.quantity+'" onchange="changeQuantityInBill(\''+watch.watchID+'\','+b.price+',\''+billID+'\')"></p>'+
+                        '<p>Qty: <input type="number" disabled style="width: 50px;" id="quantity'+watch.watchID+'" value="'+b.quantity+'" onchange="changeQuantityInBill(\''+watch.watchID+'\','+b.price+',\''+billID+'\')"></p>'+
                         '</div>'+
                     '</div>'
                     

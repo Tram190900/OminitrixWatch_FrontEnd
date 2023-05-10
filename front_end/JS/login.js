@@ -93,9 +93,10 @@ function login(){
                     .then(function(response){
                         if(typeof(response.data)!=='undefined'){
                             if(response.data.password===password){
-                                location.href = '../HTML/Home.html' 
+                                // location.href = '../HTML/Home.html' 
                                 sessionStorage.setItem('userid',JSON.stringify(user))
                                 sessionStorage.setItem('account',JSON.stringify(response.data))
+                                history.back()
                             }else{
                                 alert('Password sai. Nhập lại password')
                                 document.getElementById('password').focus()

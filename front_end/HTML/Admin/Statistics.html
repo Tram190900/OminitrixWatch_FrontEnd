@@ -22,7 +22,7 @@
 
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <title id="title">Admin</title>
+    <title id="title">Statistics</title>
     <script>
         window.onload = function () { document.getElementById('leafFinal').textContent = document.getElementById('title').textContent 
                                         isCustomer()
@@ -144,22 +144,23 @@
                             <div id="chartContainer" class="col-5">
                                 <canvas id="revenueByYear" style="width:100%;max-width:600px"></canvas>
                                 <script>
-                                    var xValues = ["01", "02", "03", "04", "05","06","07","08","09","10","11","12"];
-                                    const th1 = totalByMonth(1)
-                                    const th2 = totalByMonth(2)
-                                    const th3 = totalByMonth(3)
-                                    const th4 = totalByMonth(4)
-                                    const th5 = totalByMonth(5)
-                                    const th6 = totalByMonth(6)
-                                    const th7 = totalByMonth(7)
-                                    const th8 = totalByMonth(8)
-                                    const th9 = totalByMonth(9)
-                                    const th10 = totalByMonth(10)
-                                    const th11 = totalByMonth(11)
-                                    const th12 = totalByMonth(12)
-                                    const yValues = [th1,th2,th3,th4,th5,th6,th7,th8,th9,th10,th11,th12];
+                                    var xValues = ["0","01", "02", "03", "04", "05","06","07","08","09","10","11","12"];
+                                    var yValues = [];
+                                    console.log(xValues);
+                                    for(let i =1;i<=12;i++){
+                                        var tong = 0
+                                        axios.get('http://localhost:9000/ominitrix/bill/month-bill/'+i)
+                                            .then((result) => {
+                                                result.data.forEach(element => {
+                                                    tong = tong + element.total
+                                                });
+                                                yValues.push(tong)
+                                                tong =0
+                                            }).catch((err) => {
+                                                console.log(err);
+                                            });
+                                    }
                                     console.log(yValues);
-                                    
                                     new Chart("revenueByYear", {
                                     type: "bar",
                                     data: {

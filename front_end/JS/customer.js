@@ -29,7 +29,7 @@ function filter(){
                                 '<td>'+user.lastName+'</td>'+
                                 '<td>'+user.email+'</td>'+
                                 '<td>'+user.phone+'</td>'+
-                                '<td>'+role+'</td>'+
+                                // '<td>'+role+'</td>'+
                                 '<td>'+user.address+'</td>'+
                                 '<td>'+
                                     '<span style="display: flex;">'+
@@ -76,7 +76,7 @@ function filter(){
                                     '<td>'+user.lastName+'</td>'+
                                     '<td>'+user.email+'</td>'+
                                     '<td>'+user.phone+'</td>'+
-                                    '<td>'+role+'</td>'+
+                                    // '<td>'+role+'</td>'+
                                     '<td>'+user.address+'</td>'+
                                     '<td>'+
                                         '<span style="display: flex;">'+
@@ -122,7 +122,7 @@ function filterByRole(){
                             '<td>'+user.lastName+'</td>'+
                             '<td>'+user.email+'</td>'+
                             '<td>'+user.phone+'</td>'+
-                            '<td>'+role+'</td>'+
+                            // '<td>'+role+'</td>'+
                             '<td>'+user.address+'</td>'+
                             '<td>'+
                                 '<span style="display: flex;">'+
@@ -160,7 +160,7 @@ function filterByRole(){
                             '<td>'+user.lastName+'</td>'+
                             '<td>'+user.email+'</td>'+
                             '<td>'+user.phone+'</td>'+
-                            '<td>'+role+'</td>'+
+                            // '<td>'+role+'</td>'+
                             '<td>'+user.address+'</td>'+
                             '<td>'+
                                 '<span style="display: flex;">'+

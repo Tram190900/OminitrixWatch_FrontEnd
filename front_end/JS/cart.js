@@ -46,8 +46,11 @@ function removeToCart(watchID) {
       return a.watchID !== watchID;
     })
   );
-  
-  sessionStorage.setItem("cart", JSON.stringify(arrNew));
+  if(!arrNew){
+    sessionStorage.setItem("cart", JSON.stringify(arrNew));
+  }else{
+    sessionStorage.removeItem('cart')
+  }
   location.reload()
 }
 

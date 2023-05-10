@@ -18,9 +18,10 @@
     <script type="text/javascript" src="../../JS/login.js"></script>
     <script type="text/javascript" src="../../JS/RegularExpressions.js"></script>
     <script type="text/javascript" src="../../JS/cart.js"></script>
+    <script type="text/javascript" src="../../JS/bill.js"></script>
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <title id="title">Admin</title>
+    <title id="title">Table Order</title>
     <script>
         // window.onscroll = function () { scrollFunction() };
         window.onload = function () { document.getElementById('leafFinal').textContent = document.getElementById('title').textContent
@@ -141,15 +142,16 @@
                             <a style="font-size: 27px;margin-right: 20px;">Orders</a>
                         </span>
                         <form id="group-input">
-                            <input class="form-control" type="text" id="orderDate" placeholder="Email">
-                            <input class="form-control" type="date" id="orderDate" placeholder="Order date">
-                            <select id="sortBy" style="border-radius: 5px;">
+                            <input class="form-control" type="text" id="orderEamil" placeholder="Email">
+                            <input class="form-control" type="date" id="orderDate" placeholder="Order date" onchange="filterByDate()">
+                            <!-- <select id="sortBy" style="border-radius: 5px;">
                                 <option>State: </option>
                                 <option>Paid</option>
                                 <option>Unpaid</option>
-                            </select>
-                            <button id="btnAdd">Filter</button>
+                            </select> -->
+                            
                         </form>
+                        <button id="btnAdd" style="height: 40px;margin-left: 5%;" onclick="filterBill()">Filter</button>
                         <div style="position: relative; margin:40px 0px 90px 0px;">
                             <div id="pageNumber" style="position: absolute; right: 0px;">
                                 <a class="active" href="#">1</a>
@@ -162,9 +164,7 @@
                                 <th>Code</th>
                                 <th>Email</th>
                                 <th>Order date</th>
-                                <th>status</th>
                                 <th>Total</th>
-                                <th></th>
                             </tr>
                             <tbody id="bodyTblOrder"></tbody>
                             
@@ -206,34 +206,41 @@
     axios.all([
         axios.get('http://localhost:9000/ominitrix/bill'),
         axios.get('http://localhost:9000/ominitrix/user'),
-        axios.get('http://localhost:9000/ominitrix/payment')
-    ]).then(axios.spread(function(bills,users,payments){
+        axios.get('http://localhost:9000/ominitrix/payment'),
+        axios.get('http://localhost:9000/ominitrix/bill-detail')
+    ]).then(axios.spread(function(bills,users,payments,bill_details){
         document.getElementById('bodyTblOrder').innerHTML = bills.data.map(function(bill){
+            var total=0
             var user = users.data.find(function(u){
                 return u.userID === bill.userID
             })
             var payment = payments.data.find(function(p){
                 return p.billID === bill.billID
             })
-            console.log(payment);
+            var detail = bill_details.data.filter(function(b){
+                return b.billID===bill.billID
+            })
+            detail.forEach(element => {
+                total = total+(element.price*element.quantity)
+            });
             return(
                 '<tr>'+
                     '<td><a class="tablinks" onclick="location.href=\'EditOrder.html?billId='+bill.billID+'\'">'+bill.billID+'</a></td>'+
                     '<td id="email">'+user.email+'</td>'+
                     '<td>'+bill.date+'</td>'+
-                    '<td>'+payment.status+'</td>'+
-                    '<td>'+bill.total.toLocaleString('en-US', {style : 'currency', currency : 'VND'})+'</td>'+
-                    '<td>'+
-                        '<span style="display: flex;background:none">'+
-                            '<button id="btnEdit"'+
-                                'onclick="location.href=\'EditOrder.html?billId='+bill.billID+'\'">'+
-                                '<i class="material-icons">edit</i>'+
-                            '</button>'+
-                            '<button id="btnDelete">'+
-                                '<i class="material-icons">delete</i>'+
-                            '</button>'+
-                        '</span>'+
-                    '</td>'+
+                    // '<td>'+payment.status+'</td>'+
+                    '<td>'+total.toLocaleString('en-US', {style : 'currency', currency : 'VND'})+'</td>'+
+                    // '<td>'+
+                    //     '<span style="display: flex;background:none">'+
+                    //         '<button id="btnEdit"'+
+                    //             'onclick="location.href=\'EditOrder.html?billId='+bill.billID+'\'">'+
+                    //             '<i class="material-icons">edit</i>'+
+                    //         '</button>'+
+                    //         '<button id="btnDelete">'+
+                    //             '<i class="material-icons">delete</i>'+
+                    //         '</button>'+
+                    //     '</span>'+
+                    // '</td>'+
                 '</tr>'
             )
         }).join('')

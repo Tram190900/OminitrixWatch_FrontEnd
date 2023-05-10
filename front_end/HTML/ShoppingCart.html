@@ -161,8 +161,8 @@
                                         subtotal += (watch.price * product.quantity)
                                         return(
                                             '<div class="row" id="productInCart">'+
-                                                '<div class="col-md-3 col-lg-3">'+
-                                                    '<img style="width: 100px;height:120px"'+
+                                                '<div class="col-md-3 col-lg-3" style="margin-left: 4%;">'+
+                                                    '<img style="width: 60%;height:160px"'+
                                                         'src="http://localhost:9000/'+watch.images[0]+'">'+
                                                 '</div>'+
                                                 '<div class="col-md-4 col-lg-4">'+
@@ -232,9 +232,9 @@
                             </div>
                         </div>
                         <div>
-                            <button id="btnCheckOut" onload="if(!'listWatchInCart' in sessionStorage) {
+                            <button id="btnCheckOut" onclick="location.href='CheckOut.html'" onload="if(!'listWatchInCart' in sessionStorage) {
                                 document.getElementById('btnCheckOut').disabled =true
-                            }"><a href="CheckOut.html">CHECKOUT</a></button>
+                            }"><a>CHECKOUT</a></button>
                         </div>
                     </div>
                 </div>
