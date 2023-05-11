@@ -24,7 +24,7 @@ function filter(){
                     }
                 document.getElementById('bodyTblCustomer').innerHTML = 
                         '<tr>'+
-                                '<td><img src="'+user.avatar+'" style="wight:50px,height:50px"/></td>'+
+                                '<td><img style="height:50px;wight:50px;border-radius:50px" src="http://localhost:9000/'+user.avatar+'" style="wight:50px,height:50px"/></td>'+
                                 '<td>'+user.firstName+'</td>'+
                                 '<td>'+user.lastName+'</td>'+
                                 '<td>'+user.email+'</td>'+
@@ -71,7 +71,7 @@ function filter(){
                         }
                     document.getElementById('bodyTblCustomer').innerHTML = 
                             '<tr>'+
-                                    '<td><img src="'+user.avatar+'" style="wight:50px,height:50px"/></td>'+
+                                    '<td><img style="height:50px;wight:50px;border-radius:50px" src="http://localhost:9000/'+user.avatar+'" style="wight:50px,height:50px"/></td>'+
                                     '<td>'+user.firstName+'</td>'+
                                     '<td>'+user.lastName+'</td>'+
                                     '<td>'+user.email+'</td>'+
@@ -117,7 +117,7 @@ function filterByRole(){
                 })
                 return(
                     '<tr>'+
-                            '<td><img src="'+user.avatar+'" style="wight:50px,height:50px"/></td>'+
+                            '<td><img style="height:50px;wight:50px;border-radius:50px" src="http://localhost:9000/'+user.avatar+'" style="wight:50px,height:50px"/></td>'+
                             '<td>'+user.firstName+'</td>'+
                             '<td>'+user.lastName+'</td>'+
                             '<td>'+user.email+'</td>'+
@@ -137,7 +137,7 @@ function filterByRole(){
                         '</td>'+
                     '</tr>'
                 )
-            })
+            }).join('')
         })).catch((err) => {
             console.log(err);
         });
@@ -155,7 +155,7 @@ function filterByRole(){
                 })
                 return(
                     '<tr>'+
-                            '<td><img src="'+user.avatar+'" style="wight:50px,height:50px"/></td>'+
+                            '<td><img style="height:50px;wight:50px;border-radius:50px" src="http://localhost:9000/'+user.avatar+'" style="wight:50px,height:50px"/></td>'+
                             '<td>'+user.firstName+'</td>'+
                             '<td>'+user.lastName+'</td>'+
                             '<td>'+user.email+'</td>'+

@@ -1,6 +1,5 @@
 function postComment(watchID){
-    const user = JSON.parse(sessionStorage.getItem('userid'))
-    const userID = user.userID
+    const userID = JSON.parse(sessionStorage.getItem('userid'))
     const commentContent = document.getElementById('commentContent').value
     const date = Date.now()
     axios.post('http://localhost:9000/ominitrix/comment/add', {
@@ -29,7 +28,7 @@ function loadComment(watchID){
             })
             return(
                 '<div class="row" id="commentItem" style="border-bottom: 1px solid #ccc;margin-top:10px">'+
-                    '<img class="col-1" src="'+user.avatar+'" style="width: 45px; height: 45px;border: 1px solid black;border-radius: 25px;">'+
+                    '<img src="http://localhost:9000/'+user.avatar+'" style="width: 10%; height: 45px;border-radius: 45px;">'+
                     '<div class="col-10">'+
                         '<p style="font-weight: bold;font-size: 12px;">'+user.lastName+'</p>'+
                        ' <p style="font-size: 12px;">'+comment.date+'</p>'+
