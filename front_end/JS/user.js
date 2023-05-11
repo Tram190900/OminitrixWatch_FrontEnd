@@ -5,7 +5,7 @@ function editUser(){
     const lName = document.getElementById('newLName').value 
     const phone = document.getElementById('newPhone').value 
     const address = document.getElementById('newAddress').value 
-    const userID= (JSON.parse(sessionStorage.getItem('userid'))).userID
+    const userID= JSON.parse(sessionStorage.getItem('userid'))
     const avatar = document.getElementById('image_uploads')
 
     const data = new FormData()
@@ -24,6 +24,7 @@ function editUser(){
         data:data,
     }).then((result) => {
         console.log(result.status);
+        location.reload()
     }).catch((err) => {
         console.log(err);
     });

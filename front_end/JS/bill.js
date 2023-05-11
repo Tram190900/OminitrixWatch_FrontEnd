@@ -50,22 +50,23 @@ function changeQuantityInBill(watchID,billID,price){
     console.log(price);
     
 }
-function totalByMonth(month){
-    var tong = 0
-    axios.get('http://localhost:9000/ominitrix/bill/month-bill/'+month)
-        .then((result) => {
-            result.data.forEach(element => {
-                tong = tong + element.total
-            });
-            console.log(tong);
-            return tong
-        }).catch((err) => {
-            console.log(err);
-        });
-}
+async function totalBy() {
+    var zzz =[]
+    try {
+      const result = await axios.get('http://localhost:9000/ominitrix/bill-detail/getBillByMonth')
+      result.data.forEach(element => {
+        zzz.push(element)
+      });
+    
+      console.log(zzz + "z");
+      
+      return zzz;
+    } catch (err) {
+      console.log(err);
+    }
+  }
 function addBill(){
-    user = JSON.parse(sessionStorage.getItem('userid'))
-    var userID = user.userID
+    userID = JSON.parse(sessionStorage.getItem('userid'))
 
     total = parseFloat(sessionStorage.getItem('total'))
     date = new Date()
@@ -99,6 +100,7 @@ function addBill(){
                             }).then(function(res){
                                 console.log(res.data);
                                 sessionStorage.removeItem('cart')
+                                sessionStorage.removeItem('total')
                                 location.reload()
                             })
                         })

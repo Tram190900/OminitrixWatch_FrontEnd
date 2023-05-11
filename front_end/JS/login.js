@@ -30,7 +30,7 @@ function registration(){
                                 console.log(response.status);
                                 if(response.status==201 || response.status==200){
                                     
-                                    sessionStorage.setItem('userid',JSON.stringify(user))
+                                    sessionStorage.setItem('userid',JSON.stringify(user.userID))
                                     sessionStorage.setItem('account',JSON.stringify(account))
                                     location.href = '../HTML/Home.html'
                                 }
@@ -44,20 +44,22 @@ function registration(){
 
 function isCustomer(){
         if('userid' in sessionStorage && 'account' in sessionStorage){
-            user = JSON.parse(sessionStorage.getItem('userid'))
+            userID = JSON.parse(sessionStorage.getItem('userid'))
             account = JSON.parse(sessionStorage.getItem('account'))
-
-            document.getElementById('guest').style.display ="none"
-            document.getElementById('customer').style.display ="inline"
-            document.getElementById('userName').innerHTML = '<img style="height:30px;wight:30px;border-radius:30px" src="http://localhost:9000/'+user.avatar+'"/>'+user.lastName+''
-            if(account.role===false){
-                document.getElementById('roleAdmin').style.display="none"
-                console.log('customer');
-            }else if(account.role===true){
-                document.getElementById('roleAdmin').style.display="inline"
-                console.log('admin');
-            }
-            console.log("exist");
+            axios.get('http://localhost:9000/ominitrix/user/findByID/'+userID)
+                .then(function(user){
+                    document.getElementById('guest').style.display ="none"
+                    document.getElementById('customer').style.display ="inline"
+                    document.getElementById('userName').innerHTML = '<img style="height:30px;wight:30px;border-radius:30px" src="http://localhost:9000/'+user.data.avatar+'"/>'+user.data.lastName+''
+                    if(account.role===false){
+                        document.getElementById('roleAdmin').style.display="none"
+                        console.log('customer');
+                    }else if(account.role===true){
+                        document.getElementById('roleAdmin').style.display="inline"
+                        console.log('admin');
+                    }
+                    console.log("exist");
+                })
         }else{
             document.getElementById('guest').style.display ="inline"
             document.getElementById('customer').style.display ="none"
@@ -94,7 +96,7 @@ function login(){
                         if(typeof(response.data)!=='undefined'){
                             if(response.data.password===password){
                                 // location.href = '../HTML/Home.html' 
-                                sessionStorage.setItem('userid',JSON.stringify(user))
+                                sessionStorage.setItem('userid',JSON.stringify(user.userID))
                                 sessionStorage.setItem('account',JSON.stringify(response.data))
                                 history.back()
                             }else{
