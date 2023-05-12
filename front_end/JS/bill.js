@@ -104,7 +104,9 @@ function addBill(){
                                     console.log(err);
                                 })
                             })
-                            axios.post('http://localhost:9000/ominitrix/payment/add',{
+                            
+                        })
+                        axios.post('http://localhost:9000/ominitrix/payment/add',{
                                 "status": "paid",
                                 "billID":billID
                             }).then(function(res){
@@ -113,7 +115,6 @@ function addBill(){
                                 sessionStorage.removeItem('total')
                                 location.reload()
                             })
-                        })
                         
                     }
                 })
