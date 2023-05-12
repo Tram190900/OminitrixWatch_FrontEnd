@@ -200,7 +200,7 @@
                                 <th>Thickness</th>
                                 <th>Watch Gender</th>
                                 <th>Price</th>
-                                <th>Qty</th>
+                                <th>Status</th>
                                 <th>Vote like</th>
                                 <th></th>
                             </tr>
@@ -254,6 +254,13 @@
                 color = colors.data.find(function(c){
                     return c.colorID === watch.colorID
                 })
+                var status = null
+                if(watch.limitQuantity>0){
+                    status = "stocking"
+                }
+                else if(watch.limitQuantity==0){
+                    status ="sold out"
+                }
                 return(
                     '<tr>'+
                     '<td><img style="width: 100%;height:160px"'+
@@ -267,7 +274,7 @@
                         '<td>'+watch.thickness+' mm</td>'+
                         '<td id="water">'+watch.watchGender+'</td>'+
                         '<td>'+watch.price.toLocaleString('en-US', {style : 'currency', currency : 'VND'})+'</td>'+
-                        '<td>'+watch.limitQuantity+'</td>'+
+                        '<td>'+status+'</td>'+
                         '<td>'+watch.voteLike+'</td>'+
                         '<td>'+
                             '<span style="display: flex;background:none">'+
@@ -275,9 +282,9 @@
                                     'onclick="location.href=\'EditProduct.html?watchId='+watch.watchID+'\'">'+
                                     '<i class="material-icons">edit</i>'+
                                 '</button>'+
-                                '<button id="btnEdit" onclick="deleteById(\''+watch.watchID+'\')">'+
-                                    '<i class="material-icons">delete</i>'+
-                                '</button>'+
+                                // '<button id="btnEdit" onclick="deleteById(\''+watch.watchID+'\')">'+
+                                //     '<i class="material-icons">delete</i>'+
+                                // '</button>'+
                             '</span>'+
                         '</td>'+
                         '</tr>'
