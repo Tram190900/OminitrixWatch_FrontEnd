@@ -92,7 +92,17 @@ function addBill(){
                                 "watchID": item.watchID,
                                 "billID":billID
                             }).then(function(res){
-                                console.log(res.data);
+                                var data=new FormData();
+                                data.append("buyQuantity",item.quantity)
+                                axios({
+                                    url:'http://localhost:9000/ominitrix/watch/updateQuantity/'+item.watchID,
+                                    method:'PUT',
+                                    data:data
+                                }).then(function(res){
+                                    console.log(res.data);
+                                }).catch(function(err){
+                                    console.log(err);
+                                })
                             })
                             axios.post('http://localhost:9000/ominitrix/payment/add',{
                                 "status": "paid",
