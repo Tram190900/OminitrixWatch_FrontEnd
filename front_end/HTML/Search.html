@@ -187,7 +187,8 @@
                                     // document.getElementById('rootLink').innerText = watchType.data.typeName
 
                                     document.getElementById('listWatch').innerHTML = watchs.data.map(function(watch){
-                                        return(
+                                        if(watch.limitQuantity==0){
+                                            return(
                                             '<div class="col-md-4 col-lg-4" style="margin-bottom: 20px;">'+
                                                 '<div class="card">'+
                                                     '<div class="card-header" style="position: relative;">'+
@@ -203,11 +204,34 @@
                                                         '<p id="priceWatch">'+watch.price.toLocaleString('en-US', {style : 'currency', currency : 'VND'})+'</p>'+
                                                     '</div>'+
                                                     '<div style="margin-bottom: 20px;">'+
-                                                        '<button id="btnAdd2Cart" onclick="add2Cart(\''+watch.watchID+'\',\''+watch.price+'\')"><i class="material-icons" style="color: white;background-color: black;margin-right: 10px;">shopping_cart</i>Add to Cart</button>'+
+                                                        '<button id="btnAdd2Cart" class="'+watch.watchID+'" onclick="add2Cart(\''+watch.watchID+'\',\''+watch.price+'\')" disabled style="background-color:gray"><i class="material-icons"'+
+                                                            'style="color: white;background-color: gray;margin-right: 10px;">shopping_cart</i>Add to Cart</button>'+
                                                     '</div>'+
                                                 '</div>'+
-                                           ' </div>'
-                                        )
+                                           ' </div>')
+                                        }else if(watch.limitQuantity>0){
+                                            return(
+                                            '<div class="col-md-4 col-lg-4" style="margin-bottom: 20px;">'+
+                                                '<div class="card">'+
+                                                    '<div class="card-header" style="position: relative;">'+
+                                                        '<a href="ProductDetail.html?watchId='+watch.watchID+'">'+
+                                                            '<img src="http://localhost:9000/'+watch.images[0]+'"'+'id="imageCard">'+
+                                                            '<div class="middle">'+
+                                                                '<i class="material-icons" style="color: gray;margin-top: 50%;">remove_red_eye</i>'+
+                                                            '</div>'+
+                                                        '</a>'+
+                                                    '</div>'+
+                                                    '<div class="card-body" style="width: 100%;margin-bottom: -30px;">'+
+                                                        '<a href="ProductDetail.html?watchId='+watch.watchID+'" class="txtLinkName"><p id="nameWatch">'+watch.watchName+'</p></a>'+
+                                                        '<p id="priceWatch">'+watch.price.toLocaleString('en-US', {style : 'currency', currency : 'VND'})+'</p>'+
+                                                    '</div>'+
+                                                    '<div style="margin-bottom: 20px;">'+
+                                                        '<button id="btnAdd2Cart" class="'+watch.watchID+'" onclick="add2Cart(\''+watch.watchID+'\',\''+watch.price+'\')"><i class="material-icons"'+
+                                                            'style="color: white;background-color: black;margin-right: 10px;">shopping_cart</i>Add to Cart</button>'+
+                                                    '</div>'+
+                                                '</div>'+
+                                           ' </div>')
+                                        }
                                     }).join('')
                                 })
                                 )

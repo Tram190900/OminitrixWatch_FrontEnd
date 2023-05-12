@@ -259,7 +259,11 @@
                     '<a href="#" class="fa fa-linkedin"></a>'+
                     '<a href="#" class="fa fa-pinterest"></a>'
             document.getElementById('desWatch').innerHTML = '<p>'+watch.description+'</p>'      
-            
+            if(watch.limitQuantity==0){
+                document.getElementById('btnAdd2Cart').disabled = true
+                document.getElementById('btnAdd2Cart').style.backgroundColor='gray'
+                document.getElementById('btnAdd2Cart').innerHTML = '<i class="material-icons" style="color: white;background-color: gray;">shopping_cart</i>Add to Cart'
+            }
         }
             
         )
