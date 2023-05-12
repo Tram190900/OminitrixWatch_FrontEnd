@@ -19,7 +19,7 @@
     <script type="text/javascript" src="../JS/watch.js"></script>
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <title>Categories</title>
+    <title>Search</title>
     <script>
         // window.onscroll = function () { scrollFunction() };
         window.onload = function(){isCustomer()
@@ -100,7 +100,7 @@
                 </div>
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="pathLink">
-                        <a href="Home.html">Home</a> &iota; <a id="rootLink"></a>
+                        <a href="Home.html">Home</a> &iota; <span id="typeLink">Search</span>
                     </div>
                 </div>
 
@@ -157,12 +157,12 @@
                     <div class="column">
                         <div class="row" style="margin-bottom: 4%;">
                             <div class="col-md-6 col-lg-6">
-                                <label id="sortBy" style="font-size: 15px;font-weight: bold;">Sort by</label>
+                                <!-- <label id="sortBy" style="font-size: 15px;font-weight: bold;">Sort by</label>
                                 <select id="sortBy" class="sortByPrice" style="font-size: 15px;" onchange="sortByPrice(this)">
                                     <option>All</option>
                                     <option value="-1">Price: Low to Hight</option>
                                     <option value="1">Price: Hight to Low</option>
-                                </select>
+                                </select> -->
                             </div>
                             <div class="col-md-6 col-lg-6" style="position: relative;">
                                 <div  id="pageNumber" style="position: absolute; right: 0px;">
@@ -178,13 +178,13 @@
                         <div class="row" id="listWatch">
                             <script>
                                 const params = new URLSearchParams(document.location.search)
-                                const type = params.get('watchType')
+                                const searchName = params.get('search')
                                 axios.all([
-                                    axios.get('http://localhost:9000/ominitrix/watch/find-by-type/'+type),
-                                    axios.get('http://localhost:9000/ominitrix/type/'+type),
+                                    axios.get('http://localhost:9000/ominitrix/watch/findByName/'+searchName),
+                                    // axios.get('http://localhost:9000/ominitrix/type/'+type),
                                 ]).then(axios.spread(function(watchs,watchType){
 
-                                    document.getElementById('rootLink').innerText = watchType.data.typeName
+                                    // document.getElementById('rootLink').innerText = watchType.data.typeName
 
                                     document.getElementById('listWatch').innerHTML = watchs.data.map(function(watch){
                                         return(
