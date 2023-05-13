@@ -498,3 +498,10 @@ function sortByPrice(sort){
         location.reload()
     }
 }
+
+function checkQty(qty,limitQuantity){
+    if(qty.value>limitQuantity){
+        alert('Vượt quá số lượng cho phép')
+        qty.value = qty.value-1
+    }
+}

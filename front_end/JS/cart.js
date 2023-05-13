@@ -21,19 +21,63 @@ function add2Cart(watchid,price) {
     alert("Thêm vào giỏ hàng thành công");
   }
 }
+function add2CartWithQty(watchid,price){
+  qty = document.getElementById('Qty').value
+  if ("cart" in sessionStorage) {
+    listWatchInCart = JSON.parse(sessionStorage.getItem("cart"));
+    listWatchInCart.push({
+      watchID: watchid,
+      quantity: qty,
+      price:price
+    });
+    sessionStorage.setItem("cart", JSON.stringify(listWatchInCart));
+    document.getElementById("quantityCart").innerText = listWatchInCart.length;
+    alert("Thêm vào giỏ hàng thành công");
+  } else {
+    listWatchInCart = [];
+    listWatchInCart.push({
+      watchID: watchid,
+      quantity: qty,
+      price:price
+    });
+    sessionStorage.setItem("cart", JSON.stringify(listWatchInCart));
+    document.getElementById("quantityCart").innerText = listWatchInCart.length;
+    alert("Thêm vào giỏ hàng thành công");
+  }
+}
 function changeQuantity(price, watchid) {
   qty = parseInt(document.querySelector(".Qty" + watchid).value);
   arr = JSON.parse(sessionStorage.getItem("cart"));
   index = arr.findIndex((item) => item.watchID === watchid);
-  newQty = arr[index].quantity = qty;
-  total = price * qty;
-  document.querySelector(".total" + watchid).innerText = total.toLocaleString(
-    "en-US",
-    { style: "currency", currency: "VND" }
-  );
+  axios.get('http://localhost:9000/ominitrix/watch/'+watchid)
+    .then(function(res){
+      if(qty > res.data.limitQuantity){
+        alert('Vượt quá số lượng trong kho')
+        qty=qty-1
+        newQty = arr[index].quantity = qty;
+        total = price * qty;
+        document.querySelector(".total" + watchid).innerText = total.toLocaleString(
+          "en-US",
+          { style: "currency", currency: "VND" }
+        );
 
-  sessionStorage.setItem("cart", JSON.stringify(arr));
-  location.reload()
+        sessionStorage.setItem("cart", JSON.stringify(arr));
+        location.reload()
+            
+      }
+      else{
+        newQty = arr[index].quantity = qty;
+        total = price * qty;
+        document.querySelector(".total" + watchid).innerText = total.toLocaleString(
+          "en-US",
+          { style: "currency", currency: "VND" }
+        );
+
+        sessionStorage.setItem("cart", JSON.stringify(arr));
+        location.reload()
+            }
+    })
+  
   return price * qty;
 }
 

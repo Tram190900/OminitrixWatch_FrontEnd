@@ -17,6 +17,7 @@
     <script type="text/javascript" src="../JS/RegularExpressions.js"></script>
     <script type="text/javascript" src="../JS/cart.js"></script>
     <script type="text/javascript" src="../JS/comment.js"></script>
+    <script type="text/javascript" src="../JS/watch.js"></script>
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <title>Product Detail</title>
@@ -174,7 +175,7 @@
                 </div>
                 <div class="col-md-3 col-lg-3">
                     <h4 style="font-weight: bold;">Contact Us</h4>
-                    <span><i class="material-icons" style="font-size: 17px;">location_on</i>  Nguyễn Văn Bảo</span><br>
+                    <span><i class="material-icons"  style="font-size: 17px;">location_on</i>  Nguyễn Văn Bảo</span><br>
                     <span><i class="material-icons" style="font-size: 17px;">phone</i>  01234567891</span><br>
                     <span><i class="material-icons" style="font-size: 17px;">access_alarm</i>  7 days a week from 9:00 am to 7:00 pm</span><br>
                     <span><i class="material-icons" style="font-size: 17px;">mail</i>  info@demolink.org</span>
@@ -248,17 +249,18 @@
                     '<label>Color:</label><br>'+
                     '<span class="dot"></span><br><br>'+
                     '<label>Quantity:</label><br>'+
-                    '<input id="Qty" type="number" min="1" value="1" style="width: 65px;padding: 1%;"><br><br>'+
+                    '<input id="Qty" type="number" min="1" value="1" onchange="checkQty(this,'+watch.limitQuantity+')" style="width: 65px;padding: 1%;"><br><br>'+
                     '<label>Available quantity :</label>'+
                     '<p>'+watch.limitQuantity+'</p>'+
-                    '<button id="btnAdd2Cart" onclick="add2Cart(\''+watch.watchID+'\',\''+watch.price+'\')" style="margin-bottom: 20px;"><i class="material-icons" style="color: white;background-color: black;">shopping_cart</i>Add to Cart</button>'+
+                    '<button id="btnAdd2Cart" onclick="add2CartWithQty(\''+watch.watchID+'\',\''+watch.price+'\')" style="margin-bottom: 20px;"><i class="material-icons" style="color: white;background-color: black;">shopping_cart</i>Add to Cart</button>'+
                     '<i class="material-icons" id="clickHeart" onclick="likeProduct()">favorite_border</i><br>'+
                     '<a href="#" class="fa fa-facebook"></a>'+
                     '<a href="#" class="fa fa-twitter"></a>'+
                     '<a href="#" class="fa fa-google"></a>'+
                     '<a href="#" class="fa fa-linkedin"></a>'+
                     '<a href="#" class="fa fa-pinterest"></a>'
-            document.getElementById('desWatch').innerHTML = '<p>'+watch.description+'</p>'      
+            document.getElementById('desWatch').innerHTML = '<p>'+watch.description+'</p>'    
+            
             if(watch.limitQuantity<=0){
                 document.getElementById('btnAdd2Cart').disabled = true
                 document.getElementById('btnAdd2Cart').style.backgroundColor='gray'
