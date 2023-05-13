@@ -132,9 +132,9 @@ function filterBill(){
         axios.all([
             axios.get('http://localhost:9000/ominitrix/bill'),
             axios.get('http://localhost:9000/ominitrix/user'),
-            axios.get('http://localhost:9000/ominitrix/payment'),
+            // axios.get('http://localhost:9000/ominitrix/payment'),
             axios.get('http://localhost:9000/ominitrix/bill-detail')
-        ]).then(axios.spread(function(bills,users,payments,bill_details){
+        ]).then(axios.spread(function(bills,users,bill_details){
             var total = 0
             userByEmail = users.data.find(function(u){
                 return u.email===email
@@ -186,9 +186,9 @@ function filterByDate(){
         axios.all([
             axios.get('http://localhost:9000/ominitrix/bill'),
             axios.get('http://localhost:9000/ominitrix/user'),
-            axios.get('http://localhost:9000/ominitrix/payment'),
+            // axios.get('http://localhost:9000/ominitrix/payment'),
             axios.get('http://localhost:9000/ominitrix/bill-detail')
-        ]).then(axios.spread(function(bills,users,payments,bill_details){
+        ]).then(axios.spread(function(bills,users,bill_details){
             billByDate = bills.data.filter(function(b){
                 return formatDate(new Date(Date.parse(b.date))) === date
             })
@@ -197,9 +197,9 @@ function filterByDate(){
                 var user = users.data.find(function(u){
                     return u.userID === bill.userID
                 })
-                var payment = payments.data.find(function(p){
-                    return p.billID === bill.billID
-                })
+                // var payment = payments.data.find(function(p){
+                //     return p.billID === bill.billID
+                // })
                 var detail = bill_details.data.filter(function(b){
                     return b.billID===bill.billID
                 })
