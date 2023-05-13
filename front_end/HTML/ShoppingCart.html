@@ -24,36 +24,7 @@
         // window.onscroll = function () { scrollFunction() };
         window.onload = function(){
             if(!isCustomer()){
-                var listWatchInCart = []
-                // axios.all([
-                //     axios.get('http://localhost:9000/ominitrix/bill'),
-                //     axios.get('http://localhost:9000/ominitrix/payment')
-                // ]).then(axios.spread(function(bills, payments){
-                //     bill = bills.data.filter(function(b){
-                //         user = JSON.parse(sessionStorage.getItem('userid'))
-                //         return b.userID === user.userID
-                //     })
-                //     var payment
-                //     bill.forEach(element => {
-                //         payment = payments.data.find(function(p){
-                //             return p.billID === element.billID && p.status === 'unpaid'
-                //         })
-                //     });
-                //     if(payment!=null){
-                //         axios.get('http://localhost:9000/ominitrix/bill-detail/'+payment.billID)
-                //         .then(function(res){
-                //             res.data.map(function(b){
-                //                     listWatchInCart.push({
-                //                     "watchID":b.watchID,
-                //                     "quantity":b.quantity,
-                //                     "price":res.data.price
-                //                 })
-                //             })
-                //             sessionStorage.setItem('cart',JSON.stringify(listWatchInCart))
-                //         })
-                //     }
-                    
-                // }))
+                // document.getElementById('btnCheckOut').disabled=true
             }
             quantityInCart()
         }
@@ -275,7 +246,7 @@
         </footer>
     </div>
     <script>
-        if(sessionStorage.getItem('cart')==null){
+        if(sessionStorage.getItem('cart')==null || sessionStorage.getItem('userid')==null){
             document.getElementById('btnCheckOut').disabled =true
             document.getElementById('btnCheckOut').style.backgroundColor='gray'
         }
