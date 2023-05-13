@@ -259,7 +259,7 @@
                 if(watch.limitQuantity>0){
                     status = "stocking"
                 }
-                else if(watch.limitQuantity==0){
+                else if(watch.limitQuantity<=0){
                     status ="sold out"
                 }
                 return(

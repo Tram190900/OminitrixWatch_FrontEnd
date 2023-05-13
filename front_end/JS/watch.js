@@ -77,44 +77,52 @@ function findByBrand(brandId) {
                 return w.brandID === brandId;
             });
             document.getElementById("listWatch").innerHTML = watchs
-                .map(function (watch) {
-                    return (
-                        '<div class="col-md-4 col-lg-4" style="margin-bottom: 20px;">' +
-                        '<div class="card">' +
-                        '<div class="card-header" style="position: relative;">' +
-                        '<a href="ProductDetail.html?watchId=' +
-                        watch.watchID +
-                        '">' +
-                        '<img src="http://localhost:9000/' +
-                        watch.images[0] +
-                        '"' +
-                        'id="imageCard">' +
-                        '<div class="middle">' +
-                        '<i class="material-icons" style="color: gray;margin-top: 50%;">remove_red_eye</i>' +
-                        "</div>" +
-                        "</a>" +
-                        "</div>" +
-                        '<div class="card-body" style="width: 100%;margin-bottom: -30px;">' +
-                        '<a href="ProductDetail.html?watchId=' +
-                        watch.watchID +
-                        '" class="txtLinkName"><p id="nameWatch">' +
-                        watch.watchName +
-                        "</p></a>" +
-                        '<p id="priceWatch">' +
-                        watch.price.toLocaleString("en-US", {
-                            style: "currency",
-                            currency: "VND",
-                        }) +
-                        "</p>" +
-                        "</div>" +
-                        '<div style="margin-bottom: 20px;">' +
-                        '<button id="btnAdd2Cart" onclick="add2Cart(\'' +
-                        watch.watchID +
-                        '\')"><i class="material-icons" style="color: white;background-color: black;margin-right: 10px;">shopping_cart</i>Add to Cart</button>' +
-                        "</div>" +
-                        "</div>" +
-                        " </div>"
-                    );
+                .map(function (w) {
+                    if(w.limitQuantity<=0){
+                        return(
+                        '<div class="col-md-4 col-lg-4" style="margin-bottom: 20px;">'+
+                            '<div class="card">'+
+                                '<div class="card-header" style="position: relative;">'+
+                                    '<a href="ProductDetail.html?watchId='+w.watchID+'">'+
+                                        '<img src="http://localhost:9000/'+w.images[0]+'"'+'id="imageCard">'+
+                                        '<div class="middle">'+
+                                            '<i class="material-icons" style="color: gray;margin-top: 50%;">remove_red_eye</i>'+
+                                        '</div>'+
+                                    '</a>'+
+                                '</div>'+
+                                '<div class="card-body" style="width: 100%;margin-bottom: -30px;">'+
+                                    '<a href="ProductDetail.html?watchId='+w.watchID+'" class="txtLinkName"><p id="nameWatch">'+w.watchName+'</p></a>'+
+                                    '<p id="priceWatch">'+w.price.toLocaleString('en-US', {style : 'currency', currency : 'VND'})+'</p>'+
+                                '</div>'+
+                                '<div style="margin-bottom: 20px;">'+
+                                    '<button id="btnAdd2Cart" class="'+w.watchID+'" onclick="add2Cart(\''+w.watchID+'\',\''+w.price+'\')" disabled style="background-color:gray"><i class="material-icons"'+
+                                        'style="color: white;background-color: gray;margin-right: 10px;">shopping_cart</i>Add to Cart</button>'+
+                                '</div>'+
+                            '</div>'+
+                       ' </div>')
+                    }else if(w.limitQuantity>0){
+                        return(
+                        '<div class="col-md-4 col-lg-4" style="margin-bottom: 20px;">'+
+                            '<div class="card">'+
+                                '<div class="card-header" style="position: relative;">'+
+                                    '<a href="ProductDetail.html?watchId='+w.watchID+'">'+
+                                        '<img src="http://localhost:9000/'+w.images[0]+'"'+'id="imageCard">'+
+                                        '<div class="middle">'+
+                                            '<i class="material-icons" style="color: gray;margin-top: 50%;">remove_red_eye</i>'+
+                                        '</div>'+
+                                    '</a>'+
+                                '</div>'+
+                                '<div class="card-body" style="width: 100%;margin-bottom: -30px;">'+
+                                    '<a href="ProductDetail.html?watchId='+w.watchID+'" class="txtLinkName"><p id="nameWatch">'+w.watchName+'</p></a>'+
+                                    '<p id="priceWatch">'+w.price.toLocaleString('en-US', {style : 'currency', currency : 'VND'})+'</p>'+
+                                '</div>'+
+                                '<div style="margin-bottom: 20px;">'+
+                                    '<button id="btnAdd2Cart" class="'+w.watchID+'" onclick="add2Cart(\''+w.watchID+'\',\''+w.price+'\')"><i class="material-icons"'+
+                                        'style="color: white;background-color: black;margin-right: 10px;">shopping_cart</i>Add to Cart</button>'+
+                                '</div>'+
+                            '</div>'+
+                       ' </div>')
+                    }
                 })
                 .join("");
         });
@@ -145,61 +153,42 @@ function adminFindByType(typeID) {
                             brand = brands.data.find(function (b) {
                                 return b.brandID === watch.brandID;
                             });
-                            return (
-                                "<tr>" +
-                                '<td><img style="width: 120px;height:130px"' +
-                                'src="http://localhost:9000/' +
-                                watch.images[0] +
-                                '">' +
-                                "</td>" +
-                                '<td style="width: 260px;">' +
-                                watch.watchName +
-                                "</td>" +
-                                "<td>" +
-                                brand.brandName +
-                                "</td>" +
-                                "<td>" +
-                                typeName +
-                                "</td>" +
-                                '<td><span class="dot" style="background-color:' +
-                                color.colorName +
-                                ' ;"></span>' +
-                                "</td>" +
-                                "<td>" +
-                                watch.thickness +
-                                " mm</td>" +
-                                '<td id="water">' +
-                                watch.watchGender +
-                                "</td>" +
-                                "<td>" +
-                                watch.price.toLocaleString("en-US", {
-                                    style: "currency",
-                                    currency: "VND",
-                                }) +
-                                "</td>" +
-                                "<td>" +
-                                watch.limitQuantity +
-                                "</td>" +
-                                "<td>" +
-                                watch.voteLike +
-                                "</td>" +
-                                "<td>" +
-                                '<span style="display: flex;background:none">' +
-                                '<button id="btnEdit"' +
-                                "onclick=\"location.href='AddProduct.html?watchId=" +
-                                watch.watchID +
-                                "'\">" +
-                                '<i class="material-icons">edit</i>' +
-                                "</button>" +
-                                '<button id="btnEdit" onclick="deleteById(\'' +
-                                watch.watchID +
-                                "')\">" +
-                                '<i class="material-icons">delete</i>' +
-                                "</button>" +
-                                "</span>" +
-                                "</td>" +
-                                "</tr>"
-                            );
+                            var status = null
+                            if(watch.limitQuantity>0){
+                                status = "stocking"
+                            }
+                            else if(watch.limitQuantity<=0){
+                                status ="sold out"
+                            }
+                            return(
+                                '<tr>'+
+                                '<td><img style="width: 100%;height:160px"'+
+                                            'src="http://localhost:9000/'+watch.images[0]+'">'+
+                                    '</td>'+
+                                    '<td style="width: 260px;">'+watch.watchName+'</td>'+
+                                    '<td>'+brand.brandName+'</td>'+
+                                    '<td>'+type.typeName+'</td>'+
+                                    '<td><span class="dot" style="background-color:'+color.colorName+' ;"></span>'+
+                                    '</td>'+
+                                    '<td>'+watch.thickness+' mm</td>'+
+                                    '<td id="water">'+watch.watchGender+'</td>'+
+                                    '<td>'+watch.price.toLocaleString('en-US', {style : 'currency', currency : 'VND'})+'</td>'+
+                                    '<td>'+watch.limitQuantity+'</td>'+
+                                    '<td>'+status+'</td>'+
+                                    '<td>'+watch.voteLike+'</td>'+
+                                    '<td>'+
+                                        '<span style="display: flex;background:none">'+
+                                            '<button id="btnEdit"'+
+                                                'onclick="location.href=\'EditProduct.html?watchId='+watch.watchID+'\'">'+
+                                                '<i class="material-icons">edit</i>'+
+                                            '</button>'+
+                                            // '<button id="btnEdit" onclick="deleteById(\''+watch.watchID+'\')">'+
+                                            //     '<i class="material-icons">delete</i>'+
+                                            // '</button>'+
+                                        '</span>'+
+                                    '</td>'+
+                                    '</tr>'
+                            )
                         })
                         .join("");
                 })
@@ -232,61 +221,42 @@ function adminFindByBrand(brandID) {
                             type = types.data.find(function (b) {
                                 return b.typeID === watch.typeID;
                             });
-                            return (
-                                "<tr>" +
-                                '<td><img style="width: 120px;height:130px"' +
-                                'src="http://localhost:9000/' +
-                                watch.images[0] +
-                                '">' +
-                                "</td>" +
-                                '<td style="width: 260px;">' +
-                                watch.watchName +
-                                "</td>" +
-                                "<td>" +
-                                brandName +
-                                "</td>" +
-                                "<td>" +
-                                type.typeName +
-                                "</td>" +
-                                '<td><span class="dot" style="background-color:' +
-                                color.colorName +
-                                ' ;"></span>' +
-                                "</td>" +
-                                "<td>" +
-                                watch.thickness +
-                                " mm</td>" +
-                                '<td id="water">' +
-                                watch.watchGender +
-                                "</td>" +
-                                "<td>" +
-                                watch.price.toLocaleString("en-US", {
-                                    style: "currency",
-                                    currency: "VND",
-                                }) +
-                                "</td>" +
-                                "<td>" +
-                                watch.limitQuantity +
-                                "</td>" +
-                                "<td>" +
-                                watch.voteLike +
-                                "</td>" +
-                                "<td>" +
-                                '<span style="display: flex;background:none">' +
-                                '<button id="btnEdit"' +
-                                "onclick=\"location.href='AddProduct.html?watchId=" +
-                                watch.watchID +
-                                "'\">" +
-                                '<i class="material-icons">edit</i>' +
-                                "</button>" +
-                                '<button id="btnEdit" onclick="deleteById(\'' +
-                                watch.watchID +
-                                "')\">" +
-                                '<i class="material-icons">delete</i>' +
-                                "</button>" +
-                                "</span>" +
-                                "</td>" +
-                                "</tr>"
-                            );
+                            var status = null
+                            if(watch.limitQuantity>0){
+                                status = "stocking"
+                            }
+                            else if(watch.limitQuantity<=0){
+                                status ="sold out"
+                            }
+                            return(
+                                '<tr>'+
+                                '<td><img style="width: 100%;height:160px"'+
+                                            'src="http://localhost:9000/'+watch.images[0]+'">'+
+                                    '</td>'+
+                                    '<td style="width: 260px;">'+watch.watchName+'</td>'+
+                                    '<td>'+brand.brandName+'</td>'+
+                                    '<td>'+type.typeName+'</td>'+
+                                    '<td><span class="dot" style="background-color:'+color.colorName+' ;"></span>'+
+                                    '</td>'+
+                                    '<td>'+watch.thickness+' mm</td>'+
+                                    '<td id="water">'+watch.watchGender+'</td>'+
+                                    '<td>'+watch.price.toLocaleString('en-US', {style : 'currency', currency : 'VND'})+'</td>'+
+                                    '<td>'+watch.limitQuantity+'</td>'+
+                                    '<td>'+status+'</td>'+
+                                    '<td>'+watch.voteLike+'</td>'+
+                                    '<td>'+
+                                        '<span style="display: flex;background:none">'+
+                                            '<button id="btnEdit"'+
+                                                'onclick="location.href=\'EditProduct.html?watchId='+watch.watchID+'\'">'+
+                                                '<i class="material-icons">edit</i>'+
+                                            '</button>'+
+                                            // '<button id="btnEdit" onclick="deleteById(\''+watch.watchID+'\')">'+
+                                            //     '<i class="material-icons">delete</i>'+
+                                            // '</button>'+
+                                        '</span>'+
+                                    '</td>'+
+                                    '</tr>'
+                            )
                         })
                         .join("");
                 })
@@ -360,7 +330,8 @@ function sortMaxMin(){
                     return w.price>=min && w.price<=max
                 })
                 document.getElementById('listWatch').innerHTML = watch.map(function(w){
-                    return(
+                    if(w.limitQuantity<=0){
+                        return(
                         '<div class="col-md-4 col-lg-4" style="margin-bottom: 20px;">'+
                             '<div class="card">'+
                                 '<div class="card-header" style="position: relative;">'+
@@ -376,11 +347,34 @@ function sortMaxMin(){
                                     '<p id="priceWatch">'+w.price.toLocaleString('en-US', {style : 'currency', currency : 'VND'})+'</p>'+
                                 '</div>'+
                                 '<div style="margin-bottom: 20px;">'+
-                                    '<button id="btnAdd2Cart" onclick="add2Cart(\''+w.watchID+'\',\''+w.price+'\')"><i class="material-icons" style="color: white;background-color: black;margin-right: 10px;">shopping_cart</i>Add to Cart</button>'+
+                                    '<button id="btnAdd2Cart" class="'+w.watchID+'" onclick="add2Cart(\''+w.watchID+'\',\''+w.price+'\')" disabled style="background-color:gray"><i class="material-icons"'+
+                                        'style="color: white;background-color: gray;margin-right: 10px;">shopping_cart</i>Add to Cart</button>'+
                                 '</div>'+
                             '</div>'+
-                       ' </div>'
-                    )
+                       ' </div>')
+                    }else if(w.limitQuantity>0){
+                        return(
+                        '<div class="col-md-4 col-lg-4" style="margin-bottom: 20px;">'+
+                            '<div class="card">'+
+                                '<div class="card-header" style="position: relative;">'+
+                                    '<a href="ProductDetail.html?watchId='+w.watchID+'">'+
+                                        '<img src="http://localhost:9000/'+w.images[0]+'"'+'id="imageCard">'+
+                                        '<div class="middle">'+
+                                            '<i class="material-icons" style="color: gray;margin-top: 50%;">remove_red_eye</i>'+
+                                        '</div>'+
+                                    '</a>'+
+                                '</div>'+
+                                '<div class="card-body" style="width: 100%;margin-bottom: -30px;">'+
+                                    '<a href="ProductDetail.html?watchId='+w.watchID+'" class="txtLinkName"><p id="nameWatch">'+w.watchName+'</p></a>'+
+                                    '<p id="priceWatch">'+w.price.toLocaleString('en-US', {style : 'currency', currency : 'VND'})+'</p>'+
+                                '</div>'+
+                                '<div style="margin-bottom: 20px;">'+
+                                    '<button id="btnAdd2Cart" class="'+w.watchID+'" onclick="add2Cart(\''+w.watchID+'\',\''+w.price+'\')"><i class="material-icons"'+
+                                        'style="color: white;background-color: black;margin-right: 10px;">shopping_cart</i>Add to Cart</button>'+
+                                '</div>'+
+                            '</div>'+
+                       ' </div>')
+                    }
                 }).join('')
             }else{
                 location.reload()
@@ -399,7 +393,8 @@ function sortByPrice(sort){
                     return a.price-b.price
                 })
                 document.getElementById('listWatch').innerHTML = watchAfter.map(function(w){
-                    return(
+                    if(w.limitQuantity<=0){
+                        return(
                         '<div class="col-md-4 col-lg-4" style="margin-bottom: 20px;">'+
                             '<div class="card">'+
                                 '<div class="card-header" style="position: relative;">'+
@@ -415,11 +410,34 @@ function sortByPrice(sort){
                                     '<p id="priceWatch">'+w.price.toLocaleString('en-US', {style : 'currency', currency : 'VND'})+'</p>'+
                                 '</div>'+
                                 '<div style="margin-bottom: 20px;">'+
-                                    '<button id="btnAdd2Cart" onclick="add2Cart(\''+w.watchID+'\',\''+w.price+'\')"><i class="material-icons" style="color: white;background-color: black;margin-right: 10px;">shopping_cart</i>Add to Cart</button>'+
+                                    '<button id="btnAdd2Cart" class="'+w.watchID+'" onclick="add2Cart(\''+w.watchID+'\',\''+w.price+'\')" disabled style="background-color:gray"><i class="material-icons"'+
+                                        'style="color: white;background-color: gray;margin-right: 10px;">shopping_cart</i>Add to Cart</button>'+
                                 '</div>'+
                             '</div>'+
-                       ' </div>'
-                    )
+                       ' </div>')
+                    }else if(w.limitQuantity>0){
+                        return(
+                        '<div class="col-md-4 col-lg-4" style="margin-bottom: 20px;">'+
+                            '<div class="card">'+
+                                '<div class="card-header" style="position: relative;">'+
+                                    '<a href="ProductDetail.html?watchId='+w.watchID+'">'+
+                                        '<img src="http://localhost:9000/'+w.images[0]+'"'+'id="imageCard">'+
+                                        '<div class="middle">'+
+                                            '<i class="material-icons" style="color: gray;margin-top: 50%;">remove_red_eye</i>'+
+                                        '</div>'+
+                                    '</a>'+
+                                '</div>'+
+                                '<div class="card-body" style="width: 100%;margin-bottom: -30px;">'+
+                                    '<a href="ProductDetail.html?watchId='+w.watchID+'" class="txtLinkName"><p id="nameWatch">'+w.watchName+'</p></a>'+
+                                    '<p id="priceWatch">'+w.price.toLocaleString('en-US', {style : 'currency', currency : 'VND'})+'</p>'+
+                                '</div>'+
+                                '<div style="margin-bottom: 20px;">'+
+                                    '<button id="btnAdd2Cart" class="'+w.watchID+'" onclick="add2Cart(\''+w.watchID+'\',\''+w.price+'\')"><i class="material-icons"'+
+                                        'style="color: white;background-color: black;margin-right: 10px;">shopping_cart</i>Add to Cart</button>'+
+                                '</div>'+
+                            '</div>'+
+                       ' </div>')
+                    }
                 }).join('')
             })
     }else if(sort.value=="1"){
@@ -429,7 +447,8 @@ function sortByPrice(sort){
                     return b.price-a.price
                 })
                 document.getElementById('listWatch').innerHTML = watchAfter.map(function(w){
-                    return(
+                    if(w.limitQuantity<=0){
+                        return(
                         '<div class="col-md-4 col-lg-4" style="margin-bottom: 20px;">'+
                             '<div class="card">'+
                                 '<div class="card-header" style="position: relative;">'+
@@ -445,11 +464,34 @@ function sortByPrice(sort){
                                     '<p id="priceWatch">'+w.price.toLocaleString('en-US', {style : 'currency', currency : 'VND'})+'</p>'+
                                 '</div>'+
                                 '<div style="margin-bottom: 20px;">'+
-                                    '<button id="btnAdd2Cart" onclick="add2Cart(\''+w.watchID+'\',\''+w.price+'\')"><i class="material-icons" style="color: white;background-color: black;margin-right: 10px;">shopping_cart</i>Add to Cart</button>'+
+                                    '<button id="btnAdd2Cart" class="'+w.watchID+'" onclick="add2Cart(\''+w.watchID+'\',\''+w.price+'\')" disabled style="background-color:gray"><i class="material-icons"'+
+                                        'style="color: white;background-color: gray;margin-right: 10px;">shopping_cart</i>Add to Cart</button>'+
                                 '</div>'+
                             '</div>'+
-                       ' </div>'
-                    )
+                       ' </div>')
+                    }else if(w.limitQuantity>0){
+                        return(
+                        '<div class="col-md-4 col-lg-4" style="margin-bottom: 20px;">'+
+                            '<div class="card">'+
+                                '<div class="card-header" style="position: relative;">'+
+                                    '<a href="ProductDetail.html?watchId='+w.watchID+'">'+
+                                        '<img src="http://localhost:9000/'+w.images[0]+'"'+'id="imageCard">'+
+                                        '<div class="middle">'+
+                                            '<i class="material-icons" style="color: gray;margin-top: 50%;">remove_red_eye</i>'+
+                                        '</div>'+
+                                    '</a>'+
+                                '</div>'+
+                                '<div class="card-body" style="width: 100%;margin-bottom: -30px;">'+
+                                    '<a href="ProductDetail.html?watchId='+w.watchID+'" class="txtLinkName"><p id="nameWatch">'+w.watchName+'</p></a>'+
+                                    '<p id="priceWatch">'+w.price.toLocaleString('en-US', {style : 'currency', currency : 'VND'})+'</p>'+
+                                '</div>'+
+                                '<div style="margin-bottom: 20px;">'+
+                                    '<button id="btnAdd2Cart" class="'+w.watchID+'" onclick="add2Cart(\''+w.watchID+'\',\''+w.price+'\')"><i class="material-icons"'+
+                                        'style="color: white;background-color: black;margin-right: 10px;">shopping_cart</i>Add to Cart</button>'+
+                                '</div>'+
+                            '</div>'+
+                       ' </div>')
+                    }
                 }).join('')
             })
     }else{

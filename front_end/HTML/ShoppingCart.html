@@ -273,6 +273,13 @@
             </div>
         </footer>
     </div>
+    <script>
+        if(sessionStorage.getItem('cart')==null){
+            document.getElementById('btnCheckOut').disabled =true
+            document.getElementById('btnCheckOut').style.backgroundColor='gray'
+        }
+        
+    </script>
 </body>
 
 </html>
