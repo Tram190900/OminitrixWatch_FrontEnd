@@ -14,6 +14,7 @@ function findBillByEmail(email){
             var user = userByEmail.find(function(u){
                 return u.userID === bill.userID
             })
+            console.log(user);
             var payment = payments.data.find(function(p){
                 return p.billID === bill.billID
             })
@@ -99,22 +100,24 @@ function addBill(){
                                     method:'PUT',
                                     data:data
                                 }).then(function(res){
-                                    console.log(res.data);
+                                    sessionStorage.removeItem('cart')
+                                    sessionStorage.removeItem('total')
+                                    location.reload()
                                 }).catch(function(err){
                                     console.log(err);
                                 })
                             })
                             
                         })
-                        axios.post('http://localhost:9000/ominitrix/payment/add',{
-                                "status": "paid",
-                                "billID":billID
-                            }).then(function(res){
-                                console.log(res.data);
-                                sessionStorage.removeItem('cart')
-                                sessionStorage.removeItem('total')
-                                location.reload()
-                            })
+                        // axios.post('http://localhost:9000/ominitrix/payment/add',{
+                        //         "status": "paid",
+                        //         "billID":billID
+                        //     }).then(function(res){
+                        //         console.log(res.data);
+                        //         sessionStorage.removeItem('cart')
+                        //         sessionStorage.removeItem('total')
+                        //         location.reload()
+                        //     })
                         
                     }
                 })
@@ -150,7 +153,7 @@ function filterBill(){
                     return(
                         '<tr>'+
                             '<td><a class="tablinks" onclick="location.href=\'EditOrder.html?billId='+bill.billID+'\'">'+bill.billID+'</a></td>'+
-                            '<td id="email">'+user.email+'</td>'+
+                            '<td id="email">'+userByEmail.email+'</td>'+
                             '<td>'+bill.date+'</td>'+
                             // '<td>'+payment.status+'</td>'+
                             '<td>'+total.toLocaleString('en-US', {style : 'currency', currency : 'VND'})+'</td>'+
