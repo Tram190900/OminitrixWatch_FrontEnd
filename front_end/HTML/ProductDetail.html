@@ -42,15 +42,16 @@
                                     <p id="quantityCart"></p>
                             </span>
                             <!-- Guest -->
-                            <div id="guest">
+                            <div id="guest" style="display: inline;">
                                 <a href="Registration.html">Registration</a> &#124; 
                                 <a href="Login.html">Login</a>
                             </div>
 
                             <!-- Customer -->
                             <div class="dropdown" style="display: none;" id="customer">
-                                <a href="Login.html" id="userName" style="display: inline-flex;justify-content: center;"></a>
+                                <a id="userName" style="display: inline-flex;justify-content: center;"></a>
                                 <div class="dropdown-content">
+                                    <a href="../HTML/MyOrder.html">My Order</a>
                                     <a href="Admin/TableProduct.html" id="roleAdmin">Admin</a>
                                     <a href="#" onclick="logOut()">Log Out</a>
                                 </div>
@@ -253,7 +254,7 @@
                     '<label>Available quantity :</label>'+
                     '<p>'+watch.limitQuantity+'</p>'+
                     '<button id="btnAdd2Cart" onclick="add2CartWithQty(\''+watch.watchID+'\',\''+watch.price+'\')" style="margin-bottom: 20px;"><i class="material-icons" style="color: white;background-color: black;">shopping_cart</i>Add to Cart</button>'+
-                    '<i class="material-icons" id="clickHeart" onclick="likeProduct()">favorite_border</i><br>'+
+                    '<i class="material-icons" id="clickHeart" onclick="likeProduct(watchId)">favorite_border</i><br>'+
                     '<a href="#" class="fa fa-facebook"></a>'+
                     '<a href="#" class="fa fa-twitter"></a>'+
                     '<a href="#" class="fa fa-google"></a>'+

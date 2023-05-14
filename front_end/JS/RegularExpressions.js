@@ -102,14 +102,25 @@ function showSlides(n) {
   dots[slideIndex-1].className += " active";
 }
 
-function likeProduct(){
+function likeProduct(watchID){
   var like = document.getElementById('clickHeart');
   if(like.textContent==="favorite_border"){
     like.textContent='favorite';
     like.style.color='red'
+    const userID = JSON.parse(sessionStorage.getItem('userid'))
+
+    axios.post('http://localhost:9000/ominitrix/like/add', {
+        "userID": userID,
+        "watchID": watchID
+    }).then(function(res){
+        if(res.status==200){
+           
+        }
+    }) 
   }else{
     like.textContent="favorite_border"
     like.style.color='black'
+    axios.delete('http://localhost:9000/ominitrix/like/delete?'+"userID="+userID+"&watchID="+watchID)
   }
 }
 
