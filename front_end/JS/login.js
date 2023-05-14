@@ -98,7 +98,7 @@ function login(){
                                 // location.href = '../HTML/Home.html' 
                                 sessionStorage.setItem('userid',JSON.stringify(user.userID))
                                 sessionStorage.setItem('account',JSON.stringify(response.data))
-                                history.back()
+                                location.href='../HTML/Home.html'
                             }else{
                                 alert('Password sai. Nhập lại password')
                                 document.getElementById('password').focus()
