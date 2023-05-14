@@ -78,7 +78,7 @@ function findByBrand(brandId) {
             });
             document.getElementById("listWatch").innerHTML = watchs
                 .map(function (w) {
-                    if(w.limitQuantity<=0){
+                    if(w.limitQuantity<=0||w.status==false){
                         return(
                         '<div class="col-md-4 col-lg-4" style="margin-bottom: 20px;">'+
                             '<div class="card">'+
@@ -157,8 +157,8 @@ function adminFindByType(typeID) {
                             if(watch.limitQuantity>0){
                                 status = "stocking"
                             }
-                            else if(watch.limitQuantity<=0){
-                                status ="sold out"
+                            else if(watch.limitQuantity<=0||watch.status==false){
+                                status ="stop business"
                             }
                             return(
                                 '<tr>'+
@@ -225,8 +225,8 @@ function adminFindByBrand(brandID) {
                             if(watch.limitQuantity>0){
                                 status = "stocking"
                             }
-                            else if(watch.limitQuantity<=0){
-                                status ="sold out"
+                            else if(watch.limitQuantity<=0||watch.status==false){
+                                status ="stop business"
                             }
                             return(
                                 '<tr>'+
@@ -330,7 +330,7 @@ function sortMaxMin(){
                     return w.price>=min && w.price<=max
                 })
                 document.getElementById('listWatch').innerHTML = watch.map(function(w){
-                    if(w.limitQuantity<=0){
+                    if(w.limitQuantity<=0||w.status==false){
                         return(
                         '<div class="col-md-4 col-lg-4" style="margin-bottom: 20px;">'+
                             '<div class="card">'+
@@ -393,7 +393,7 @@ function sortByPrice(sort){
                     return a.price-b.price
                 })
                 document.getElementById('listWatch').innerHTML = watchAfter.map(function(w){
-                    if(w.limitQuantity<=0){
+                    if(w.limitQuantity<=0 || w.status==false){
                         return(
                         '<div class="col-md-4 col-lg-4" style="margin-bottom: 20px;">'+
                             '<div class="card">'+

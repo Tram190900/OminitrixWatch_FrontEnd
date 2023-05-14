@@ -187,7 +187,7 @@
                                     document.getElementById('rootLink').innerText = watchType.data.typeName
 
                                     document.getElementById('listWatch').innerHTML = watchs.data.map(function(watch){
-                                        if(watch.limitQuantity<=0){
+                                        if(watch.limitQuantity<=0 || watch.status==false){
                                             return(
                                             '<div class="col-md-4 col-lg-4" style="margin-bottom: 20px;">'+
                                                 '<div class="card">'+

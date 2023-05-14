@@ -256,11 +256,11 @@
                     return c.colorID === watch.colorID
                 })
                 var status = null
-                if(watch.limitQuantity>0){
+                if(watch.limitQuantity>0 && watch.status ==true){
                     status = "stocking"
                 }
-                else if(watch.limitQuantity<=0){
-                    status ="sold out"
+                else if(watch.limitQuantity<=0 || watch.status ==false){
+                    status ="stop business"
                 }
                 return(
                     '<tr>'+
