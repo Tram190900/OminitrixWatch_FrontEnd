@@ -102,7 +102,7 @@ function addBill(){
                                 }).then(function(res){
                                     sessionStorage.removeItem('cart')
                                     sessionStorage.removeItem('total')
-                                    location.reload()
+                                    location.href='../HTML/Home.html'
                                 }).catch(function(err){
                                     console.log(err);
                                 })
