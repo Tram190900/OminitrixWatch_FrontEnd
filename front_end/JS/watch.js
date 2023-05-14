@@ -447,7 +447,7 @@ function sortByPrice(sort){
                     return b.price-a.price
                 })
                 document.getElementById('listWatch').innerHTML = watchAfter.map(function(w){
-                    if(w.limitQuantity<=0){
+                    if(w.limitQuantity<=0||w.status==false){
                         return(
                         '<div class="col-md-4 col-lg-4" style="margin-bottom: 20px;">'+
                             '<div class="card">'+
